@@ -340,7 +340,7 @@
 
     // Highlight the staff depending on correctness
     function highlightNote(correct) {
-      noteContainer.className = correct ? "staff green" : "staff red";
+      noteContainer.className = correct ? "staff green" : "staff red"; //todo: eliminate
       noteEllipse.setAttribute("fill", correct ? "green" : "red");
       setTimeout(() => {
         noteEllipse.setAttribute("fill", "black"); // Reset note color after delay
