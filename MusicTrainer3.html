@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Musical Note Trainer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .staff {
+      position: relative;
+      width: 300px;
+      height: 100px;
+      margin: 20px auto;
+      background: linear-gradient(to bottom, transparent 20%, black 20%, black 22%, transparent 22%) repeat-y;
+      background-size: 100% 20px;
+    }
+    .note {
+      position: absolute;
+      font-size: 32px;
+      color: black;
+      bottom: 0;
+    }
+    #noteContainer.green .note {
+      color: green;
+    }
+    #noteContainer.red .note {
+      color: red;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Musical Note Trainer</h1>
+  <p id="instruction">Sing or play the note shown below:</p>
+  <div id="noteContainer" class="staff">
+    <div id="note" class="note">♪</div>
+  </div>
+  <button id="startButton">Start</button>
+
+  <script>
+    const notes = [
+      { name: "C4", frequency: 261.63, position: 60 }, // Bottom of the staff
+      { name: "D4", frequency: 293.66, position: 50 },
+      { name: "E4", frequency: 329.63, position: 40 },
+      { name: "F4", frequency: 349.23, position: 30 },
+      { name: "G4", frequency: 392.00, position: 20 },
+      { name: "A4", frequency: 440.00, position: 10 },
+      { name: "B4", frequency: 493.88, position: 0 }  // Top of the staff
+    ];
+
+    const noteContainer = document.getElementById("noteContainer");
+    const noteElement = document.getElementById("note");
+    const startButton = document.getElementById("startButton");
+    let currentNote = null;
+
+    function getNextNote() {
+      return notes[Math.floor(Math.random() * notes.length)];
+    }
+
+    function displayNote(note) {
+      noteElement.style.bottom = `${note.position}px`; // Position the note
+    }
+
+    function highlightNote(correct) {
+      noteContainer.className = correct ? "staff green" : "staff red";
+    }
+
+    async function startListening() {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const analyser = audioContext.createAnalyser();
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const source = audioContext.createMediaStreamSource(stream);
+      source.connect(analyser);
+
+      const bufferLength = analyser.fftSize;
+      const dataArray = new Float32Array(bufferLength);
+
+      function checkPitch() {
+        analyser.getFloatTimeDomainData(dataArray);
+        const pitch = getPitch(dataArray, audioContext.sampleRate);
+        if (pitch && currentNote) {
+          const targetFrequency = currentNote.frequency;
+          const correct = Math.abs(targetFrequency - pitch) < 5; // Allow small tolerance
+          highlightNote(correct);
+          if (correct) {
+            setTimeout(nextNote, 1000);
+          }
+        }
+        requestAnimationFrame(checkPitch);
+      }
+
+      checkPitch();
+    }
+
+    function getPitch(data, sampleRate) {
+      let maxVal = -Infinity;
+      let maxIndex = 0;
+
+      for (let i = 0; i < data.length; i++) {
+        if (data[i] > maxVal) {
+          maxVal = data[i];
+          maxIndex = i;
+        }
+      }
+
+      const frequency = maxIndex * (sampleRate / data.length);
+      return frequency > 20 && frequency < 2000 ? frequency : null;
+    }
+
+    function nextNote() {
+      currentNote = getNextNote();
+      displayNote(currentNote);
+      noteContainer.className = "staff"; // Reset color
+    }
+
+    startButton.addEventListener("click", () => {
+      nextNote();
+      startListening();
+    });
+  </script>
+</body>
+</html>
