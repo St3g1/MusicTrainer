@@ -91,6 +91,11 @@
       padding: 10px 20px;
       font-size: 16px;
       margin-top: 20px;
+      background-color: green; /* Set the button background color to green */
+      color: white; /* Set the text color to white for better contrast */
+      border: none; /* Remove the default border */
+      border-radius: 5px; /* Optional: Add rounded corners */
+      cursor: pointer; /* Change the cursor to a pointer when hovering */
     }
     .container {
       display: flex;
@@ -142,7 +147,7 @@
       <div class="line"></div>
       <div class="line"></div>
       <div class="clef">𝄞</div> <!-- Unicode for Treble Clef -->
-      <svg id="note" class="note" width="24" height="40">
+      <svg id="note" class="note" width="24" height="40" style="display: none;">
         <ellipse id="noteEllipse" cx="12" cy="20" rx="12" ry="10" fill="black" />
         <!-- <rect class="stem" width="1" height="30" x="10" y="0" fill="black" /> -->
       </svg>
@@ -150,10 +155,10 @@
       <div id="noteName" class="note-name"></div>
     </div>
     <div class="checkbox-container">
-      <label><input type="checkbox" id="showNoteNameCheckbox">Zeige Noten Namen</label>
-      <label><input type="checkbox" id="showExtendedCheckbox">Erweiterter Notenraum</label>
-      <label><input type="checkbox" id="showSharpCheckbox">Aktiviere Vorzeichen <b>♯</b></label>
-      <label><input type="checkbox" id="showFlatCheckbox">Aktiviere Vorzeichen <b>♭</bb></label>
+      <label><input type="checkbox" id="showNoteNameCheckbox" disabled>Zeige Noten Namen</label>
+      <label><input type="checkbox" id="showExtendedCheckbox" disabled>Erweiterter Notenraum</label>
+      <label><input type="checkbox" id="showSharpCheckbox" disabled>Aktiviere Vorzeichen <b>♯</b></label>
+      <label><input type="checkbox" id="showFlatCheckbox" disabled>Aktiviere Vorzeichen <b>♭</bb></label>
     </div>
   </div>
   <button id="startButton">Start</button>
@@ -262,11 +267,7 @@
     const accidentalElement = document.getElementById("accidental");
 
     showNoteNameCheckbox.addEventListener('change', () => {
-      if (!showNoteNameCheckbox.checked) {
-        noteNameElement.textContent = ''; // Hide note name immediately
-      } else if (currentNote) {
-        noteNameElement.textContent = currentNote.name; // Show note name if a note is displayed
-      }
+      noteNameElement.textContent = showNoteNameCheckbox.checked && currentNote ? currentNote.name : '';
     });
     showSharpCheckbox.addEventListener('change', () => {nextNote();});
     showFlatCheckbox.addEventListener('change', () => {nextNote();});
@@ -291,6 +292,7 @@
 
     // Display the note on the staff
     function displayNote(note) {
+      noteElement.style.display = 'block'; // Show the note
       noteElement.style.bottom = `${note.position}px`; // Position dynamically
       drawLedgerLines(note.position);
       noteNameElement.textContent = showNoteNameCheckbox.checked ? note.name : ''; // Display or hide note name
@@ -404,6 +406,13 @@
     startButton.addEventListener("click", () => {
       nextNote();
       startListening();
+      startButton.textContent = "Weiter"; // Change button text to "Weiter"
+      startButton.style.backgroundColor = "gray"; // Change button color to gray
+      // Enable checkboxes
+      showNoteNameCheckbox.disabled = false;
+      showExtendedCheckbox.disabled = false;
+      showSharpCheckbox.disabled = false;
+      showFlatCheckbox.disabled = false;
     });
   </script>
 </body>
