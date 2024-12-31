@@ -184,12 +184,13 @@
     <div class="option-container">
       <h3>Optionen</h3>
       <label><input type="checkbox" id="showNoteNameCheckbox" disabled>Zeige Noten Namen</label>
+      <label><input type="checkbox" id="playNoteCheckbox" disabled>Spiele Ton</label>
       <div class="option-heading">Notenraum:</div>
       <div>
         <label><input type="radio" name="noteRange" id="smallRange" value="small" disabled checked>Klein</label>
         <label><input type="radio" name="noteRange" id="middleRange" value="middle" disabled>Mittel</label>
         <label><input type="radio" name="noteRange" id="largeRange" value="large" disabled>Groß</label>
-        <div class="note-filter">
+        <div class="note-filter" title="Alle mit den Buchstaben in der Liste übereinstimmende Töne werden ausgewählt.">
           <label><input type="checkbox" id="noteFilterCheckbox" disabled>Noten Filter: 
           <input type="text" id="noteFilter" value="C D E F G A H" disabled></label>
         </div>
@@ -205,97 +206,98 @@
 
   <script>
     const allNotes = [
-      { name: "C6", frequency: 1046.50, position: 210 },
-      { name: "H5", frequency: 987.77, position: 200 },
-      { name: "B5", frequency: 932.33, position: 200 },
-      { name: "A#5", frequency: 932.33, position: 190 },
-      { name: "A5", frequency: 880.00, position: 190 },
-      { name: "Ab5", frequency: 830.61, position: 190 },
-      { name: "G#5", frequency: 830.61, position: 180 },
-      { name: "G5", frequency: 783.99, position: 180 },
-      { name: "Gb5", frequency: 739.99, position: 180 },
-      { name: "F#5", frequency: 739.99, position: 170 },
-      { name: "F5", frequency: 698.46, position: 170 },
-      { name: "E5", frequency: 659.25, position: 160 },
-      { name: "Eb5", frequency: 622.25, position: 160 },
-      { name: "D#5", frequency: 622.25, position: 150 },
-      { name: "D5", frequency: 587.33, position: 150 },
-      { name: "Db5", frequency: 554.37, position: 150 },
-      { name: "C#5", frequency: 554.37, position: 140 },
-      { name: "C5", frequency: 523.25, position: 140 },
-      { name: "H4", frequency: 493.88, position: 130 },
-      { name: "B4", frequency: 466.16, position: 130 },
-      { name: "A#4", frequency: 466.16, position: 120 },
-      { name: "A4", frequency: 440.00, position: 120 },
-      { name: "Ab4", frequency: 415.30, position: 120 },
-      { name: "G#4", frequency: 415.30, position: 110 },
-      { name: "G4", frequency: 392.00, position: 110 },
-      { name: "Gb4", frequency: 369.99, position: 110 },
-      { name: "F#4", frequency: 369.99, position: 100 },
-      { name: "F4", frequency: 349.23, position: 100 },
-      { name: "E4", frequency: 329.63, position: 90 },
-      { name: "Eb4", frequency: 311.13, position: 90 },
-      { name: "D#4", frequency: 311.13, position: 80 },
-      { name: "D4", frequency: 293.66, position: 80 },
-      { name: "Db4", frequency: 277.18, position: 80 },
-      { name: "C#4", frequency: 277.18, position: 70 },
-      { name: "C4", frequency: 261.63, position: 70 }, // Positioned for middle C
-      { name: "H3", frequency: 246.94, position: 60 },
-      { name: "B3", frequency: 233.08, position: 60 },
-      { name: "A#3", frequency: 233.08, position: 50 },
-      { name: "A3", frequency: 220.00, position: 50 },
-      { name: "Ab3", frequency: 207.65, position: 50 },
-      { name: "G#3", frequency: 207.65, position: 40 },
-      { name: "G3", frequency: 196.00, position: 40 },
-      { name: "Gb3", frequency: 185.00, position: 40 },
-      { name: "F#3", frequency: 185.00, position: 30 },
-      { name: "F3", frequency: 174.61, position: 30 },
-      { name: "E3", frequency: 164.81, position: 20 },
-      { name: "Eb3", frequency: 155.56, position: 20 },
-      { name: "D#3", frequency: 155.56, position: 10 },
-      { name: "D3", frequency: 146.83, position: 10 },
-      { name: "Db3", frequency: 138.59, position: 10 },
-      { name: "C#3", frequency: 138.59, position: 0 },
-      { name: "C3", frequency: 130.81, position: 0 },
-      { name: "H2", frequency: 123.47, position: -10 },
-      { name: "B2", frequency: 116.54, position: -10 },
-      { name: "A#2", frequency: 116.54, position: -20 },
-      { name: "A2", frequency: 110.00, position: -20 },
-      { name: "Ab2", frequency: 103.83, position: -20 },
-      { name: "G#2", frequency: 103.83, position: -30 },
-      { name: "G2", frequency: 98.00, position: -30 },
-      { name: "Gb2", frequency: 92.50, position: -30 },
-      { name: "F#2", frequency: 92.50, position: -40 },
-      { name: "F2", frequency: 87.31, position: -40 },
-      { name: "E2", frequency: 82.41, position: -50 },
-      { name: "Eb2", frequency: 77.78, position: -50 },
-      { name: "D#2", frequency: 77.78, position: -60 },
-      { name: "D2", frequency: 73.42, position: -60 },
-      { name: "Db2", frequency: 69.30, position: -60 },
-      { name: "C#2", frequency: 69.30, position: -70 },
-      { name: "C2", frequency: 65.41, position: -70 },
-      { name: "H1", frequency: 61.74, position: -80 },
-      { name: "B1", frequency: 58.27, position: -80 },
-      { name: "A#1", frequency: 58.27, position: -90 },
-      { name: "A1", frequency: 55.00, position: -90 },
-      { name: "Ab1", frequency: 51.91, position: -90 },
-      { name: "G#1", frequency: 51.91, position: -100 },
-      { name: "G1", frequency: 49.00, position: -100 },
-      { name: "Gb1", frequency: 46.25, position: -100 },
-      { name: "F#1", frequency: 46.25, position: -110 },
-      { name: "F1", frequency: 43.65, position: -110 },
-      { name: "E1", frequency: 41.20, position: -120 },
-      { name: "Eb1", frequency: 38.89, position: -120 },
-      { name: "D#1", frequency: 38.89, position: -130 },
-      { name: "D1", frequency: 36.71, position: -130 },
-      { name: "Db1", frequency: 34.65, position: -130 },
-      { name: "C#1", frequency: 34.65, position: -140 },
-      { name: "C1", frequency: 32.70, position: -140 }
+//      { name: "C6", frequency: 1046.50, mp3: ".mp3", position: 210 },
+//      { name: "H5", frequency: 987.77, mp3: ".mp3", position: 200 },
+      { name: "B5", frequency: 932.33, mp3: "88.mp3", position: 200 },
+      { name: "A#5", frequency: 932.33, mp3: "87.mp3", position: 190 },
+      { name: "A5", frequency: 880.00, mp3: "86.mp3", position: 190 },
+      { name: "Ab5", frequency: 830.61, mp3: "85.mp3", position: 190 },
+      { name: "G#5", frequency: 830.61, mp3: "85.mp3", position: 180 },
+      { name: "G5", frequency: 783.99, mp3: "84.mp3", position: 180 },
+      { name: "Gb5", frequency: 739.99, mp3: "83.mp3", position: 180 },
+      { name: "F#5", frequency: 739.99, mp3: "83.mp3", position: 170 },
+      { name: "F5", frequency: 698.46, mp3: "82.mp3", position: 170 },
+      { name: "E5", frequency: 659.25, mp3: "81.mp3", position: 160 },
+      { name: "Eb5", frequency: 622.25, mp3: "80.mp3", position: 160 },
+      { name: "D#5", frequency: 622.25, mp3: "80.mp3", position: 150 },
+      { name: "D5", frequency: 587.33, mp3: "79.mp3", position: 150 },
+      { name: "Db5", frequency: 554.37, mp3: "78.mp3", position: 150 },
+      { name: "C#5", frequency: 554.37, mp3: "78.mp3", position: 140 },
+      { name: "C5", frequency: 523.25, mp3: "77.mp3", position: 140 },
+      { name: "H4", frequency: 493.88, mp3: "76.mp3", position: 130 },
+      { name: "B4", frequency: 466.16, mp3: "75.mp3", position: 130 },
+      { name: "A#4", frequency: 466.16, mp3: "75.mp3", position: 120 },
+      { name: "A4", frequency: 440.00, mp3: "74.mp3", position: 120 },
+      { name: "Ab4", frequency: 415.30, mp3: "73.mp3", position: 120 },
+      { name: "G#4", frequency: 415.30, mp3: "73.mp3", position: 110 },
+      { name: "G4", frequency: 392.00, mp3: "72.mp3", position: 110 },
+      { name: "Gb4", frequency: 369.99, mp3: "71.mp3", position: 110 },
+      { name: "F#4", frequency: 369.99, mp3: "71.mp3", position: 100 },
+      { name: "F4", frequency: 349.23, mp3: "70.mp3", position: 100 },
+      { name: "E4", frequency: 329.63, mp3: "69.mp3", position: 90 },
+      { name: "Eb4", frequency: 311.13, mp3: "68.mp3", position: 90 },
+      { name: "D#4", frequency: 311.13, mp3: "68.mp3", position: 80 },
+      { name: "D4", frequency: 293.66, mp3: "67.mp3", position: 80 },
+      { name: "Db4", frequency: 277.18, mp3: "66.mp3", position: 80 },
+      { name: "C#4", frequency: 277.18, mp3: "66.mp3", position: 70 },
+      { name: "C4", frequency: 261.63, mp3: "65.mp3", position: 70 }, // Positioned for middle C
+      { name: "H3", frequency: 246.94, mp3: "64.mp3", position: 60 },
+      { name: "B3", frequency: 233.08, mp3: "63.mp3", position: 60 },
+      { name: "A#3", frequency: 233.08, mp3: "62.mp3", position: 50 },
+      { name: "A3", frequency: 220.00, mp3: "61.mp3", position: 50 },
+      { name: "Ab3", frequency: 207.65, mp3: "60.mp3", position: 50 },
+      { name: "G#3", frequency: 207.65, mp3: "60.mp3", position: 40 },
+      { name: "G3", frequency: 196.00, mp3: "59.mp3", position: 40 },
+      { name: "Gb3", frequency: 185.00, mp3: "58.mp3", position: 40 },
+      { name: "F#3", frequency: 185.00, mp3: "58.mp3", position: 30 },
+      { name: "F3", frequency: 174.61, mp3: "57.mp3", position: 30 },
+      { name: "E3", frequency: 164.81, mp3: "56.mp3", position: 20 },
+      { name: "Eb3", frequency: 155.56, mp3: "55.mp3", position: 20 },
+      { name: "D#3", frequency: 155.56, mp3: "55.mp3", position: 10 },
+      { name: "D3", frequency: 146.83, mp3: "54.mp3", position: 10 },
+      { name: "Db3", frequency: 138.59, mp3: "53.mp3", position: 10 },
+      { name: "C#3", frequency: 138.59, mp3: "53.mp3", position: 0 },
+      { name: "C3", frequency: 130.81, mp3: "52.mp3", position: 0 },
+      { name: "H2", frequency: 123.47, mp3: "51.mp3", position: -10 },
+      { name: "B2", frequency: 116.54, mp3: "50.mp3", position: -10 },
+      { name: "A#2", frequency: 116.54, mp3: "50.mp3", position: -20 },
+      { name: "A2", frequency: 110.00, mp3: "49.mp3", position: -20 },
+      { name: "Ab2", frequency: 103.83, mp3: "48.mp3", position: -20 },
+      { name: "G#2", frequency: 103.83, mp3: "48.mp3", position: -30 },
+      { name: "G2", frequency: 98.00, mp3: "47.mp3", position: -30 },
+      { name: "Gb2", frequency: 92.50, mp3: "46.mp3", position: -30 },
+      { name: "F#2", frequency: 92.50, mp3: "46.mp3", position: -40 },
+      { name: "F2", frequency: 87.31, mp3: "45.mp3", position: -40 },
+      { name: "E2", frequency: 82.41, mp3: "44.mp3", position: -50 },
+      { name: "Eb2", frequency: 77.78, mp3: "43.mp3", position: -50 },
+      { name: "D#2", frequency: 77.78, mp3: "43.mp3", position: -60 },
+      { name: "D2", frequency: 73.42, mp3: "42.mp3", position: -60 },
+      { name: "Db2", frequency: 69.30, mp3: "41.mp3", position: -60 },
+      { name: "C#2", frequency: 69.30, mp3: "41.mp3", position: -70 },
+      { name: "C2", frequency: 65.41, mp3: "40.mp3", position: -70 },
+      { name: "H1", frequency: 61.74, mp3: "39.mp3", position: -80 },
+      { name: "B1", frequency: 58.27, mp3: "38.mp3", position: -80 },
+      { name: "A#1", frequency: 58.27, mp3: "38.mp3", position: -90 },
+      { name: "A1", frequency: 55.00, mp3: "37.mp3", position: -90 },
+      { name: "Ab1", frequency: 51.91, mp3: "36.mp3", position: -90 },
+      { name: "G#1", frequency: 51.91, mp3: "36.mp3", position: -100 },
+      { name: "G1", frequency: 49.00, mp3: "35.mp3", position: -100 },
+      { name: "Gb1", frequency: 46.25, mp3: "34.mp3", position: -100 },
+      { name: "F#1", frequency: 46.25, mp3: "34.mp3", position: -110 },
+      { name: "F1", frequency: 43.65, mp3: "33.mp3", position: -110 },
+      { name: "E1", frequency: 41.20, mp3: "32.mp3", position: -120 },
+      { name: "Eb1", frequency: 38.89, mp3: "31.mp3", position: -120 },
+      { name: "D#1", frequency: 38.89, mp3: "31.mp3", position: -130 },
+      { name: "D1", frequency: 36.71, mp3: "30.mp3", position: -130 },
+      { name: "Db1", frequency: 34.65, mp3: "29.mp3", position: -130 },
+      { name: "C#1", frequency: 34.65, mp3: "29.mp3", position: -140 },
+      { name: "C1", frequency: 32.70, mp3: "28.mp3", position: -140 }
     ];
     
     // Load saved options from localStorage
     function loadOptions() {
       showNoteNameCheckbox.checked = JSON.parse(localStorage.getItem("showNoteNameCheckbox")) || false;
+      playNoteCheckbox.checked = JSON.parse(localStorage.getItem("playNoteCheckbox")) || false;
       smallRangeRadio.checked = JSON.parse(localStorage.getItem("smallRangeRadio")) || false;
       middleRangeRadio.checked = JSON.parse(localStorage.getItem("middleRangeRadio")) || false;
       largeRangeRadio.checked = JSON.parse(localStorage.getItem("largeRangeRadio")) || false;
@@ -309,6 +311,7 @@
     // Save options to localStorage
     function saveOptions() {
       localStorage.setItem("showNoteNameCheckbox", JSON.stringify(showNoteNameCheckbox.checked));
+      localStorage.setItem("playNoteCheckbox", JSON.stringify(playNoteCheckbox.checked));
       localStorage.setItem("smallRangeRadio", JSON.stringify(smallRangeRadio.checked));
       localStorage.setItem("middleRangeRadio", JSON.stringify(middleRangeRadio.checked));
       localStorage.setItem("largeRangeRadio", JSON.stringify(largeRangeRadio.checked));
@@ -323,6 +326,7 @@
     const startButton = document.getElementById("startButton");
     const noteNameElement = document.getElementById("noteName");
     const showNoteNameCheckbox = document.getElementById("showNoteNameCheckbox");
+    const playNoteCheckbox = document.getElementById("playNoteCheckbox");
     const smallRangeRadio = document.getElementById("smallRange");
     const middleRangeRadio = document.getElementById("middleRange");
     const largeRangeRadio = document.getElementById("largeRange");
@@ -337,6 +341,7 @@
       noteNameElement.textContent = showNoteNameCheckbox.checked && currentNote ? currentNote.name : '';
       saveOptions();
     });
+    playNoteCheckbox.addEventListener('change', () => { saveOptions(); });
     showSharpCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
     showFlatCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
     smallRangeRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
@@ -346,6 +351,8 @@
     noteFilterInput.addEventListener('change', () => { saveOptions();}); 
 
     let currentNote = null;
+    let audioContext = null;
+    let oscillator = null;
 
     // Select a random note
     function getNextNote() {
@@ -390,9 +397,42 @@
       } else {
         accidentalElement.textContent = '';
       }
+      if(playNoteCheckbox.checked){playTone(note);}
     //  setStemDirection(note.position);
     }
 
+    // Play the note using Web Audio API
+    function playTone(note) {
+      if (audioContext) {
+        audioContext.close();
+      }
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      oscillator = audioContext.createOscillator();
+      oscillator.type = 'sine'; // You can change the type to 'square', 'sawtooth', 'triangle'
+      oscillator.frequency.setValueAtTime(note.frequency, audioContext.currentTime);
+      oscillator.connect(audioContext.destination);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 1); // Play the note for 1 second
+    }
+
+    // Play the audio file for the given note
+    async function playMp3(note) {
+      const { audioContext, audioBuffer } = await loadMp3(note);
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
+      source.start();
+    }
+
+    // Load the audio file for the given note (can only be used with WebServer!)
+    async function loadMp3(note) {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const response = await fetch("audio/" + note.mp3);
+      const arrayBuffer = await response.arrayBuffer();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+      return { audioContext, audioBuffer };
+    }
+    
     // Draw ledger lines for notes outside the staff
     function drawLedgerLines(position) {
       const ledgerLines = document.querySelectorAll('.ledger-line');
@@ -493,6 +533,7 @@
       startButton.style.backgroundColor = "gray"; // Change button color to gray
       // Enable checkboxes
       showNoteNameCheckbox.disabled = false;
+      playNoteCheckbox.disabled = false;
       smallRangeRadio.disabled = false;
       middleRangeRadio.disabled = false;
       largeRangeRadio.disabled = false;
