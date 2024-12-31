@@ -295,28 +295,28 @@
     
     // Load saved options from localStorage
     function loadOptions() {
-    showNoteNameCheckbox.checked = JSON.parse(localStorage.getItem("showNoteNameCheckbox")) || false;
-    smallRangeRadio.checked = JSON.parse(localStorage.getItem("smallRangeRadio")) || false;
-    middleRangeRadio.checked = JSON.parse(localStorage.getItem("middleRangeRadio")) || false;
-    largeRangeRadio.checked = JSON.parse(localStorage.getItem("largeRangeRadio")) || false;
-    showSharpCheckbox.checked = JSON.parse(localStorage.getItem("showSharpCheckbox")) || false;
-    showFlatCheckbox.checked = JSON.parse(localStorage.getItem("showFlatCheckbox")) || false;
-    noteFilterCheckbox.checked = JSON.parse(localStorage.getItem("noteFilterCheckbox")) || false;
-    noteFilterInput.value = localStorage.getItem("noteFilterInput") || "C D E F G A H";
-    noteFilterInput.disabled = !noteFilterCheckbox.checked;
-  }
+      showNoteNameCheckbox.checked = JSON.parse(localStorage.getItem("showNoteNameCheckbox")) || false;
+      smallRangeRadio.checked = JSON.parse(localStorage.getItem("smallRangeRadio")) || false;
+      middleRangeRadio.checked = JSON.parse(localStorage.getItem("middleRangeRadio")) || false;
+      largeRangeRadio.checked = JSON.parse(localStorage.getItem("largeRangeRadio")) || false;
+      showSharpCheckbox.checked = JSON.parse(localStorage.getItem("showSharpCheckbox")) || false;
+      showFlatCheckbox.checked = JSON.parse(localStorage.getItem("showFlatCheckbox")) || false;
+      noteFilterCheckbox.checked = JSON.parse(localStorage.getItem("noteFilterCheckbox")) || false;
+      noteFilterInput.value = localStorage.getItem("noteFilterInput") || "C D E F G A H";
+      noteFilterInput.disabled = !noteFilterCheckbox.checked;
+    }
 
-  // Save options to localStorage
-  function saveOptions() {
-    localStorage.setItem("showNoteNameCheckbox", JSON.stringify(showNoteNameCheckbox.checked));
-    localStorage.setItem("smallRangeRadio", JSON.stringify(smallRangeRadio.checked));
-    localStorage.setItem("middleRangeRadio", JSON.stringify(middleRangeRadio.checked));
-    localStorage.setItem("largeRangeRadio", JSON.stringify(largeRangeRadio.checked));
-    localStorage.setItem("showSharpCheckbox", JSON.stringify(showSharpCheckbox.checked));
-    localStorage.setItem("showFlatCheckbox", JSON.stringify(showFlatCheckbox.checked));
-    localStorage.setItem("noteFilterCheckbox", JSON.stringify(noteFilterCheckbox.checked));
-    localStorage.setItem("noteFilterInput", noteFilterInput.value);
-  }
+    // Save options to localStorage
+    function saveOptions() {
+      localStorage.setItem("showNoteNameCheckbox", JSON.stringify(showNoteNameCheckbox.checked));
+      localStorage.setItem("smallRangeRadio", JSON.stringify(smallRangeRadio.checked));
+      localStorage.setItem("middleRangeRadio", JSON.stringify(middleRangeRadio.checked));
+      localStorage.setItem("largeRangeRadio", JSON.stringify(largeRangeRadio.checked));
+      localStorage.setItem("showSharpCheckbox", JSON.stringify(showSharpCheckbox.checked));
+      localStorage.setItem("showFlatCheckbox", JSON.stringify(showFlatCheckbox.checked));
+      localStorage.setItem("noteFilterCheckbox", JSON.stringify(noteFilterCheckbox.checked));
+      localStorage.setItem("noteFilterInput", noteFilterInput.value);
+    }
 
     const noteContainer = document.getElementById("noteContainer");
     const noteElement = document.getElementById("note");
@@ -398,7 +398,7 @@
       const ledgerLines = document.querySelectorAll('.ledger-line');
       ledgerLines.forEach(line => line.remove());
 
-      if (position > 100 || position < 20) {
+      if (position > 100 || position < 10) {
         const numLines = position > 100 ? Math.abs(Math.ceil((100-position) / 20)) : Math.abs(Math.ceil(position / 20))+1;
         for (let i = 0; i < numLines; i++) {
           const line = document.createElement('div');
