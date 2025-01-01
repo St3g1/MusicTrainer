@@ -29,12 +29,16 @@
       <h2>Optionen</h2>
       <label><input type="checkbox" id="showNoteNameCheckbox" disabled>Zeige Noten Namen</label>
       <label><input type="checkbox" id="playNoteCheckbox" disabled>Spiele Ton</label>
+      <!-- <div class="checkbox-text" title="Gibt die Pause (in Mili-Sekunden) zwischen einem erfolgreichen und neue vorgeschlagen Ton an.">
+        <label>Pause:
+        <input type="text" id="pause" value="1000" width="50" disabled></label>
+      </div> -->
       <div class="option-heading">Notenraum:</div>
       <div>
         <label><input type="radio" name="noteRange" id="smallRange" value="small" disabled checked>Klein</label>
         <label><input type="radio" name="noteRange" id="middleRange" value="middle" disabled>Mittel</label>
         <label><input type="radio" name="noteRange" id="largeRange" value="large" disabled>Groß</label>
-        <div class="note-filter" title="Alle mit den Buchstaben in der Liste übereinstimmenden Töne werden ausgewählt.">
+        <div class="checkbox-text" title="Alle mit den Buchstaben in der Liste übereinstimmenden Töne werden ausgewählt.">
           <label><input type="checkbox" id="noteFilterCheckbox" disabled>Noten Filter: 
           <input type="text" id="noteFilter" value="C D E F G A H" disabled></label>
         </div>
@@ -44,7 +48,7 @@
         <label><input type="checkbox" id="showSharpCheckbox" disabled>Aktiviere <b>♯</b></label>
         <label><input type="checkbox" id="showFlatCheckbox" disabled>Aktiviere <b>♭</bb></label>
       </div>    
-    </div>
+  </div>
   </div>
   <button id="startButton">Start</button>
   <div id="message">

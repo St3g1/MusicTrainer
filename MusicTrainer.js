@@ -121,6 +121,7 @@ const allNotes = [
       const noteNameElement = document.getElementById("noteName");
       const showNoteNameCheckbox = document.getElementById("showNoteNameCheckbox");
       const playNoteCheckbox = document.getElementById("playNoteCheckbox");
+      // const pauseInput = document.getElementById("pause");
       const smallRangeRadio = document.getElementById("smallRange");
       const middleRangeRadio = document.getElementById("middleRange");
       const largeRangeRadio = document.getElementById("largeRange");
@@ -137,6 +138,7 @@ const allNotes = [
         saveOptions();
       });
       playNoteCheckbox.addEventListener('change', () => { saveOptions(); });
+      // pauseInput.addEventListener('change', () => { saveOptions(); pause = Math.round(pauseInput.innerText); });
       showSharpCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
       showFlatCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
       smallRangeRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
@@ -159,12 +161,14 @@ const allNotes = [
           startButton.style.backgroundColor = "gray"; // Change button color to gray
           setOptionEnableState(true);
           saveOptions();
+//          pause = Math.round(pauseInput.innerText);
         });
       });
 
       function setOptionEnableState(state){
         showNoteNameCheckbox.disabled = !state;
         playNoteCheckbox.disabled = !state;
+//        pauseInput.disabled = !state;
         smallRangeRadio.disabled = !state;
         middleRangeRadio.disabled = !state;
         largeRangeRadio.disabled = !state;
@@ -184,8 +188,8 @@ const allNotes = [
 
       let currentNote = null;
       let audioContext = null;
-      let oscillator = null;
       let model;
+      let pause;
   
       //--------------- NOTE SELECTION ------------------------------
 
@@ -288,9 +292,9 @@ const allNotes = [
         setTimeout(() => {
           if (correct && !blocking) {
             blocking = true;
-            setTimeout(nextNote, 1000); // Delay before showing the next note
+            setTimeout(nextNote, pause||500); // Delay before showing the next note
           }
-        }, 1000); // Delay duration
+        }, pause||500); // Delay duration
       }
 
       /*--------- Audio OUTPUT --------------------------*/
@@ -324,7 +328,7 @@ const allNotes = [
 
       /*----------------------- TONE DETECTION with neuronal network -------------------------------*/
       //Based on https://github.com/marl/crepe
-      var confidenceRequested = 0.9
+      var confidenceRequested = 0.8
 
       async function loadModel() {
         if(!running){
