@@ -1,4 +1,7 @@
 crepe = (function() {
+  const statusElement = document.getElementById('status');
+  const errorElement = document.getElementById('error');
+  const startButton = document.getElementById('startButton');  
   function error(message) {
     document.getElementById('status').innerHTML = 'Error: ' + message;
     return message;
@@ -77,8 +80,9 @@ crepe = (function() {
   var running = false;
 
   try {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    audioContext = new AudioContext();
+    audioContext = new window.AudioContext || window.webkitAudioContext;
+//    const AudioContext = window.AudioContext || window.webkitAudioContext;
+//    audioContext = new AudioContext();
     document.getElementById('srate').innerHTML = audioContext.sampleRate;
   } catch (e) {
     error('Could not instantiate AudioContext: ' + e.message);
@@ -160,7 +164,7 @@ crepe = (function() {
     }
     if (navigator.getUserMedia) {
       status('Initializing audio...')
-      navigator.getUserMedia({audio: true}, function(stream) {
+      navigator.getUserMedia({audio: true}, function(stream) { 
         status('Setting up AudioContext ...');
         console.log('Audio context sample rate = ' + audioContext.sampleRate);
         const mic = audioContext.createMediaStreamSource(stream);
@@ -206,7 +210,16 @@ crepe = (function() {
     initAudio();
   }
 
-  initTF();
+  startButton.addEventListener('click', () => {
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      document.getElementById('srate').innerHTML = audioContext.sampleRate;
+    }
+    if (audioContext.state === 'suspended') {
+      audioContext.resume();
+    }
+    initTF();
+  });
 
   return {
     'audioContext': audioContext,

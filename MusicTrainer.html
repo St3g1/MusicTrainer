@@ -212,11 +212,16 @@
   <button id="startButton">Start</button>
   <div id="message"></div>
   <canvas id="activation" width="800" height="400"></canvas>
+  Status: <span id="status"></span><br>
+  Estimated Pitch: <span id="estimated-pitch"></span><br>
+  Voicing Confidence: <span id="voicing-confidence"></span>
+  Your sample rate is <span id="srate"></span> Hz.
 
   <!------------------------------ SCRIPT ----------------------------------->
   <!-- <script src="https://cdn.jsdelivr.net/npm/pitchfinder/lib/index.js"></script> -->
   <!-- <script src="https://cdn.jsdelivr.net/npm/meyda@5.6.3/dist/web/meyda.min.js"></script> -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="crepe/tfjs-0.8.0.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script> -->
   <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/crepe"></script> -->
   <!-- <script src="https://marl.github.io/crepe/crepe.js"></script> -->
   <script src="crepe/crepe.js"></script>
@@ -589,7 +594,7 @@
     startButton.addEventListener("click", () => {
 //      loadModel().then(() => {
         nextNote();
-        startListening();
+        startListeningAI();
         startButton.textContent = "Weiter"; // Change button text to "Weiter"
         startButton.style.backgroundColor = "gray"; // Change button color to gray
         // Enable checkboxes
