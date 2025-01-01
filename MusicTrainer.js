@@ -446,9 +446,9 @@
           }
         }
         if (navigator.getUserMedia) {
-          status('Initializing audio...')
+          status('Initialisiere Audio...')
           navigator.getUserMedia({audio: true}, function(stream) { 
-            status('Setting up AudioContext ...');
+            status('Setze AudioContext auf...');
             console.log('Audio context sample rate = ' + audioContext.sampleRate);
             const mic = audioContext.createMediaStreamSource(stream);
     
@@ -470,15 +470,15 @@
             gain.connect(audioContext.destination);
     
             if (audioContext.state === 'running') {
-              status('Running ...');
+              status('Ausführung gestartet...');
             } else {
               // user gesture (like click) is required to start AudioContext, in some browser versions
               status('<a href="javascript:crepe.resume();" style="color:red;">* Click here to start the demo *</a>')
             }
           }, function(text) {
-            error('Could not access microphone - ' + text);
+            error('Auf Mikrofon kann nicht zugegriffen werden - ' + text);
           });
-        } else error('Could not access microphone - getUserMedia not available');
+        } else error('Auf Mikrofon kann nicht zugegriffen werden - getUserMedia not available');
       }
   
       /*----------------------- TONE CHECKING -------------------------------*/
