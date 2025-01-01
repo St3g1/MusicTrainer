@@ -92,7 +92,7 @@ const allNotes = [
       function loadOptions() {
         showNoteNameCheckbox.checked = JSON.parse(localStorage.getItem("showNoteNameCheckbox")) || false;
         playNoteCheckbox.checked = JSON.parse(localStorage.getItem("playNoteCheckbox")) || false;
-        smallRangeRadio.checked = JSON.parse(localStorage.getItem("smallRangeRadio")) || false;
+        smallRangeRadio.checked = JSON.parse(localStorage.getItem("smallRangeRadio")) || true;
         middleRangeRadio.checked = JSON.parse(localStorage.getItem("middleRangeRadio")) || false;
         largeRangeRadio.checked = JSON.parse(localStorage.getItem("largeRangeRadio")) || false;
         showSharpCheckbox.checked = JSON.parse(localStorage.getItem("showSharpCheckbox")) || false;
