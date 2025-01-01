@@ -1,0 +1,160 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.staff {
+  position: relative;
+  width: 200px;
+  height: 140px;
+  /* border: 1px solid black; */
+  margin: 140px 50px;
+  padding: 0px 20px;
+}
+
+.staff .line {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: black;
+}
+
+.staff .line:nth-child(1) { top: 20px; }
+.staff .line:nth-child(2) { top: 40px; }
+.staff .line:nth-child(3) { top: 60px; }
+.staff .line:nth-child(4) { top: 80px; }
+.staff .line:nth-child(5) { top: 100px; }
+
+.clef {
+  position: absolute;
+  left: 20px;
+  top: -20px; /* Adjusted to position the clef correctly */
+  font-size: 7em;
+}
+
+.note {
+  /* padding: 50px 50px; */
+  position: absolute;
+  left: 140px;
+}
+
+.note .stem {
+  position: absolute;
+  width: 1px;
+  background-color: black;
+}
+
+.note.up .stem {
+  height: 30px;
+  bottom: 0;
+  left: 10px;
+}
+
+.note.down .stem {
+  height: 30px;
+  top: 0;
+  left: 10px;
+}
+
+.staff.green {
+  border-color: green;
+}
+
+.staff.red {
+  border-color: red;
+}
+
+#noteContainer.green .note {
+  color: green;
+}
+
+#noteContainer.red .note {
+  color: red;
+}
+
+.ledger-line {
+  position: absolute;
+  width: 45px;
+  height: 2px;
+  background-color: black;
+  left: 130px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 20px;
+  background-color: green; /* Set the button background color to green */
+  color: white; /* Set the text color to white for better contrast */
+  border: none; /* Remove the default border */
+  border-radius: 5px; /* Optional: Add rounded corners */
+  cursor: pointer; /* Change the cursor to a pointer when hovering */
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 20px;
+  width: auto;
+  max-width: 1000px;
+  margin-left: auto; /* Center the container horizontally */
+  margin-right: auto; /* Center the container horizontally */
+}
+
+#saxophone {
+  margin-right: 0px; 
+}
+.option-container {
+  text-align: left;
+  padding: 10px 20px;
+  margin-left: 30px; /* Add some space between the note display and the checkboxes */
+  margin-top: 30px;
+  border: 1px solid rgb(195, 195, 195); /* Add a 1px border */
+  border-radius: 5px; /* Add rounded corners */ 
+}
+.option-container label {
+  display: block; /* Forces a line break after each label */
+  margin-bottom: 5px; /* Adds some space between the checkboxes */
+  margin-right: 10px;
+}
+.option-container label input {
+  margin-right: 10px; /* Add some space between the checkbox and the text */ 
+}
+.option-container .note-filter label {
+  display: flex;
+  align-items: center;
+  margin-right: 10px; /* Add some space between the checkbox and the text input */
+  white-space: nowrap; /* Prevent the text from wrapping */
+}
+.option-container .note-filter input[type="text"] {
+  flex: 1; /* Allow the text input to take the remaining space */
+  margin-left: 10px;
+}
+.option-container .note-filter {
+  display: flex;
+  align-items: center;
+}
+.option-container .option-heading {
+  font-weight: bold; /* Make the section titles bold */
+  margin-top: 15px; /* Increase the top margin to create more space */
+  margin-bottom: 5px; /* Increase the top margin to create more space */
+}
+.note-name {
+  position: absolute;
+  left: 205px;
+  top: -20px;
+  font-size: 1.5em;
+}
+.accidental {
+position: absolute;
+left: 105px;
+font-size: 2.5em;
+font-weight: bold; 
+font-style: italic;
+}
+#message {
+  margin: 10px;
+  font-size: 1em;
+  font-weight: normal;
+}
