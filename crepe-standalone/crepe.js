@@ -219,7 +219,7 @@ crepe = (function() {
     if (audioContext.state === 'suspended') {
       audioContext.resume();
     }
-    initTF();
+    if(!running){initTF()};
   });
 
   return {
