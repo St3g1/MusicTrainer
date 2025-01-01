@@ -147,7 +147,6 @@ font-style: italic;
   flex-direction: column;
   cursor: pointer;
   position: relative; 
-  /* top: 150px; Position below the burger menu */
   left: -50px;
   /* border: 1px solid rgb(195, 195, 195); Add a 1px border */
 }
