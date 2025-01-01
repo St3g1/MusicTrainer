@@ -35,8 +35,7 @@ body {
   left: 20px;
   top: -20px; /* Adjusted to position the clef correctly */
   font-size: 7em;
-  font-family: 'Times New Roman', Times, serif; /* Example font family */
-  font-size: 3em; /* Adjust the size as needed */
+  font-family:'Courier New', Courier, monospace;
 }
 
 #clefBass {
@@ -44,8 +43,7 @@ body {
   left: 20px;
   top: -25px; /* Adjusted to position the clef correctly */
   font-size: 6.5em;
-  font-family: 'Times New Roman', Times, serif; /* Example font family */
-  font-size: 3em; /* Adjust the size as needed */
+  font-family:'Courier New', Courier, monospace;
 }
 
 .note {
@@ -159,6 +157,7 @@ font-style: italic;
   height: 3px;
   background-color: black;
   margin: 4px 0;
+  white-space: nowrap;
 }
 .option-container {
   display: none;
