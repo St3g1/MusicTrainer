@@ -172,6 +172,15 @@ const allNotes = [
         noteFilterCheckbox.disabled = !state;
       }
 
+      function error(text) {
+        document.getElementById('status').innerHTML = 'Error: ' + text;
+        return text;
+      }
+    
+      function status(text) {
+        document.getElementById('status').innerHTML = text;
+      }
+
       let currentNote = null;
       let audioContext = null;
       let oscillator = null;
@@ -182,6 +191,7 @@ const allNotes = [
       // Filter notes and select a random note from this list
       function getNextNote() {
         let notes = allNotes;
+        //Filter notes
         if (smallRangeRadio.checked) {
           notes = notes.filter(note => note.position >= 0 && note.position <= 70);
         } else if (middleRangeRadio.checked) {
@@ -202,11 +212,14 @@ const allNotes = [
             notes = notes.filter(note => regex.test(note.name));
           }
         }
+        if(currentNote){notes = notes.filter(note => !note.name.includes(currentNote.name));} //don't use the same note
+        //Randomize result
         return notes[Math.floor(Math.random() * notes.length)];
       }
  
       // Show the next note
       function nextNote() {
+        blocking = false; //reset
         currentNote = getNextNote();
         displayNote(currentNote);
         noteContainer.className = "staff"; // Reset staff color
@@ -264,7 +277,8 @@ const allNotes = [
           noteElement.classList.remove('down');
         }
       }
-  
+
+      var blocking = false;
       // Highlight the staff depending on correctness (not used here)
       function highlightNote(correct) {
         noteContainer.className = correct ? "staff green" : "staff red"; //todo: eliminate
@@ -272,6 +286,7 @@ const allNotes = [
         setTimeout(() => {
           noteEllipse.setAttribute("fill", "black"); // Reset note color after delay
           if (correct) {
+            blocking = true;
             setTimeout(nextNote, 1000); // Delay before showing the next note
           }
         }, 1000); // Delay duration
@@ -280,10 +295,6 @@ const allNotes = [
       /*--------- Audio OUTPUT --------------------------*/
       // Play the note using Web Audio API
       function playTone(note) {
-        // if (audioContext) {
-        //   audioContext.close();
-        // }
-        // audioContext = new (window.AudioContext || window.webkitAudioContext)();
         oscillator = audioContext.createOscillator();
         oscillator.type = 'sawtooth'; // You can change the type to 'square', 'sine', 'sawtooth', 'triangle'
         oscillator.frequency.setValueAtTime(note.frequency, audioContext.currentTime);
@@ -322,15 +333,6 @@ const allNotes = [
         }
       }
 
-      function error(text) {
-        document.getElementById('status').innerHTML = 'Error: ' + text;
-        return text;
-      }
-    
-      function status(text) {
-        document.getElementById('status').innerHTML = text;
-      }
-    
       var running = false;
     
       // perform resampling the audio to 16000 Hz, on which the model is trained.
