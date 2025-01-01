@@ -92,6 +92,8 @@ const allNotes = [
       function loadOptions() {
         showNoteNameCheckbox.checked = JSON.parse(localStorage.getItem("showNoteNameCheckbox")) || false;
         playNoteCheckbox.checked = JSON.parse(localStorage.getItem("playNoteCheckbox")) || false;
+        pauseInput.value = localStorage.getItem("pauseInput") || "500";
+        toleranceInput.value = localStorage.getItem("toleranceInput") || "5";
         smallRangeRadio.checked = JSON.parse(localStorage.getItem("smallRangeRadio")) || true;
         middleRangeRadio.checked = JSON.parse(localStorage.getItem("middleRangeRadio")) || false;
         largeRangeRadio.checked = JSON.parse(localStorage.getItem("largeRangeRadio")) || false;
@@ -106,6 +108,8 @@ const allNotes = [
       function saveOptions() {
         localStorage.setItem("showNoteNameCheckbox", JSON.stringify(showNoteNameCheckbox.checked));
         localStorage.setItem("playNoteCheckbox", JSON.stringify(playNoteCheckbox.checked));
+        localStorage.setItem("pauseInput", pauseInput.value);
+        localStorage.setItem("toleranceInput", toleranceInput.value);
         localStorage.setItem("smallRangeRadio", JSON.stringify(smallRangeRadio.checked));
         localStorage.setItem("middleRangeRadio", JSON.stringify(middleRangeRadio.checked));
         localStorage.setItem("largeRangeRadio", JSON.stringify(largeRangeRadio.checked));
@@ -121,7 +125,8 @@ const allNotes = [
       const noteNameElement = document.getElementById("noteName");
       const showNoteNameCheckbox = document.getElementById("showNoteNameCheckbox");
       const playNoteCheckbox = document.getElementById("playNoteCheckbox");
-      // const pauseInput = document.getElementById("pause");
+      const pauseInput = document.getElementById("pause");
+      const toleranceInput = document.getElementById("tolerance");
       const smallRangeRadio = document.getElementById("smallRange");
       const middleRangeRadio = document.getElementById("middleRange");
       const largeRangeRadio = document.getElementById("largeRange");
@@ -131,7 +136,12 @@ const allNotes = [
       const showFlatCheckbox = document.getElementById("showFlatCheckbox");
       const noteEllipse = document.getElementById("noteEllipse");
       const accidentalElement = document.getElementById("accidental");
-  
+      let currentNote = null;
+      let audioContext = null;
+      let model;
+      let pause;
+      let tolerance;
+
       //--------------- EVENT LISTENERS ------------------------------
       showNoteNameCheckbox.addEventListener('change', () => {
         noteNameElement.textContent = showNoteNameCheckbox.checked && currentNote ? currentNote.name : '';
@@ -141,7 +151,8 @@ const allNotes = [
         if(playNoteCheckbox.checked && currentNote){playTone(currentNote);}
         saveOptions(); 
       });
-      // pauseInput.addEventListener('change', () => { saveOptions(); pause = Math.round(pauseInput.innerText); });
+      pauseInput.addEventListener('change', () => { saveOptions(); pause = Math.round(pauseInput.value); });
+      toleranceInput.addEventListener('change', () => { saveOptions(); tolerance = Math.round(toleranceInput.value); });
       showSharpCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
       showFlatCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
       smallRangeRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
@@ -164,14 +175,16 @@ const allNotes = [
           startButton.style.backgroundColor = "gray"; // Change button color to gray
           setOptionEnableState(true);
           saveOptions();
-//          pause = Math.round(pauseInput.innerText);
+          tolerance = Math.round(toleranceInput.value);
+          pause = Math.round(pauseInput.innerText);
         });
       });
 
       function setOptionEnableState(state){
         showNoteNameCheckbox.disabled = !state;
         playNoteCheckbox.disabled = !state;
-//        pauseInput.disabled = !state;
+        toleranceInput.disabled = !state;
+        pauseInput.disabled = !state;
         smallRangeRadio.disabled = !state;
         middleRangeRadio.disabled = !state;
         largeRangeRadio.disabled = !state;
@@ -188,11 +201,6 @@ const allNotes = [
       function status(text) {
         document.getElementById('status').innerHTML = text;
       }
-
-      let currentNote = null;
-      let audioContext = null;
-      let model;
-      let pause;
   
       //--------------- NOTE SELECTION ------------------------------
 
@@ -458,7 +466,7 @@ const allNotes = [
           if (pitch && currentNote) {
             status("pitch: " + Math.round(pitch) + ", desired: " + Math.round(currentNote.frequency));
             const targetFrequency = currentNote.frequency;
-            const correct = Math.abs(targetFrequency - pitch) < 5; // Allow small tolerance
+            const correct = Math.abs(targetFrequency - pitch) < tolerance; // Allow small tolerance
             highlightNote(correct);
           }
         }

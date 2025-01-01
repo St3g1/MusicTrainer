@@ -29,10 +29,14 @@
       <h2>Optionen</h2>
       <label><input type="checkbox" id="showNoteNameCheckbox" disabled>Zeige Noten Namen</label>
       <label><input type="checkbox" id="playNoteCheckbox" disabled>Spiele Ton</label>
-      <!-- <div class="checkbox-text" title="Gibt die Pause (in Mili-Sekunden) zwischen einem erfolgreichen und neue vorgeschlagen Ton an.">
+      <div class="checkbox-text" title="Gibt die Pause (in Milli-Sekunden) zwischen einem erfolgreichen und neue vorgeschlagen Ton an.">
         <label>Pause:
-        <input type="text" id="pause" value="1000" width="50" disabled></label>
-      </div> -->
+        <input type="text" id="pause" value="1000" disabled></label>
+      </div>
+      <div class="checkbox-text" title="Erlaubt bei der Ton-Erkennung eine Abweichung von den angegebenen Hertz.">
+        <label>Toleranz (Hertz):
+        <input type="text" id="tolerance" value="5" disabled></label>
+      </div>
       <div class="option-heading">Notenraum:</div>
       <div>
         <label><input type="radio" name="noteRange" id="smallRange" value="small" disabled checked>Klein</label>
