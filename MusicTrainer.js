@@ -409,7 +409,6 @@ const allNotes = [
             var result = (confidence > confidenceRequested) ? predicted_hz.toFixed(3) + ' Hz' : '&nbsp;Kein Ton&nbsp&nbsp;';
             var strlen = result.length;
             for (var i = 0; i < 11 - strlen; i++) result = "&nbsp;" + result;
-            document.getElementById('estimated-pitch').innerHTML = result;
             checkNote((confidence > confidenceRequested) ? predicted_hz : null);
           });
         });
@@ -464,7 +463,7 @@ const allNotes = [
       function checkNote(pitch){
         if(!blocking){
           if (pitch && currentNote) {
-            status("pitch: " + Math.round(pitch) + ", desired: " + Math.round(currentNote.frequency));
+            status("Tonhöhe: " + Math.round(pitch) + " Hz, Ziel: " + Math.round(currentNote.frequency) + " Hz");
             const targetFrequency = currentNote.frequency;
             const correct = Math.abs(targetFrequency - pitch) < tolerance; // Allow small tolerance
             highlightNote(correct);
