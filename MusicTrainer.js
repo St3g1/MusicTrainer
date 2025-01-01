@@ -137,7 +137,10 @@ const allNotes = [
         noteNameElement.textContent = showNoteNameCheckbox.checked && currentNote ? currentNote.name : '';
         saveOptions();
       });
-      playNoteCheckbox.addEventListener('change', () => { saveOptions(); });
+      playNoteCheckbox.addEventListener('change', () => {
+        if(playNoteCheckbox.checked && currentNote){playTone(currentNote);}
+        saveOptions(); 
+      });
       // pauseInput.addEventListener('change', () => { saveOptions(); pause = Math.round(pauseInput.innerText); });
       showSharpCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
       showFlatCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
