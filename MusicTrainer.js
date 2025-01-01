@@ -280,10 +280,10 @@ const allNotes = [
       /*--------- Audio OUTPUT --------------------------*/
       // Play the note using Web Audio API
       function playTone(note) {
-        if (audioContext) {
-          audioContext.close();
-        }
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // if (audioContext) {
+        //   audioContext.close();
+        // }
+        // audioContext = new (window.AudioContext || window.webkitAudioContext)();
         oscillator = audioContext.createOscillator();
         oscillator.type = 'sawtooth'; // You can change the type to 'square', 'sine', 'sawtooth', 'triangle'
         oscillator.frequency.setValueAtTime(note.frequency, audioContext.currentTime);
@@ -311,7 +311,9 @@ const allNotes = [
       }
 
       /*----------------------- TONE DETECTION with neuronal network -------------------------------*/
-  
+      //Based on https://github.com/marl/crepe
+      var confidenceRequested = 0.9
+
       async function loadModel() {
         if(!running){
           status('Lade Modell...');
@@ -319,11 +321,6 @@ const allNotes = [
           status('Modell geladen');
         }
       }
-
-      //*----------------------- CREPE -------------------------- 
-      //Based on https://github.com/marl/crepe
-      
-      var confidenceRequested = 0.9
 
       function error(text) {
         document.getElementById('status').innerHTML = 'Error: ' + text;
