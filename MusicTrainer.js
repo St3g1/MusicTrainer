@@ -405,10 +405,6 @@ const allNotes = [
             const predicted_cent = productSum / weightSum;
             const predicted_hz = 10 * Math.pow(2, predicted_cent / 1200.0);
     
-            // update the UI and the activation plot
-            var result = (confidence > confidenceRequested) ? predicted_hz.toFixed(3) + ' Hz' : '&nbsp;Kein Ton&nbsp&nbsp;';
-            var strlen = result.length;
-            for (var i = 0; i < 11 - strlen; i++) result = "&nbsp;" + result;
             checkNote((confidence > confidenceRequested) ? predicted_hz : null);
           });
         });
@@ -461,12 +457,14 @@ const allNotes = [
       /*----------------------- TONE CHECKING -------------------------------*/
 
       function checkNote(pitch){
-        if(!blocking){
-          if (pitch && currentNote) {
+        if(!blocking && currentNote){
+          if (pitch) {
             status("Tonhöhe: " + Math.round(pitch) + " Hz, Ziel: " + Math.round(currentNote.frequency) + " Hz");
             const targetFrequency = currentNote.frequency;
             const correct = Math.abs(targetFrequency - pitch) < tolerance; // Allow small tolerance
             highlightNote(correct);
+          } else {
+            status("Tonhöhe: <b>Spiele einen Ton</b>, Ziel: " + Math.round(currentNote.frequency) + " Hz");
           }
         }
       }
