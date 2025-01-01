@@ -260,22 +260,12 @@
         drawClef(note);
         drawNote(note);
         drawLedgerLines(note);
-        //Show note name
-        noteNameElement.textContent = showNoteNameCheckbox.checked ? note.name : ''; // Display or hide note name
-        // Display accidental
-        if (note.name.includes('#')) {
-          accidentalElement.textContent = '♯';
-          accidentalElement.style.bottom = `${note.position + 0}px`; // Adjust position for accidental
-        } else if (note.name.includes('b')) {
-          accidentalElement.textContent = '♭';
-          accidentalElement.style.bottom = `${note.position + 0}px`; // Adjust position for accidental
-        } else {
-          accidentalElement.textContent = '';
-        }
+        drawNoteName(note);
+        drawAccidental(note);
         if(playNoteCheckbox.checked){playTone(note);}
       //  setStemDirection(note.position);
       }
-
+      
       function drawClef(note){
         if((note.position < clefSwitchPosition) && useBassClefCheckbox.checked){
           clefTrebleElement.style.display = "none";
@@ -285,10 +275,28 @@
           clefBassElement.style.display = "none";
         }
       }
+
       function drawNote(note){
         noteElement.style.display = 'block'; // Show the note
         const offset = (note.position < clefSwitchPosition) && useBassClefCheckbox.checked ? 120 : 0;
         noteElement.style.bottom = `${note.position+offset}px`; // Position dynamically
+      }
+
+      function drawNoteName(note){
+        noteNameElement.textContent = showNoteNameCheckbox.checked ? note.name : ''; // Display or hide note name
+      }
+
+      function drawAccidental(note){ //Vorzeichen
+        const offset = (note.position < clefSwitchPosition) && useBassClefCheckbox.checked ? 120 : 0;
+        if (note.name.includes('#')) {
+          accidentalElement.textContent = '♯';
+          accidentalElement.style.bottom = `${note.position + offset}px`; // Adjust position for accidental
+        } else if (note.name.includes('b')) {
+          accidentalElement.textContent = '♭';
+          accidentalElement.style.bottom = `${note.position + offset}px`; // Adjust position for accidental
+        } else {
+          accidentalElement.textContent = '';
+        }        
       }
 
       // Draw ledger lines for notes outside the staff
@@ -325,7 +333,6 @@
       var blocking = false;
       // Highlight the staff depending on correctness (not used here)
       function highlightNote(correct) {
-        noteContainer.className = correct ? "staff green" : "staff red"; //todo: eliminate
         noteEllipse.setAttribute("fill", correct ? "green" : "red");
         setTimeout(() => {
           if (correct && !blocking) {
