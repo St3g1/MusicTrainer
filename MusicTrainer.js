@@ -141,6 +141,9 @@
       const showFlatCheckbox = document.getElementById("showFlatCheckbox");
       const noteEllipse = document.getElementById("noteEllipse");
       const accidentalElement = document.getElementById("accidental");
+      const burgerMenu = document.getElementById('burgerMenu');
+      const optionContainer = document.getElementById('optionContainer');
+    
       let currentNote = null;
       let audioContext = null;
       let model;
@@ -187,6 +190,14 @@
           tolerance = Math.round(toleranceInput.value);
           pause = Math.round(pauseInput.innerText);
         });
+      });
+      burgerMenu.addEventListener('click', () => {
+        optionContainer.classList.toggle('active');
+      });
+      document.addEventListener('click', (event) => {
+        if (!optionContainer.contains(event.target) && !burgerMenu.contains(event.target)) {
+          optionContainer.classList.remove('active');
+        }
       });
 
       function setOptionEnableState(state){
@@ -275,11 +286,13 @@
           clefBassElement.style.display = "none";
         }
       }
+      
+      const offset_global = -60;
 
       function drawNote(note){
         noteElement.style.display = 'block'; // Show the note
         const offset = (note.position < clefSwitchPosition) && useBassClefCheckbox.checked ? 120 : 0;
-        noteElement.style.bottom = `${note.position+offset}px`; // Position dynamically
+        noteElement.style.bottom = `${note.position+offset+offset_global}px`; // Position dynamically
       }
 
       function drawNoteName(note){
@@ -290,10 +303,10 @@
         const offset = (note.position < clefSwitchPosition) && useBassClefCheckbox.checked ? 120 : 0;
         if (note.name.includes('#')) {
           accidentalElement.textContent = '♯';
-          accidentalElement.style.bottom = `${note.position + offset}px`; // Adjust position for accidental
+          accidentalElement.style.bottom = `${note.position + offset + offset_global}px`; // Adjust position for accidental
         } else if (note.name.includes('b')) {
           accidentalElement.textContent = '♭';
-          accidentalElement.style.bottom = `${note.position + offset}px`; // Adjust position for accidental
+          accidentalElement.style.bottom = `${note.position + offset + offset_global}px`; // Adjust position for accidental
         } else {
           accidentalElement.textContent = '';
         }        
@@ -310,7 +323,7 @@
           for (let i = 0; i < numLines; i++) {
             const line = document.createElement('div');
             line.className = 'ledger-line';
-            line.style.bottom = `${(position > 100 ? 140 + (i * 20) : 20 - (i * 20)) - 2}px`;
+            line.style.bottom = `${(position > 100 ? offset_global + 140 + (i * 20) : offset_global + 20 - (i * 20)) - 2}px`;
             noteContainer.appendChild(line);
           }
         }
