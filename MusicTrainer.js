@@ -144,13 +144,42 @@ const allNotes = [
       largeRangeRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
       noteFilterCheckbox.addEventListener('change', () => { noteFilterInput.disabled = !noteFilterCheckbox.checked; nextNote(); saveOptions();}); 
       noteFilterInput.addEventListener('change', () => { saveOptions();}); 
-      
+      startButton.addEventListener("click", () => {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+        loadModel().then(() => {
+          if(!running){initAudio();}
+          nextNote();
+          startButton.textContent = "Weiter"; // Change button text to "Weiter"
+          startButton.style.backgroundColor = "gray"; // Change button color to gray
+          setOptionEnableState(true);
+          saveOptions();
+        });
+      });
+
+      function setOptionEnableState(state){
+        showNoteNameCheckbox.disabled = !state;
+        playNoteCheckbox.disabled = !state;
+        smallRangeRadio.disabled = !state;
+        middleRangeRadio.disabled = !state;
+        largeRangeRadio.disabled = !state;
+        showSharpCheckbox.disabled = !state;
+        showFlatCheckbox.disabled = !state;
+        noteFilterCheckbox.disabled = !state;
+      }
+
       let currentNote = null;
       let audioContext = null;
       let oscillator = null;
       let model;
   
-      // Select a random note
+      //--------------- NOTE SELECTION ------------------------------
+
+      // Filter notes and select a random note from this list
       function getNextNote() {
         let notes = allNotes;
         if (smallRangeRadio.checked) {
@@ -175,7 +204,16 @@ const allNotes = [
         }
         return notes[Math.floor(Math.random() * notes.length)];
       }
-  
+ 
+      // Show the next note
+      function nextNote() {
+        currentNote = getNextNote();
+        displayNote(currentNote);
+        noteContainer.className = "staff"; // Reset staff color
+      }
+
+      //--------------- NOTE DRAWING ------------------------------
+
       // Display the note on the staff
       function displayNote(note) {
         noteElement.style.display = 'block'; // Show the note
@@ -196,40 +234,7 @@ const allNotes = [
         if(playNoteCheckbox.checked){playTone(note);}
       //  setStemDirection(note.position);
       }
-  
-      /*--------- Audio OUTPUT --------------------------*/
-      // Play the note using Web Audio API
-      function playTone(note) {
-        if (audioContext) {
-          audioContext.close();
-        }
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        oscillator = audioContext.createOscillator();
-        oscillator.type = 'sawtooth'; // You can change the type to 'square', 'sine', 'sawtooth', 'triangle'
-        oscillator.frequency.setValueAtTime(note.frequency, audioContext.currentTime);
-        oscillator.connect(audioContext.destination);
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 1); // Play the note for 1 second
-      }
-  
-      // Play the audio file for the given note
-      async function playMp3(note) {
-        const { audioContext, audioBuffer } = await loadMp3(note);
-        const source = audioContext.createBufferSource();
-        source.buffer = audioBuffer;
-        source.connect(audioContext.destination);
-        source.start();
-      }
-  
-      // Load the audio file for the given note (can only be used with WebServer!)
-      async function loadMp3(note) {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const response = await fetch("audio/" + note.mp3);
-        const arrayBuffer = await response.arrayBuffer();
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-        return { audioContext, audioBuffer };
-      }
-      
+
       // Draw ledger lines for notes outside the staff
       function drawLedgerLines(position) {
         const ledgerLines = document.querySelectorAll('.ledger-line');
@@ -271,46 +276,42 @@ const allNotes = [
           }
         }, 1000); // Delay duration
       }
-  
-      /*----------------------- TONE DETECTION -------------------------------*/
-  
-      // Start listening to microphone input
-      async function startListening() {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const analyser = audioContext.createAnalyser();
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const source = audioContext.createMediaStreamSource(stream);
-        source.connect(analyser);
-        analyser.fftSize = 2048;
-        const bufferLength = analyser.fftSize;
-        const dataArray = new Float32Array(bufferLength);
-  
-  //      const detectPitch = new Pitchfinder.YIN(); //pitchfinder
-  //      Meyda.windowingFunction = 'hanning';
-  
-        function checkPitch() {
-          analyser.getFloatTimeDomainData(dataArray);
-          const pitch = getPitch(dataArray, audioContext.sampleRate);
-  //        const pitch = detectPitch(dataArray, audioContext.sampleRate); //pitchfinder
-  //        const features = Meyda.extract('pitch', dataArray); //Meyda1
-  //        const pitch = features ? features.pitch : null; //Meyda1
-  //        const features = Meyda.extract(['amplitudeSpectrum'], dataArray); //Meyda2
-  //        const pitch = getPitch(features.amplitudeSpectrum, audioContext.sampleRate); //Meyda2
-          if (pitch && currentNote) {
-            messageElement.innerHTML = "pitch: " + Math.round(pitch) + ", desired: " + Math.round(currentNote.frequency);
-            const targetFrequency = currentNote.frequency;
-            const correct = Math.abs(targetFrequency - pitch) < 5; // Allow small tolerance
-            highlightNote(correct);
-            // if (correct) {
-            //   setTimeout(nextNote, 1000);
-            // }
-          }
-          requestAnimationFrame(checkPitch);
+
+      /*--------- Audio OUTPUT --------------------------*/
+      // Play the note using Web Audio API
+      function playTone(note) {
+        if (audioContext) {
+          audioContext.close();
         }
-        checkPitch();
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        oscillator = audioContext.createOscillator();
+        oscillator.type = 'sawtooth'; // You can change the type to 'square', 'sine', 'sawtooth', 'triangle'
+        oscillator.frequency.setValueAtTime(note.frequency, audioContext.currentTime);
+        oscillator.connect(audioContext.destination);
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 1); // Play the note for 1 second
+      }
+  
+      // Play the audio file for the given note
+      async function playMp3(note) {
+        const { audioContext, audioBuffer } = await loadMp3(note);
+        const source = audioContext.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(audioContext.destination);
+        source.start();
+      }
+  
+      // Load the audio file for the given note (can only be used with WebServer!)
+      async function loadMp3(note) {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const response = await fetch("audio/" + note.mp3);
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        return { audioContext, audioBuffer };
       }
 
-      /*------  AI MODEL ------*/
+      /*----------------------- TONE DETECTION with neuronal network -------------------------------*/
+  
       async function loadModel() {
         if(!running){
           status('Lade Modell...');
@@ -319,65 +320,11 @@ const allNotes = [
         }
       }
 
-      // Basic pitch detection
-      function getPitch(data, sampleRate) {
-        let maxVal = -Infinity;
-        let maxIndex = 0;
-        for (let i = 0; i < data.length; i++) {
-          if (data[i] > maxVal) {
-            maxVal = data[i];
-            maxIndex = i;
-          }
-        }
-        if(maxVal > 0.5) console.log("MaxVal = " + maxVal);
-        const frequency = maxIndex * (sampleRate / data.length);
-        return frequency > 20 && frequency < 2000 && maxVal > 0.5 ? frequency : null;
-      }
-  
-      // Show the next note
-      function nextNote() {
-        currentNote = getNextNote();
-        displayNote(currentNote);
-        noteContainer.className = "staff"; // Reset staff color
-      }
-      
-      startButton.addEventListener("click", () => {
-        if (!audioContext) {
-          audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioContext.state === 'suspended') {
-          audioContext.resume();
-        }
-        loadModel().then(() => {
-          if(!running){initAudio();}
-          nextNote();
-          startButton.textContent = "Weiter"; // Change button text to "Weiter"
-          startButton.style.backgroundColor = "gray"; // Change button color to gray
-          // Enable checkboxes
-          showNoteNameCheckbox.disabled = false;
-          playNoteCheckbox.disabled = false;
-          smallRangeRadio.disabled = false;
-          middleRangeRadio.disabled = false;
-          largeRangeRadio.disabled = false;
-          showSharpCheckbox.disabled = false;
-          showFlatCheckbox.disabled = false;
-          noteFilterCheckbox.disabled = false;
-          saveOptions();
-        });
-      });
-      
-    function checkNote(pitch){
-      if (pitch && currentNote) {
-        status("pitch: " + Math.round(pitch) + ", desired: " + Math.round(currentNote.frequency));
-        const targetFrequency = currentNote.frequency;
-        const correct = Math.abs(targetFrequency - pitch) < 5; // Allow small tolerance
-        highlightNote(correct);
-      }
-    }
-
       //*----------------------- CREPE -------------------------- 
       //Based on https://github.com/marl/crepe
-       
+      
+      var confidenceRequested = 0.9
+
       function error(text) {
         document.getElementById('status').innerHTML = 'Error: ' + text;
         return text;
@@ -444,11 +391,11 @@ const allNotes = [
             const predicted_hz = 10 * Math.pow(2, predicted_cent / 1200.0);
     
             // update the UI and the activation plot
-            var result = (confidence > 0.5) ? predicted_hz.toFixed(3) + ' Hz' : '&nbsp;Kein Ton&nbsp&nbsp;';
+            var result = (confidence > confidenceRequested) ? predicted_hz.toFixed(3) + ' Hz' : '&nbsp;Kein Ton&nbsp&nbsp;';
             var strlen = result.length;
             for (var i = 0; i < 11 - strlen; i++) result = "&nbsp;" + result;
             document.getElementById('estimated-pitch').innerHTML = result;
-            checkNote((confidence > 0.5) ? predicted_hz : null);
+            checkNote((confidence > confidenceRequested) ? predicted_hz : null);
           });
         });
       }
@@ -497,3 +444,13 @@ const allNotes = [
         } else error('Could not access microphone - getUserMedia not available');
       }
   
+      /*----------------------- TONE CHECKING -------------------------------*/
+
+      function checkNote(pitch){
+        if (pitch && currentNote) {
+          status("pitch: " + Math.round(pitch) + ", desired: " + Math.round(currentNote.frequency));
+          const targetFrequency = currentNote.frequency;
+          const correct = Math.abs(targetFrequency - pitch) < 5; // Allow small tolerance
+          highlightNote(correct);
+        }
+      }
