@@ -10,24 +10,8 @@
   <h1>Sabine's Noten Trainer</h1>
   <p id="instruction">Spiele den Ton auf dem Saxophon:</p>
   <div class="container">
-    <div id="saxophone"><img src="saxophone.png" alt="Saxophone"></div>
-    <div id="noteContainer" class="staff">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-      <div id="clefTreble" style="display: none;">𝄞</div> <!-- Unicode for Treble Clef -->
-      <div id="clefBass" style="display: none;">𝄢</div> <!-- Unicode for Bass Clef -->
-      <svg id="note" class="note" width="24" height="40" style="display: none;">
-        <ellipse id="noteEllipse" cx="12" cy="20" rx="12" ry="10" fill="black" />
-        <!-- <rect class="stem" width="1" height="30" x="10" y="0" fill="black" /> -->
-      </svg>
-      <div id="accidental" class="accidental"></div>
-      <div id="noteName" class="note-name"></div>
-    </div>
     <!--------------- OPTIONS ------------------>
-    <div class="option-container">
+    <div class="option-container" id="optionContainer">
       <h2>Optionen</h2>
       <label><input type="checkbox" id="showNoteNameCheckbox" disabled>Zeige Noten Namen</label>
       <label><input type="checkbox" id="playNoteCheckbox" disabled>Spiele Ton</label>
@@ -55,8 +39,34 @@
         <label><input type="checkbox" id="showSharpCheckbox" disabled>Aktiviere <b>♯</b></label>
         <label><input type="checkbox" id="showFlatCheckbox" disabled>Aktiviere <b>♭</bb></label>
       </div>    
-  </div>
-  </div>
+    </div>
+    <div class="content">
+      <!--------------- SAXOPHONE ------------------>
+      <div id="saxophone"><img src="saxophone.png" alt="Saxophone"></div>
+      <!--------------- STAFF ------------------>
+      <div id="noteContainer" class="staff">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div id="clefTreble" style="display: none;">𝄞</div> <!-- Unicode for Treble Clef -->
+        <div id="clefBass" style="display: none;">𝄢</div> <!-- Unicode for Bass Clef -->
+        <svg id="note" class="note" width="24" height="40" style="display: none;">
+          <ellipse id="noteEllipse" cx="12" cy="20" rx="12" ry="10" fill="black" />
+          <!-- <rect class="stem" width="1" height="30" x="10" y="0" fill="black" /> -->
+        </svg>
+        <div id="accidental" class="accidental"></div>
+        <div id="noteName" class="note-name"></div>
+      </div>
+      <!--------------- BURGER MENU ------------------>
+      <div class="burger-menu" id="burgerMenu">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>    
   <button id="startButton">Start</button>
   <div id="message">
     <span id="status"></span>
@@ -67,6 +77,13 @@
   <script>
    // Load options when the page loads
     window.addEventListener('load', loadOptions);
+
+    // Burger menu toggle
+    const burgerMenu = document.getElementById('burgerMenu');
+    const optionContainer = document.getElementById('optionContainer');
+    burgerMenu.addEventListener('click', () => {
+      optionContainer.classList.toggle('active');
+    });
   </script>
 </body>
 </html>
