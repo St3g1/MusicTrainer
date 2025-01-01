@@ -78,7 +78,7 @@ crepe = (function() {
 
   var audioContext;
   var running = false;
-
+/*
   try {
     audioContext = new window.AudioContext || window.webkitAudioContext;
 //    const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -88,6 +88,7 @@ crepe = (function() {
     error('Could not instantiate AudioContext: ' + e.message);
     throw e;
   }
+*/
 
   // perform resampling the audio to 16000 Hz, on which the model is trained.
   // setting a sample rate in AudioContext is not supported by most browsers at the moment.
