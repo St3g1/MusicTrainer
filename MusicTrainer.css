@@ -146,9 +146,9 @@ font-style: italic;
   display: block;
   flex-direction: column;
   cursor: pointer;
-  position: absolute; 
-  top: 150px; /* Position below the burger menu */
-  left: 682px;
+  position: relative; 
+  /* top: 150px; Position below the burger menu */
+  left: -50px;
   /* border: 1px solid rgb(195, 195, 195); Add a 1px border */
 }
 .burger-menu div {
@@ -166,9 +166,6 @@ font-style: italic;
   border: 1px solid rgb(195, 195, 195); /* Add a 1px border */
   border-radius: 5px; /* Add rounded corners */
   position: absolute;
-  top: 170px; /* Position below the burger menu */
-  left: 380px;
-  width: 250px;
   background-color: white;
   z-index: 10; /* Ensure it is above other elements */ 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
