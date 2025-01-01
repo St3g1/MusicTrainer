@@ -30,11 +30,18 @@ body {
 .staff .line:nth-child(4) { top: 80px; }
 .staff .line:nth-child(5) { top: 100px; }
 
-.clef {
+#clefTreble {
   position: absolute;
   left: 20px;
   top: -20px; /* Adjusted to position the clef correctly */
   font-size: 7em;
+}
+
+#clefBass {
+  position: absolute;
+  left: 20px;
+  top: -25px; /* Adjusted to position the clef correctly */
+  font-size: 6.5em;
 }
 
 .note {

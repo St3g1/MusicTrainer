@@ -17,7 +17,8 @@
       <div class="line"></div>
       <div class="line"></div>
       <div class="line"></div>
-      <div class="clef">𝄞</div> <!-- Unicode for Treble Clef -->
+      <div id="clefTreble" style="display: none;">𝄞</div> <!-- Unicode for Treble Clef -->
+      <div id="clefBass" style="display: none;">𝄢</div> <!-- Unicode for Bass Clef -->
       <svg id="note" class="note" width="24" height="40" style="display: none;">
         <ellipse id="noteEllipse" cx="12" cy="20" rx="12" ry="10" fill="black" />
         <!-- <rect class="stem" width="1" height="30" x="10" y="0" fill="black" /> -->
@@ -25,10 +26,12 @@
       <div id="accidental" class="accidental"></div>
       <div id="noteName" class="note-name"></div>
     </div>
+    <!--------------- OPTIONS ------------------>
     <div class="option-container">
       <h2>Optionen</h2>
       <label><input type="checkbox" id="showNoteNameCheckbox" disabled>Zeige Noten Namen</label>
       <label><input type="checkbox" id="playNoteCheckbox" disabled>Spiele Ton</label>
+      <label><input type="checkbox" id="useBassClefCheckbox" disabled>Verwende Bass-Schlüssel</label>
       <div class="checkbox-text" title="Gibt die Pause (in Milli-Sekunden) zwischen einem erfolgreichen und neue vorgeschlagen Ton an.">
         <label>Pause:
         <input type="text" id="pause" value="1000" disabled></label>

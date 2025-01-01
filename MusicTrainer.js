@@ -1,97 +1,98 @@
-const allNotes = [
-  //      { name: "C6", frequency: 1046.50, mp3: ".mp3", position: 210 },
-  //      { name: "H5", frequency: 987.77, mp3: ".mp3", position: 200 },
-        { name: "B5", frequency: 932.33, mp3: "88.mp3", position: 200 },
-        { name: "A#5", frequency: 932.33, mp3: "87.mp3", position: 190 },
-        { name: "A5", frequency: 880.00, mp3: "86.mp3", position: 190 },
-        { name: "Ab5", frequency: 830.61, mp3: "85.mp3", position: 190 },
-        { name: "G#5", frequency: 830.61, mp3: "85.mp3", position: 180 },
-        { name: "G5", frequency: 783.99, mp3: "84.mp3", position: 180 },
-        { name: "Gb5", frequency: 739.99, mp3: "83.mp3", position: 180 },
-        { name: "F#5", frequency: 739.99, mp3: "83.mp3", position: 170 },
-        { name: "F5", frequency: 698.46, mp3: "82.mp3", position: 170 },
-        { name: "E5", frequency: 659.25, mp3: "81.mp3", position: 160 },
-        { name: "Eb5", frequency: 622.25, mp3: "80.mp3", position: 160 },
-        { name: "D#5", frequency: 622.25, mp3: "80.mp3", position: 150 },
-        { name: "D5", frequency: 587.33, mp3: "79.mp3", position: 150 },
-        { name: "Db5", frequency: 554.37, mp3: "78.mp3", position: 150 },
-        { name: "C#5", frequency: 554.37, mp3: "78.mp3", position: 140 },
-        { name: "C5", frequency: 523.25, mp3: "77.mp3", position: 140 },
-        { name: "H4", frequency: 493.88, mp3: "76.mp3", position: 130 },
-        { name: "B4", frequency: 466.16, mp3: "75.mp3", position: 130 },
-        { name: "A#4", frequency: 466.16, mp3: "75.mp3", position: 120 },
-        { name: "A4", frequency: 440.00, mp3: "74.mp3", position: 120 },
-        { name: "Ab4", frequency: 415.30, mp3: "73.mp3", position: 120 },
-        { name: "G#4", frequency: 415.30, mp3: "73.mp3", position: 110 },
-        { name: "G4", frequency: 392.00, mp3: "72.mp3", position: 110 },
-        { name: "Gb4", frequency: 369.99, mp3: "71.mp3", position: 110 },
-        { name: "F#4", frequency: 369.99, mp3: "71.mp3", position: 100 },
-        { name: "F4", frequency: 349.23, mp3: "70.mp3", position: 100 },
-        { name: "E4", frequency: 329.63, mp3: "69.mp3", position: 90 },
-        { name: "Eb4", frequency: 311.13, mp3: "68.mp3", position: 90 },
-        { name: "D#4", frequency: 311.13, mp3: "68.mp3", position: 80 },
-        { name: "D4", frequency: 293.66, mp3: "67.mp3", position: 80 },
-        { name: "Db4", frequency: 277.18, mp3: "66.mp3", position: 80 },
-        { name: "C#4", frequency: 277.18, mp3: "66.mp3", position: 70 },
-        { name: "C4", frequency: 261.63, mp3: "65.mp3", position: 70 }, // Positioned for middle C
-        { name: "H3", frequency: 246.94, mp3: "64.mp3", position: 60 },
-        { name: "B3", frequency: 233.08, mp3: "63.mp3", position: 60 },
-        { name: "A#3", frequency: 233.08, mp3: "62.mp3", position: 50 },
-        { name: "A3", frequency: 220.00, mp3: "61.mp3", position: 50 },
-        { name: "Ab3", frequency: 207.65, mp3: "60.mp3", position: 50 },
-        { name: "G#3", frequency: 207.65, mp3: "60.mp3", position: 40 },
-        { name: "G3", frequency: 196.00, mp3: "59.mp3", position: 40 },
-        { name: "Gb3", frequency: 185.00, mp3: "58.mp3", position: 40 },
-        { name: "F#3", frequency: 185.00, mp3: "58.mp3", position: 30 },
-        { name: "F3", frequency: 174.61, mp3: "57.mp3", position: 30 },
-        { name: "E3", frequency: 164.81, mp3: "56.mp3", position: 20 },
-        { name: "Eb3", frequency: 155.56, mp3: "55.mp3", position: 20 },
-        { name: "D#3", frequency: 155.56, mp3: "55.mp3", position: 10 },
-        { name: "D3", frequency: 146.83, mp3: "54.mp3", position: 10 },
-        { name: "Db3", frequency: 138.59, mp3: "53.mp3", position: 10 },
-        { name: "C#3", frequency: 138.59, mp3: "53.mp3", position: 0 },
-        { name: "C3", frequency: 130.81, mp3: "52.mp3", position: 0 },
-        { name: "H2", frequency: 123.47, mp3: "51.mp3", position: -10 },
-        { name: "B2", frequency: 116.54, mp3: "50.mp3", position: -10 },
-        { name: "A#2", frequency: 116.54, mp3: "50.mp3", position: -20 },
-        { name: "A2", frequency: 110.00, mp3: "49.mp3", position: -20 },
-        { name: "Ab2", frequency: 103.83, mp3: "48.mp3", position: -20 },
-        { name: "G#2", frequency: 103.83, mp3: "48.mp3", position: -30 },
-        { name: "G2", frequency: 98.00, mp3: "47.mp3", position: -30 },
-        { name: "Gb2", frequency: 92.50, mp3: "46.mp3", position: -30 },
-        { name: "F#2", frequency: 92.50, mp3: "46.mp3", position: -40 },
-        { name: "F2", frequency: 87.31, mp3: "45.mp3", position: -40 },
-        { name: "E2", frequency: 82.41, mp3: "44.mp3", position: -50 },
-        { name: "Eb2", frequency: 77.78, mp3: "43.mp3", position: -50 },
-        { name: "D#2", frequency: 77.78, mp3: "43.mp3", position: -60 },
-        { name: "D2", frequency: 73.42, mp3: "42.mp3", position: -60 },
-        { name: "Db2", frequency: 69.30, mp3: "41.mp3", position: -60 },
-        { name: "C#2", frequency: 69.30, mp3: "41.mp3", position: -70 },
-        { name: "C2", frequency: 65.41, mp3: "40.mp3", position: -70 },
-        { name: "H1", frequency: 61.74, mp3: "39.mp3", position: -80 },
-        { name: "B1", frequency: 58.27, mp3: "38.mp3", position: -80 },
-        { name: "A#1", frequency: 58.27, mp3: "38.mp3", position: -90 },
-        { name: "A1", frequency: 55.00, mp3: "37.mp3", position: -90 },
-        { name: "Ab1", frequency: 51.91, mp3: "36.mp3", position: -90 },
-        { name: "G#1", frequency: 51.91, mp3: "36.mp3", position: -100 },
-        { name: "G1", frequency: 49.00, mp3: "35.mp3", position: -100 },
-        { name: "Gb1", frequency: 46.25, mp3: "34.mp3", position: -100 },
-        { name: "F#1", frequency: 46.25, mp3: "34.mp3", position: -110 },
-        { name: "F1", frequency: 43.65, mp3: "33.mp3", position: -110 },
-        { name: "E1", frequency: 41.20, mp3: "32.mp3", position: -120 },
-        { name: "Eb1", frequency: 38.89, mp3: "31.mp3", position: -120 },
-        { name: "D#1", frequency: 38.89, mp3: "31.mp3", position: -130 },
-        { name: "D1", frequency: 36.71, mp3: "30.mp3", position: -130 },
-        { name: "Db1", frequency: 34.65, mp3: "29.mp3", position: -130 },
-        { name: "C#1", frequency: 34.65, mp3: "29.mp3", position: -140 },
-        { name: "C1", frequency: 32.70, mp3: "28.mp3", position: -140 }
-      ];
+  const allNotes = [
+    { name: "C6", frequency: 1046.50, mp3: ".mp3", position: 140 },
+    { name: "H5", frequency: 987.77, mp3: ".mp3", position: 130 },
+    { name: "B5", frequency: 932.33, mp3: "88.mp3", position: 130 },
+    { name: "A#5", frequency: 932.33, mp3: "87.mp3", position: 120 },
+    { name: "A5", frequency: 880.00, mp3: "86.mp3", position: 120 },
+    { name: "Ab5", frequency: 830.61, mp3: "85.mp3", position: 120 },
+    { name: "G#5", frequency: 830.61, mp3: "85.mp3", position: 110 },
+    { name: "G5", frequency: 783.99, mp3: "84.mp3", position: 110 },
+    { name: "Gb5", frequency: 739.99, mp3: "83.mp3", position: 110 },
+    { name: "F#5", frequency: 739.99, mp3: "83.mp3", position: 100 },
+    { name: "F5", frequency: 698.46, mp3: "82.mp3", position: 100 },
+    { name: "E5", frequency: 659.25, mp3: "81.mp3", position: 90 },
+    { name: "Eb5", frequency: 622.25, mp3: "80.mp3", position: 90 },
+    { name: "D#5", frequency: 622.25, mp3: "80.mp3", position: 80 },
+    { name: "D5", frequency: 587.33, mp3: "79.mp3", position: 80 },
+    { name: "Db5", frequency: 554.37, mp3: "78.mp3", position: 80 },
+    { name: "C#5", frequency: 554.37, mp3: "78.mp3", position: 70 },
+    { name: "C5", frequency: 523.25, mp3: "77.mp3", position: 70 },
+    { name: "H4", frequency: 493.88, mp3: "76.mp3", position: 60 },
+    { name: "B4", frequency: 466.16, mp3: "75.mp3", position: 60 },
+    { name: "A#4", frequency: 466.16, mp3: "75.mp3", position: 50 },
+    { name: "A4", frequency: 440.00, mp3: "74.mp3", position: 50 },
+    { name: "Ab4", frequency: 415.30, mp3: "73.mp3", position: 50 },
+    { name: "G#4", frequency: 415.30, mp3: "73.mp3", position: 40 },
+    { name: "G4", frequency: 392.00, mp3: "72.mp3", position: 40 },
+    { name: "Gb4", frequency: 369.99, mp3: "71.mp3", position: 40 },
+    { name: "F#4", frequency: 369.99, mp3: "71.mp3", position: 30 },
+    { name: "F4", frequency: 349.23, mp3: "70.mp3", position: 30 },
+    { name: "E4", frequency: 329.63, mp3: "69.mp3", position: 20 },
+    { name: "Eb4", frequency: 311.13, mp3: "68.mp3", position: 20 },
+    { name: "D#4", frequency: 311.13, mp3: "68.mp3", position: 10 },
+    { name: "D4", frequency: 293.66, mp3: "67.mp3", position: 10 },
+    { name: "Db4", frequency: 277.18, mp3: "66.mp3", position: 10 },
+    { name: "C#4", frequency: 277.18, mp3: "66.mp3", position: 0 },
+    { name: "C4", frequency: 261.63, mp3: "65.mp3", position: 0 }, // Positioned for middle C
+    { name: "H3", frequency: 246.94, mp3: "64.mp3", position: -10 },
+    { name: "B3", frequency: 233.08, mp3: "63.mp3", position: -10 },
+    { name: "A#3", frequency: 233.08, mp3: "62.mp3", position: -20 },
+    { name: "A3", frequency: 220.00, mp3: "61.mp3", position: -20 },
+    { name: "Ab3", frequency: 207.65, mp3: "60.mp3", position: -20 },
+    { name: "G#3", frequency: 207.65, mp3: "60.mp3", position: -30 },
+    { name: "G3", frequency: 196.00, mp3: "59.mp3", position: -30 },
+    { name: "Gb3", frequency: 185.00, mp3: "58.mp3", position: -30 },
+    { name: "F#3", frequency: 185.00, mp3: "58.mp3", position: -40 },
+    { name: "F3", frequency: 174.61, mp3: "57.mp3", position: -40 },
+    { name: "E3", frequency: 164.81, mp3: "56.mp3", position: -50 },
+    { name: "Eb3", frequency: 155.56, mp3: "55.mp3", position: -50 },
+    { name: "D#3", frequency: 155.56, mp3: "55.mp3", position: -60 },
+    { name: "D3", frequency: 146.83, mp3: "54.mp3", position: -60 },
+    { name: "Db3", frequency: 138.59, mp3: "53.mp3", position: -60 },
+    { name: "C#3", frequency: 138.59, mp3: "53.mp3", position: -70 },
+    { name: "C3", frequency: 130.81, mp3: "52.mp3", position: -70 },
+    { name: "H2", frequency: 123.47, mp3: "51.mp3", position: -80 },
+    { name: "B2", frequency: 116.54, mp3: "50.mp3", position: -80 },
+    { name: "A#2", frequency: 116.54, mp3: "50.mp3", position: -90 },
+    { name: "A2", frequency: 110.00, mp3: "49.mp3", position: -90 },
+    { name: "Ab2", frequency: 103.83, mp3: "48.mp3", position: -90 },
+    { name: "G#2", frequency: 103.83, mp3: "48.mp3", position: -100 },
+    { name: "G2", frequency: 98.00, mp3: "47.mp3", position: -100 },
+    { name: "Gb2", frequency: 92.50, mp3: "46.mp3", position: -100 },
+    { name: "F#2", frequency: 92.50, mp3: "46.mp3", position: -110 },
+    { name: "F2", frequency: 87.31, mp3: "45.mp3", position: -110 },
+    { name: "E2", frequency: 82.41, mp3: "44.mp3", position: -120 },
+    { name: "Eb2", frequency: 77.78, mp3: "43.mp3", position: -120 },
+    { name: "D#2", frequency: 77.78, mp3: "43.mp3", position: -130 },
+    { name: "D2", frequency: 73.42, mp3: "42.mp3", position: -130 },
+    { name: "Db2", frequency: 69.30, mp3: "41.mp3", position: -130 },
+    { name: "C#2", frequency: 69.30, mp3: "41.mp3", position: -140 },
+    { name: "C2", frequency: 65.41, mp3: "40.mp3", position: -140 },
+    { name: "H1", frequency: 61.74, mp3: "39.mp3", position: -150 },
+    { name: "B1", frequency: 58.27, mp3: "38.mp3", position: -150 },
+    { name: "A#1", frequency: 58.27, mp3: "38.mp3", position: -160 },
+    { name: "A1", frequency: 55.00, mp3: "37.mp3", position: -160 },
+    { name: "Ab1", frequency: 51.91, mp3: "36.mp3", position: -160 },
+    { name: "G#1", frequency: 51.91, mp3: "36.mp3", position: -170 },
+    { name: "G1", frequency: 49.00, mp3: "35.mp3", position: -170 },
+    { name: "Gb1", frequency: 46.25, mp3: "34.mp3", position: -170 },
+    { name: "F#1", frequency: 46.25, mp3: "34.mp3", position: -180 },
+    { name: "F1", frequency: 43.65, mp3: "33.mp3", position: -180 },
+    { name: "E1", frequency: 41.20, mp3: "32.mp3", position: -190 },
+    { name: "Eb1", frequency: 38.89, mp3: "31.mp3", position: -190 },
+    { name: "D#1", frequency: 38.89, mp3: "31.mp3", position: -200 },
+    { name: "D1", frequency: 36.71, mp3: "30.mp3", position: -200 },
+    { name: "Db1", frequency: 34.65, mp3: "29.mp3", position: -200 },
+    { name: "C#1", frequency: 34.65, mp3: "29.mp3", position: -210 },
+    { name: "C1", frequency: 32.70, mp3: "28.mp3", position: -210 }
+  ];
       
       /*--------- Last Settings  --------------------------*/
       // Load saved options from localStorage
       function loadOptions() {
         showNoteNameCheckbox.checked = JSON.parse(localStorage.getItem("showNoteNameCheckbox")) || false;
         playNoteCheckbox.checked = JSON.parse(localStorage.getItem("playNoteCheckbox")) || false;
+        useBassClefCheckbox.checked = JSON.parse(localStorage.getItem("useBassClefCheckbox")) || false;
         pauseInput.value = localStorage.getItem("pauseInput") || "500";
         toleranceInput.value = localStorage.getItem("toleranceInput") || "5";
         smallRangeRadio.checked = JSON.parse(localStorage.getItem("smallRangeRadio")) || true;
@@ -108,6 +109,7 @@ const allNotes = [
       function saveOptions() {
         localStorage.setItem("showNoteNameCheckbox", JSON.stringify(showNoteNameCheckbox.checked));
         localStorage.setItem("playNoteCheckbox", JSON.stringify(playNoteCheckbox.checked));
+        localStorage.setItem("useBassClefCheckbox", JSON.stringify(useBassClefCheckbox.checked));
         localStorage.setItem("pauseInput", pauseInput.value);
         localStorage.setItem("toleranceInput", toleranceInput.value);
         localStorage.setItem("smallRangeRadio", JSON.stringify(smallRangeRadio.checked));
@@ -121,10 +123,13 @@ const allNotes = [
       
       const noteContainer = document.getElementById("noteContainer");
       const noteElement = document.getElementById("note");
+      const clefTrebleElement = document.getElementById("clefTreble");
+      const clefBassElement = document.getElementById("clefBass");
       const startButton = document.getElementById("startButton");
       const noteNameElement = document.getElementById("noteName");
       const showNoteNameCheckbox = document.getElementById("showNoteNameCheckbox");
       const playNoteCheckbox = document.getElementById("playNoteCheckbox");
+      const useBassClefCheckbox = document.getElementById("useBassClefCheckbox");
       const pauseInput = document.getElementById("pause");
       const toleranceInput = document.getElementById("tolerance");
       const smallRangeRadio = document.getElementById("smallRange");
@@ -151,6 +156,10 @@ const allNotes = [
         if(playNoteCheckbox.checked && currentNote){playTone(currentNote);}
         saveOptions(); 
       });
+      useBassClefCheckbox.addEventListener('change', () => {
+        displayNote(currentNote);
+        saveOptions(); 
+      });      
       pauseInput.addEventListener('change', () => { saveOptions(); pause = Math.round(pauseInput.value); });
       toleranceInput.addEventListener('change', () => { saveOptions(); tolerance = Math.round(toleranceInput.value); });
       showSharpCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
@@ -183,6 +192,7 @@ const allNotes = [
       function setOptionEnableState(state){
         showNoteNameCheckbox.disabled = !state;
         playNoteCheckbox.disabled = !state;
+        useBassClefCheckbox.disabled = !state;
         toleranceInput.disabled = !state;
         pauseInput.disabled = !state;
         smallRangeRadio.disabled = !state;
@@ -228,7 +238,7 @@ const allNotes = [
             notes = notes.filter(note => regex.test(note.name));
           }
         }
-        if(currentNote){notes = notes.filter(note => !note.name.includes(currentNote.name));} //don't use the same note
+        if(currentNote && notes.length > 1){notes = notes.filter(note => !note.name.includes(currentNote.name));} //don't use the same note
         //Randomize result
         return notes[Math.floor(Math.random() * notes.length)];
       }
@@ -243,12 +253,13 @@ const allNotes = [
       }
 
       //--------------- NOTE DRAWING ------------------------------
+      let clefSwitchPosition = 0;
 
       // Display the note on the staff
       function displayNote(note) {
-        noteElement.style.display = 'block'; // Show the note
-        noteElement.style.bottom = `${note.position}px`; // Position dynamically
-        drawLedgerLines(note.position);
+        drawClef(note);
+        drawNote(note);
+        drawLedgerLines(note);
         //Show note name
         noteNameElement.textContent = showNoteNameCheckbox.checked ? note.name : ''; // Display or hide note name
         // Display accidental
@@ -265,11 +276,27 @@ const allNotes = [
       //  setStemDirection(note.position);
       }
 
+      function drawClef(note){
+        if((note.position < clefSwitchPosition) && useBassClefCheckbox.checked){
+          clefTrebleElement.style.display = "none";
+          clefBassElement.style.display = "block";
+        } else {
+          clefTrebleElement.style.display = "block";
+          clefBassElement.style.display = "none";
+        }
+      }
+      function drawNote(note){
+        noteElement.style.display = 'block'; // Show the note
+        const offset = (note.position < clefSwitchPosition) && useBassClefCheckbox.checked ? 120 : 0;
+        noteElement.style.bottom = `${note.position+offset}px`; // Position dynamically
+      }
+
       // Draw ledger lines for notes outside the staff
-      function drawLedgerLines(position) {
+      function drawLedgerLines(note) {
         const ledgerLines = document.querySelectorAll('.ledger-line');
         ledgerLines.forEach(line => line.remove());
-  
+        const offset = (note.position < clefSwitchPosition) && useBassClefCheckbox.checked ? 120 : 0;
+        const position = note.position + offset;
         if (position > 100 || position < 10) {
           const numLines = position > 100 ? Math.abs(Math.ceil((100-position) / 20)) : Math.abs(Math.ceil(position / 20))+1;
           for (let i = 0; i < numLines; i++) {
