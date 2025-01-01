@@ -153,6 +153,7 @@ const allNotes = [
         }
         loadModel().then(() => {
           if(!running){initAudio();}
+          blocking = false;
           nextNote();
           startButton.textContent = "Weiter"; // Change button text to "Weiter"
           startButton.style.backgroundColor = "gray"; // Change button color to gray
@@ -220,6 +221,7 @@ const allNotes = [
       // Show the next note
       function nextNote() {
         blocking = false; //reset
+        noteEllipse.setAttribute("fill", "black"); // Reset note color after delay
         currentNote = getNextNote();
         displayNote(currentNote);
         noteContainer.className = "staff"; // Reset staff color
@@ -284,8 +286,7 @@ const allNotes = [
         noteContainer.className = correct ? "staff green" : "staff red"; //todo: eliminate
         noteEllipse.setAttribute("fill", correct ? "green" : "red");
         setTimeout(() => {
-          noteEllipse.setAttribute("fill", "black"); // Reset note color after delay
-          if (correct) {
+          if (correct && !blocking) {
             blocking = true;
             setTimeout(nextNote, 1000); // Delay before showing the next note
           }
@@ -446,10 +447,12 @@ const allNotes = [
       /*----------------------- TONE CHECKING -------------------------------*/
 
       function checkNote(pitch){
-        if (pitch && currentNote) {
-          status("pitch: " + Math.round(pitch) + ", desired: " + Math.round(currentNote.frequency));
-          const targetFrequency = currentNote.frequency;
-          const correct = Math.abs(targetFrequency - pitch) < 5; // Allow small tolerance
-          highlightNote(correct);
+        if(!blocking){
+          if (pitch && currentNote) {
+            status("pitch: " + Math.round(pitch) + ", desired: " + Math.round(currentNote.frequency));
+            const targetFrequency = currentNote.frequency;
+            const correct = Math.abs(targetFrequency - pitch) < 5; // Allow small tolerance
+            highlightNote(correct);
+          }
         }
       }
