@@ -312,33 +312,11 @@ const allNotes = [
 
       /*------  AI MODEL ------*/
       async function loadModel() {
-        status('Lade Modell...');
-        model = await tf.loadModel('https://marl.github.io/crepe/model/model.json');
-        status('Modell geladen');
-      }
-
-      async function startListeningAI() {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const mic = audioContext.createMediaStreamSource(stream);
-        await audioContext.audioWorklet.addModule('processor.js');
-        const workletNode = new AudioWorkletNode(audioContext, 'my-processor');
-        workletNode.port.onmessage = (event) => {
-          const inputData = event.data;
-          if (model) {
-            const inputTensor = tf.tensor(inputData).reshape([1, inputData.length, 1]);
-            model.predict(inputTensor).then(prediction => {
-              const pitch = prediction.dataSync()[0];
-              if (pitch && currentNote) {
-                status("pitch: " + Math.round(pitch) + ", desired: " + Math.round(currentNote.frequency));
-                const targetFrequency = currentNote.frequency;
-                const correct = Math.abs(targetFrequency - pitch) < 5; // Allow small tolerance
-                highlightNote(correct);
-              }
-            });
-          }
-        };
-        mic.connect(workletNode);
-        workletNode.connect(audioContext.destination);
+        if(!running){
+          status('Lade Modell...');
+          model = await tf.loadModel('https://marl.github.io/crepe/model/model.json');
+          status('Modell geladen');
+        }
       }
 
       // Basic pitch detection
@@ -373,7 +351,6 @@ const allNotes = [
         loadModel().then(() => {
           if(!running){initAudio();}
           nextNote();
-    //      startListeningAI();
           startButton.textContent = "Weiter"; // Change button text to "Weiter"
           startButton.style.backgroundColor = "gray"; // Change button color to gray
           // Enable checkboxes
@@ -389,7 +366,18 @@ const allNotes = [
         });
       });
       
-      /*----------------------- CREPE -------------------------- */ 
+    function checkNote(pitch){
+      if (pitch && currentNote) {
+        status("pitch: " + Math.round(pitch) + ", desired: " + Math.round(currentNote.frequency));
+        const targetFrequency = currentNote.frequency;
+        const correct = Math.abs(targetFrequency - pitch) < 5; // Allow small tolerance
+        highlightNote(correct);
+      }
+    }
+
+      //*----------------------- CREPE -------------------------- 
+      //Based on https://github.com/marl/crepe
+       
       function error(text) {
         document.getElementById('status').innerHTML = 'Error: ' + text;
         return text;
@@ -460,6 +448,7 @@ const allNotes = [
             var strlen = result.length;
             for (var i = 0; i < 11 - strlen; i++) result = "&nbsp;" + result;
             document.getElementById('estimated-pitch').innerHTML = result;
+            checkNote((confidence > 0.5) ? predicted_hz : null);
           });
         });
       }
