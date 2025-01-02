@@ -36,7 +36,7 @@
       </div>
       <div class="option-heading">Instrumenten Stimmung:</div>
       <div>
-        <label title="Das Tenorsaxophon notiert eine große None (14 Halbtöne) höher als klingend und ist damit in B gestimmt." style="display: none;"><input type="radio" name="instrument" id="instrumentSaxTenorRadio" value="middle" disabled>Tenor Saxophon</label>
+        <label title="Das Tenorsaxophon notiert eine große None (14 Halbtöne) höher als klingend und ist damit in B gestimmt."><input type="radio" name="instrument" id="instrumentSaxTenorRadio" value="middle" disabled>Tenor Saxophon</label>
         <label title="Das Altsaxophon notiert eine große Sexte (9 Halbtöne) höher als klingend und ist damit in Es gestimmt."><input type="radio" name="instrument" id="instrumentSaxAltRadio" value="large" disabled>Alt Saxophon</label>
         <label title="Die meisten Instrumente notieren wie klingend."><input type="radio" name="instrument" id="instrumentRegularRadio" value="small" disabled checked>Klavier/Gitarre</label>
       </div>
@@ -72,13 +72,17 @@
         <img id="flat" src="fonts/flat.svg" alt="flat" style="display: none;">
         <svg id="note" class="note" width="24" height="40" style="display: none;">
           <ellipse id="noteEllipse" cx="12" cy="20" rx="12" ry="10" fill="black" />
-          <!-- <rect class="stem" width="1" height="30" x="10" y="0" fill="black" /> -->
         </svg>
         <div id="noteName" class="note-name"></div>
       </div>
     </div>
-  </div>    
-  <button id="startButton">Start</button>
+    <!--------------- BUTTON ------------------>
+    <div class="buttons">    
+      <button id="startButton">Start</button>
+      <button id="stopButton" style="display: none;">Stop</button>
+    </divd>
+  </div>
+  <!--------------- MESSAGE ------------------>
   <div id="message">
     <span id="status"></span>
   </div>
