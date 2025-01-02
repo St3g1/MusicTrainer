@@ -18,8 +18,10 @@ body {
   justify-content: center;
   align-items: flex-start;
   margin-top: 20px;
-  width: 450px;
+  width: auto;
   max-width: 500px;
+  margin-left: auto; /* Center the container horizontally */
+  margin-right: auto; /* Center the container horizontally */
 }
 .content {/*sax, staff*/
   display: flex;
