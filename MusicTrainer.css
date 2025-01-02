@@ -1,13 +1,3 @@
-@font-face {
-  font-family: 'fonts/Bravura';
-  src: url('Bravura.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'fonts/BravuraText';
-  src: url('BravuraText.otf') format('opentype');
-}
-
 .desktop-only {
   display: none;
 }
@@ -54,6 +44,16 @@ body {
   transform: scale(1.7);
 }
 
+#sharp {
+  position: absolute;
+  left: 70px;
+}
+
+#flat {
+  position: absolute;
+  left: 73px;
+}
+
 .note-name {
   position: absolute;
   left: 150px;
@@ -66,20 +66,12 @@ body {
 
 .note {
   position: absolute;
-  left: 110px;
-}
-
-.accidental {
-  position: absolute;
-  left: 78px;
-  font-size: 2.5em;
-  font-weight: bold; 
-  font-style: italic;
+  left: 100px;
 }
 
 .ledger-line {
   position: absolute;
-  left: 100px;
+  left: 90px;
   width: 45px;
   height: 2px;
   background-color: black;

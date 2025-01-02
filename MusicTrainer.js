@@ -125,6 +125,8 @@
       const noteElement = document.getElementById("note");
       const clefTrebleElement = document.getElementById("clefTreble");
       const clefBassElement = document.getElementById("clefBass");
+      const sharpElement = document.getElementById("sharp");
+      const flatElement = document.getElementById("flat");
       const startButton = document.getElementById("startButton");
       const noteNameElement = document.getElementById("noteName");
       const showNoteNameCheckbox = document.getElementById("showNoteNameCheckbox");
@@ -140,7 +142,6 @@
       const showSharpCheckbox = document.getElementById("showSharpCheckbox");
       const showFlatCheckbox = document.getElementById("showFlatCheckbox");
       const noteEllipse = document.getElementById("noteEllipse");
-      const accidentalElement = document.getElementById("accidental");
       const burgerMenu = document.getElementById('burgerMenu');
       const optionContainer = document.getElementById('optionContainer');
     
@@ -301,14 +302,15 @@
 
       function drawAccidental(note){ //Vorzeichen
         const offset = (note.position < clefSwitchPosition) && useBassClefCheckbox.checked ? 120 : 0;
+        sharpElement.style.display = 'none'; //hide 
+        flatElement.style.display = 'none'; //hide
+
         if (note.name.includes('#')) {
-          accidentalElement.textContent = '♯';
-          accidentalElement.style.bottom = `${note.position + offset + offset_global}px`; // Adjust position for accidental
+          sharpElement.style.display = 'block'; 
+          sharpElement.style.top = `${-(note.position + offset + offset_global -47)}px`; // Adjust position for accidental
         } else if (note.name.includes('b')) {
-          accidentalElement.textContent = '♭';
-          accidentalElement.style.bottom = `${note.position + offset + offset_global}px`; // Adjust position for accidental
-        } else {
-          accidentalElement.textContent = '';
+          flatElement.style.display = 'block';
+          flatElement.style.top = `${-(note.position + offset + offset_global - 40)}px`; // Adjust position for accidental
         }        
       }
 
