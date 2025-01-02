@@ -16,6 +16,12 @@
   <h1>Sabine's Noten Trainer</h1>
   <p id="instruction">Spiele den Ton auf dem Saxophon:</p>
   <div class="container">
+    <!--------------- BURGER MENU ------------------>
+    <div class="burger-menu" id="burgerMenu">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
     <!--------------- OPTIONS ------------------>
     <div class="option-container" id="optionContainer">
       <h2>Optionen</h2>
@@ -66,12 +72,6 @@
         </svg>
         <div id="noteName" class="note-name"></div>
       </div>
-      <!--------------- BURGER MENU ------------------>
-      <div class="burger-menu" id="burgerMenu">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
     </div>
   </div>    
   <button id="startButton">Start</button>
@@ -82,9 +82,7 @@
   <script src="crepe/tfjs-0.8.0.min.js"></script>
   <script src="MusicTrainer.js"></script>
   <script>
-   // Load options when the page loads
-    window.addEventListener('load', loadOptions);
-
+    window.addEventListener('load', loadOptions); // Load options when the page loads
   </script>
 </body>
 </html>
