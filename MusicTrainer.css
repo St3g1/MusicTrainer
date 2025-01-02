@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'fonts/Bravura';
+  src: url('Bravura.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'fonts/BravuraText';
+  src: url('BravuraText.otf') format('opentype');
+}
+
 .desktop-only {
   display: none;
 }
@@ -32,18 +42,16 @@ body {
 
 #clefTreble {
   position: absolute;
-  left: 0px;
-  top: -20px; /* Adjusted to position the clef correctly */
-  font-size: 7em;
-  font-family:Arial, Helvetica, sans-serif;
+  left: 14px;
+  top: 33px; /* Adjusted to position the clef correctly */
+  transform: scale(1.7);
 }
 
 #clefBass {
   position: absolute;
-  left: 0px;
-  top: -25px; /* Adjusted to position the clef correctly */
-  font-size: 6.5em;
-  font-family:Arial, Helvetica, sans-serif;
+  left: 14px;
+  top: 35px; /* Adjusted to position the clef correctly */
+  transform: scale(1.7);
 }
 
 .note-name {
