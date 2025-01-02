@@ -13,17 +13,15 @@ body {
 }
 
 /*------------- LAYOUT ------------------*/
-.container {
+.container { /*menu, options, content*/
   display: flex;
   justify-content: center;
   align-items: flex-start;
   margin-top: 20px;
-  width: auto;
+  width: 450px;
   max-width: 500px;
-  margin-left: auto; /* Center the container horizontally */
-  margin-right: auto; /* Center the container horizontally */
 }
-.content {
+.content {/*sax, staff*/
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -161,24 +159,6 @@ body {
   width: 45px;
   height: 2px;
   background-color: black;
-}
-
-.note .stem {
-  position: absolute;
-  width: 1px;
-  background-color: black;
-}
-
-.note.up .stem {
-  height: 30px;
-  bottom: 0;
-  left: 10px;
-}
-
-.note.down .stem {
-  height: 30px;
-  top: 0;
-  left: 10px;
 }
 
 /*----------------- OTHER ------------------*/
