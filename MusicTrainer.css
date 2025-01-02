@@ -8,12 +8,16 @@ body {
   padding: 20px;
 }
 
+#saxophone {
+  margin-left: 10px; 
+}
+
 .staff {
   position: relative;
   width: 200px;
   height: 80px;
   /* border: 1px solid black; */
-  margin: 150px 30px;
+  margin: 150px 20px;
   padding: 0px 0px;
 }
 
@@ -124,10 +128,6 @@ button {
   padding: 0px;
 }
 
-#saxophone {
-  margin-right: 0px; 
-}
-
 #message {
   margin: 10px;
   font-size: 1em;
@@ -135,16 +135,15 @@ button {
   font-style: italic;
 }
 
+/*------------- MENU ------------------*/
 .burger-menu {
   display: block;
   flex-direction: column;
   cursor: pointer;
   position: relative;
-  left: 420px;
+  left: 425px;
   z-index: 5;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
-
-  /* border: 1px solid rgb(195, 195, 195); Add a 1px border */
 }
 .burger-menu div {
   width: 25px;
@@ -153,6 +152,8 @@ button {
   margin: 4px 0;
   white-space: nowrap;
 }
+
+/*------------- OPTIONS ------------------*/
 .option-container {
   display: none;
   text-align: left;
