@@ -9,9 +9,92 @@ body {
 }
 
 #saxophone {
-  margin-left: 10px; 
+  margin-left: 20px; 
 }
 
+/*------------- LAYOUT ------------------*/
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 20px;
+  width: auto;
+  max-width: 500px;
+  margin-left: auto; /* Center the container horizontally */
+  margin-right: auto; /* Center the container horizontally */
+}
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0px;
+}
+
+/*------------- MENU ------------------*/
+.burger-menu {
+  display: block;
+  flex-direction: column;
+  cursor: pointer;
+  position: relative;
+  left: 435px;
+  z-index: 5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  margin: 0px;
+  padding: 0px;
+  height: 40px;
+}
+
+/*----------------- OPTIONS ------------------*/
+.option-container {
+  display: none;
+  text-align: left;
+  padding: 10px 20px;
+  margin-left: 30px; /* Add some space between the note display and the checkboxes */
+  margin-top: 0px;
+  border: 1px solid rgb(195, 195, 195); /* Add a 1px border */
+  border-radius: 5px; /* Add rounded corners */
+  position: absolute;
+  background-color: white;
+  z-index: 10; /* Ensure it is above other elements */ 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
+}
+.option-container.active {
+  display: block;
+}
+.option-container h2 {
+  margin-block-start: 0.1em;
+  margin-block-end: 0.5em;
+}
+.option-container label {
+  display: block; /* Forces a line break after each label */
+  margin-bottom: 5px; /* Adds some space between the checkboxes */
+  margin-right: 10px;
+}
+.option-container label input {
+  margin-right: 10px; /* Add some space between the checkbox and the text */ 
+}
+.option-container .checkbox-text label {
+  display: flex;
+  align-items: center;
+  margin-right: 10px; /* Add some space between the checkbox and the text input */
+  white-space: nowrap; /* Prevent the text from wrapping */
+}
+.option-container .checkbox-text input[type="text"] {
+  flex: 1; /* Allow the text input to take the remaining space */
+  margin-left: 10px;
+  width: 90px;
+}
+.option-container .checkbox-text {
+  display: flex;
+  align-items: center;
+}
+.option-container .option-heading {
+  font-weight: bold; /* Make the section titles bold */
+  margin-top: 15px; /* Increase the top margin to create more space */
+  margin-bottom: 5px; /* Increase the top margin to create more space */
+}
+
+/*------------- STAFF ------------------*/
 .staff {
   position: relative;
   width: 200px;
@@ -40,7 +123,6 @@ body {
   top: 33px; /* Adjusted to position the clef correctly */
   transform: scale(1.7);
 }
-
 #clefBass {
   position: absolute;
   left: 14px;
@@ -48,11 +130,11 @@ body {
   transform: scale(1.7);
 }
 
+/*------------- NOTE ------------------*/
 #sharp {
   position: absolute;
   left: 70px;
 }
-
 #flat {
   position: absolute;
   left: 73px;
@@ -99,6 +181,7 @@ body {
   left: 10px;
 }
 
+/*----------------- OTHER ------------------*/
 button {
   padding: 10px 20px;
   font-size: 16px;
@@ -110,102 +193,9 @@ button {
   cursor: pointer; /* Change the cursor to a pointer when hovering */
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  margin-top: 20px;
-  width: auto;
-  max-width: 500px;
-  margin-left: auto; /* Center the container horizontally */
-  margin-right: auto; /* Center the container horizontally */
-}
-
-.content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0px;
-}
-
 #message {
   margin: 10px;
   font-size: 1em;
   font-weight: normal;
   font-style: italic;
-}
-
-/*------------- MENU ------------------*/
-.burger-menu {
-  display: block;
-  flex-direction: column;
-  cursor: pointer;
-  position: relative;
-  left: 425px;
-  z-index: 5;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
-}
-.burger-menu div {
-  width: 25px;
-  height: 3px;
-  background-color: black;
-  margin: 4px 0;
-  white-space: nowrap;
-}
-
-/*------------- OPTIONS ------------------*/
-.option-container {
-  display: none;
-  text-align: left;
-  padding: 10px 20px;
-  margin-left: 30px; /* Add some space between the note display and the checkboxes */
-  margin-top: 0px;
-  border: 1px solid rgb(195, 195, 195); /* Add a 1px border */
-  border-radius: 5px; /* Add rounded corners */
-  position: absolute;
-  background-color: white;
-  z-index: 10; /* Ensure it is above other elements */ 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
-}
-.option-container.active {
-  display: block;
-}
-@media (max-width: 480px) {
-  .burger-menu {
-    display: flex;
-  }
-}
-
-.option-container h2 {
-  margin-block-start: 0.1em;
-  margin-block-end: 0.5em;
-}
-
-.option-container label {
-  display: block; /* Forces a line break after each label */
-  margin-bottom: 5px; /* Adds some space between the checkboxes */
-  margin-right: 10px;
-}
-.option-container label input {
-  margin-right: 10px; /* Add some space between the checkbox and the text */ 
-}
-.option-container .checkbox-text label {
-  display: flex;
-  align-items: center;
-  margin-right: 10px; /* Add some space between the checkbox and the text input */
-  white-space: nowrap; /* Prevent the text from wrapping */
-}
-.option-container .checkbox-text input[type="text"] {
-  flex: 1; /* Allow the text input to take the remaining space */
-  margin-left: 10px;
-  width: 90px;
-}
-.option-container .checkbox-text {
-  display: flex;
-  align-items: center;
-}
-.option-container .option-heading {
-  font-weight: bold; /* Make the section titles bold */
-  margin-top: 15px; /* Increase the top margin to create more space */
-  margin-bottom: 5px; /* Increase the top margin to create more space */
 }
