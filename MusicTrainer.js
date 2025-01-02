@@ -492,7 +492,7 @@
             gain.connect(audioContext.destination);
     
             if (audioContext.state === 'running') {
-              status('Ausführung gestartet...');
+              status('AudioContext gestartet...');
             } else {
               // user gesture (like click) is required to start AudioContext, in some browser versions
               status('<a href="javascript:crepe.resume();" style="color:red;">* Click here to start the demo *</a>')
@@ -500,7 +500,7 @@
           }, function(text) {
             error('Auf Mikrofon kann nicht zugegriffen werden - ' + text);
           });
-        } else error('Auf Mikrofon kann nicht zugegriffen werden - getUserMedia not available');
+        } else error('Auf Mikrofon kann nicht zugegriffen werden - getUserMedia nicht verfügbar.');
       }
   
       /*----------------------- TONE CHECKING -------------------------------*/

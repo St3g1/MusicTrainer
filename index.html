@@ -23,14 +23,14 @@
     <!--------------- OPTIONS ------------------>
     <div class="option-container" id="optionContainer">
       <h2>Optionen</h2>
-      <label><input type="checkbox" id="showNoteNameCheckbox" disabled>Zeige Noten Namen</label>
-      <label><input type="checkbox" id="playNoteCheckbox" disabled>Spiele Ton</label>
-      <label><input type="checkbox" id="useBassClefCheckbox" disabled>Aktiviere <b>𝄢</b></label>
+      <label title="Zeigt den Notennamen an."><input type="checkbox" id="showNoteNameCheckbox" disabled>Zeige Notennamen</label>
+      <label title="Spielt kurz den neu vorgeschlagenen Ton ab."><input type="checkbox" id="playNoteCheckbox" disabled>Spiele Ton</label>
+      <label title="Wechselt bei Bedarf in den Bassschlüssel."><input type="checkbox" id="useBassClefCheckbox" disabled>Aktiviere <b>𝄢</b></label>
       <div class="checkbox-text" title="Gibt die Pause (in Milli-Sekunden) zwischen einem erfolgreichen und neue vorgeschlagen Ton an.">
         <label>Pause:
         <input type="text" id="pause" value="1000" disabled></label>
       </div>
-      <div class="checkbox-text" title="Erlaubt bei der Ton-Erkennung eine Abweichung von den angegebenen Hertz.">
+      <div class="checkbox-text" title="Erlaubt bei der Ton-Erkennung die angegebene Abweichung in Hertz.">
         <label>Toleranz (Hertz):
         <input type="text" id="tolerance" value="5" disabled></label>
       </div>

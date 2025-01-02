@@ -15,18 +15,23 @@ body {
 /*------------- LAYOUT ------------------*/
 .container { /*menu, options, content*/
   display: flex;
+  flex-direction: column; /* Stack children vertically */
   justify-content: center;
-  align-items: flex-start;
+  align-items: center; /* Center children horizontally */
   margin-top: 20px;
-  width: auto;
-  max-width: 500px;
+  width: 100%; /* Full width */
+  max-width: 800px; /* Optional: Set a max width */
   margin-left: auto; /* Center the container horizontally */
   margin-right: auto; /* Center the container horizontally */
 }
-.content {/*sax, staff*/
+
+.content { /*sax, staff*/
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  width: 100%; /* Full width */
+  max-width: 600px; /* Optional: Set a max width */
+  margin: 0 auto; /* Center the content horizontally */
   padding: 0px;
 }
 
@@ -36,7 +41,7 @@ body {
   flex-direction: column;
   cursor: pointer;
   position: relative;
-  left: 435px;
+  left: 190px;
   z-index: 5;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
   margin: 0px;
