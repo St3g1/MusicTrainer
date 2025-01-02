@@ -28,26 +28,26 @@
       <label title="Wechselt bei Bedarf in den Bassschlüssel."><input type="checkbox" id="useBassClefCheckbox" disabled>Aktiviere <b>𝄢</b></label>
       <div class="checkbox-text" title="Gibt die Pause (in Milli-Sekunden) zwischen einem erfolgreichen und neue vorgeschlagen Ton an.">
         <label>Pause:
-        <input type="text" id="pause" value="1000" disabled></label>
+        <input type="text" id="pauseInput" value="1000" disabled></label>
       </div>
       <div class="checkbox-text" title="Erlaubt bei der Ton-Erkennung die angegebene Abweichung in Hertz.">
         <label>Toleranz (Hertz):
-        <input type="text" id="tolerance" value="5" disabled></label>
+        <input type="text" id="toleranceInput" value="5" disabled></label>
       </div>
       <div class="option-heading">Instrumenten Stimmung:</div>
       <div>
-        <label><input type="radio" name="instrument" id="saxTenor" value="middle" disabled checked>Tenor Saxophon</label>
-        <label><input type="radio" name="instrument" id="saxAlt" value="large" disabled>Alt Saxophon</label>
-        <label><input type="radio" name="instrument" id="regular" value="small" disabled>Klavier/Gitarre</label>
+        <label title="Das Tenorsaxophon notiert eine große None (14 Halbtöne) höher als klingend und ist damit in B gestimmt." style="display: none;"><input type="radio" name="instrument" id="instrumentSaxTenorRadio" value="middle" disabled>Tenor Saxophon</label>
+        <label title="Das Altsaxophon notiert eine große Sexte (9 Halbtöne) höher als klingend und ist damit in Es gestimmt."><input type="radio" name="instrument" id="instrumentSaxAltRadio" value="large" disabled>Alt Saxophon</label>
+        <label title="Die meisten Instrumente notieren wie klingend."><input type="radio" name="instrument" id="instrumentRegularRadio" value="small" disabled checked>Klavier/Gitarre</label>
       </div>
       <div class="option-heading">Notenraum:</div>
       <div>
-        <label><input type="radio" name="noteRange" id="smallRange" value="small" disabled checked>Klein</label>
-        <label><input type="radio" name="noteRange" id="middleRange" value="middle" disabled>Mittel</label>
-        <label><input type="radio" name="noteRange" id="largeRange" value="large" disabled>Groß</label>
+        <label><input type="radio" name="noteRange" id="smallRangeRadio" value="small" disabled checked>Klein</label>
+        <label><input type="radio" name="noteRange" id="middleRangeRadio" value="middle" disabled>Mittel</label>
+        <label><input type="radio" name="noteRange" id="largeRangeRadio" value="large" disabled>Groß</label>
         <div class="checkbox-text" title="Alle mit den Buchstaben in der Liste übereinstimmenden Töne werden ausgewählt.">
           <label><input type="checkbox" id="noteFilterCheckbox" disabled>Noten Filter: 
-          <input type="text" id="noteFilter" value="C D E F G A H" disabled></label>
+          <input type="text" id="noteFilterInput" value="C D E F G A H" disabled></label>
         </div>
       </div>
       <div class="option-heading">Vorzeichen:</div>
