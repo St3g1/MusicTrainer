@@ -13,7 +13,7 @@ body {
 }
 
 /*------------- LAYOUT ------------------*/
-.container { /*menu, options, content*/
+.container { /*menu, options, content, buttons*/
   display: flex;
   flex-direction: column; /* Stack children vertically */
   justify-content: center;
@@ -168,7 +168,7 @@ body {
   background-color: black;
 }
 
-/*----------------- OTHER ------------------*/
+/*----------------- BUTTONS ------------------*/
 button {
   padding: 10px 20px;
   font-size: 16px;
@@ -179,7 +179,17 @@ button {
   border-radius: 10px; /* Optional: Add rounded corners */
   cursor: pointer; /* Change the cursor to a pointer when hovering */
 }
+.buttons {
+  display: flex; 
+  gap: 10px;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 600px; /* Optional: Set a max width */
+  margin: 0 auto; /* Center the content horizontally */
+  padding: 0px;
+}
 
+/*----------------- OTHER ------------------*/
 #message {
   margin: 10px;
   font-size: 1em;
