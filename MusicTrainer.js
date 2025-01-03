@@ -449,7 +449,7 @@
       }
 
       function error(text) {
-        document.getElementById('status').innerHTML = 'Error: ' + text;
+        document.getElementById('status').innerHTML = '<span class="message-red">Error: ' + text + '</span>';
         return text;
       }
     
