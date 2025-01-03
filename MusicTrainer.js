@@ -399,15 +399,15 @@ useBassClefCheckbox.addEventListener('change', () => {
 showSummaryCheckbox.addEventListener('change', () => { saveOptions(); });
 pauseInput.addEventListener('change', () => { saveOptions(); pause = Math.round(pauseInput.value); });
 toleranceInput.addEventListener('change', () => { saveOptions(); tolerance = Math.round(toleranceInput.value); });
-instrumentSaxTenorRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); nextNote(); saveOptions();});
-instrumentSaxAltRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); nextNote(); saveOptions();});
-instrumentRegularRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); nextNote(); saveOptions();});
-showSharpCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
-showFlatCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
-smallRangeRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
-middleRangeRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
-largeRangeRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
-noteFilterCheckbox.addEventListener('change', () => { noteFilterInput.disabled = !noteFilterCheckbox.checked; nextNote(); saveOptions();}); 
+instrumentSaxTenorRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); saveOptions(); nextNote();});
+instrumentSaxAltRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); saveOptions(); nextNote();});
+instrumentRegularRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); saveOptions(); nextNote();});
+showSharpCheckbox.addEventListener('change', () => { saveOptions(); nextNote(); });
+showFlatCheckbox.addEventListener('change', () => { saveOptions(); nextNote(); });
+smallRangeRadio.addEventListener('change', () => { saveOptions(); nextNote(); });
+middleRangeRadio.addEventListener('change', () => { saveOptions(); nextNote(); });
+largeRangeRadio.addEventListener('change', () => { saveOptions(); nextNote(); });
+noteFilterCheckbox.addEventListener('change', () => { noteFilterInput.disabled = !noteFilterCheckbox.checked; saveOptions(); nextNote();}); 
 noteFilterInput.addEventListener('change', () => { saveOptions(); }); 
 burgerMenu.addEventListener('click', () => {optionContainer.classList.toggle('active');});
 document.addEventListener('click', (event) => { //close option dialog if clicked outside
@@ -457,6 +457,7 @@ function handleButtons(){
 }
 
 function updateInstrument() {
+  instrumentImage.style.display = 'block';
   if (instrumentSaxTenorRadio.checked) {
     instrumentImage.src = 'images/saxTenor.png';
     instrumentName.textContent = 'Tenor Saxophon';
@@ -718,7 +719,7 @@ function startToneDetection(){
     }
     blocking = false; //reset
     nextNote();
-    setOptionEnableState(true);
+    setOptionEnableState(true); //no longer in use
     saveOptions();
     tolerance = Math.round(toleranceInput.value);
     pause = Math.round(pauseInput.innerText);
