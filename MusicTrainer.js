@@ -610,7 +610,7 @@
       // Play the audio file for the given note
       async function playMp3(note) {
         const audioBuffer = await loadMp3(note);
-        if(!audioBuffer){return(false);}
+        if(!audioBuffer){return null;}
         const source = audioContext.createBufferSource();
         source.buffer = audioBuffer;
         source.connect(audioContext.destination);
@@ -624,7 +624,7 @@
           const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
           return { audioBuffer };
         } catch (error) {
-          return(false);
+          return null;
         }  
       }
 
