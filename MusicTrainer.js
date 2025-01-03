@@ -323,6 +323,7 @@ function loadOptions() {
   noteFilterCheckbox.checked = JSON.parse(localStorage.getItem("noteFilterCheckbox")) || false;
   noteFilterInput.value = localStorage.getItem("noteFilterInput") || "C D E F G A H";
   noteFilterInput.disabled = !noteFilterCheckbox.checked;
+  updateInstrument();
 }
 
 // Save options to localStorage
@@ -373,6 +374,8 @@ const showFlatCheckbox = document.getElementById("showFlatCheckbox");
 const noteEllipse = document.getElementById("noteEllipse");
 const burgerMenu = document.getElementById('burgerMenu');
 const optionContainer = document.getElementById('optionContainer');
+const instrumentImage = document.getElementById('instrumentImage');
+const instrumentName = document.getElementById('instrumentName');
 
 let currentNote = null;
 let audioContext = null;
@@ -396,9 +399,9 @@ useBassClefCheckbox.addEventListener('change', () => {
 showSummaryCheckbox.addEventListener('change', () => { saveOptions(); });
 pauseInput.addEventListener('change', () => { saveOptions(); pause = Math.round(pauseInput.value); });
 toleranceInput.addEventListener('change', () => { saveOptions(); tolerance = Math.round(toleranceInput.value); });
-instrumentSaxTenorRadio.addEventListener('change', () => { initNoteSatistics(); nextNote(); saveOptions();});
-instrumentSaxAltRadio.addEventListener('change', () => { initNoteSatistics(); nextNote(); saveOptions();});
-instrumentRegularRadio.addEventListener('change', () => { initNoteSatistics(); nextNote(); saveOptions();});
+instrumentSaxTenorRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); nextNote(); saveOptions();});
+instrumentSaxAltRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); nextNote(); saveOptions();});
+instrumentRegularRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); nextNote(); saveOptions();});
 showSharpCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
 showFlatCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
 smallRangeRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
@@ -423,18 +426,6 @@ stopButton.addEventListener("click", () => {
   }
 });
 
-function handleButtons(){
-  if(!running){
-    startButton.textContent = "Weiter"; // Change button text to "Weiter"
-    startButton.style.backgroundColor = "gray"; // Change button color to gray
-    stopButton.style.display = "block";
-  } else {
-    startButton.textContent = "Start"; // Change button text to "Weiter"
-    startButton.style.backgroundColor = "green"; // Change button color to gray
-    stopButton.style.display = "none";
-  }  
-}
-
 function setOptionEnableState(state){
   showNoteNameCheckbox.disabled = !state;
   playNoteCheckbox.disabled = !state;
@@ -451,6 +442,31 @@ function setOptionEnableState(state){
   showSharpCheckbox.disabled = !state;
   showFlatCheckbox.disabled = !state;
   noteFilterCheckbox.disabled = !state;
+}
+
+function handleButtons(){
+  if(!running){
+    startButton.textContent = "Weiter"; // Change button text to "Weiter"
+    startButton.style.backgroundColor = "gray"; // Change button color to gray
+    stopButton.style.display = "block";
+  } else {
+    startButton.textContent = "Start"; // Change button text to "Weiter"
+    startButton.style.backgroundColor = "green"; // Change button color to gray
+    stopButton.style.display = "none";
+  }  
+}
+
+function updateInstrument() {
+  if (instrumentSaxTenorRadio.checked) {
+    instrumentImage.src = 'images/saxTenor.png';
+    instrumentName.textContent = 'Tenor Saxophon';
+  } else if (instrumentSaxAltRadio.checked) {
+    instrumentImage.src = 'images/saxAlt.png';
+    instrumentName.textContent = 'Alt Saxophon';
+  } else {
+    instrumentImage.src = 'images/piano.png';
+    instrumentName.textContent = 'Klavier';
+  }
 }
 
 function error(text) {
