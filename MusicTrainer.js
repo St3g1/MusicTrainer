@@ -624,6 +624,7 @@
           const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
           return { audioBuffer };
         } catch (error) {
+          console.log(error);
           return null;
         }  
       }
