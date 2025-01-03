@@ -196,3 +196,7 @@ button {
   font-weight: normal;
   font-style: italic;
 }
+
+.message-red {
+  color: red;
+}

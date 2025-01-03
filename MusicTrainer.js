@@ -776,7 +776,7 @@
             const correct = Math.abs(targetFrequency - pitch) < tolerance; // Allow small tolerance
             highlightNote(correct);
           } else {
-            status("Tonhöhe: <b>Spiele einen Ton</b>, Ziel: " + Math.round(currentNote.frequency) + " Hz");
+            status("Tonhöhe: <span class='message-red'>Spiele den angegebenen Ton</span>, Ziel: " + Math.round(currentNote.frequency) + " Hz");
           }
         }
       }
