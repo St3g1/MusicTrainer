@@ -419,7 +419,7 @@ stopButton.addEventListener("click", () => {
   stopToneDetection();
   handleButtons();
   if(showSummaryCheckbox.checked){
-    showStatistics();
+    showSummary();
   } else {
     location.reload();
   }
@@ -441,6 +441,7 @@ function setOptionEnableState(state){
   showNoteNameCheckbox.disabled = !state;
   playNoteCheckbox.disabled = !state;
   useBassClefCheckbox.disabled = !state;
+  showSummaryCheckbox.disabled = !state;
   toleranceInput.disabled = !state;
   pauseInput.disabled = !state;
   instrumentSaxTenorRadio.disabled = !state;
@@ -850,9 +851,14 @@ function checkNote(pitch){
 
 /*----------------------- STATISTICS -------------------------------*/
 // Function to show the pop-up dialog with the pie chart
-function showStatistics() {
+function showSummary() {
   const correctNotes = Object.values(noteStatistics).reduce((sum, stats) => sum + stats.correct, 0);
   const incorrectNotes = Object.values(noteStatistics).reduce((sum, stats) => sum + stats.incorrect, 0);
+  // Check if there are any correct or incorrect notes
+  if (correctNotes === 0 && incorrectNotes === 0) {
+    location.reload();
+    return; // Do not show the dialog if there are no notes
+  }
   const data = [
     { label: 'Correct', value: correctNotes },
     { label: 'Incorrect', value: incorrectNotes }
