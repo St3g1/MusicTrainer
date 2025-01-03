@@ -759,7 +759,7 @@ function handleAudio(stream){
   scriptNode.connect(gain);
   gain.connect(audioContext.destination);
   if (audioContext.state === 'running') {
-    status('AudioContext gestartet...');
+    status('Starte Notenerkennung...');
   }
 }
 
