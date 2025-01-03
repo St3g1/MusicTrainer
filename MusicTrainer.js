@@ -617,7 +617,7 @@ let currentSource = null; // Variable to keep track of the currently playing sou
 
 async function playMp3(note) {
   try {
-    if (currentSource) {currentSource.stop();} // Stop the currently playing source if it exists
+    if (currentSource) {currentSource.stop(); currentSource = null;} // Stop the currently playing source if it exists
     const audioBuffer = await loadMp3(note);
     if (!audioBuffer) {
       throw new Error('AudioBuffer is null or undefined');
