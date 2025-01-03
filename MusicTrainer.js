@@ -597,18 +597,27 @@ function highlightNote(correct) {
 
 /*--------- Audio OUTPUT --------------------------*/
 // Play the note using Web Audio API
+
+let currentOscillator = null; 
 function playTone(note) {
+  if (currentOscillator) {
+    currentOscillator.stop();
+    currentOscillator = null;
+  }
   oscillator = audioContext.createOscillator();
   oscillator.type = 'sawtooth'; // You can change the type to 'square', 'sine', 'sawtooth', 'triangle'
   oscillator.frequency.setValueAtTime(note.frequency, audioContext.currentTime);
   oscillator.connect(audioContext.destination);
   oscillator.start();
   oscillator.stop(audioContext.currentTime + 1); // Play the note for 1 second
+  currentOscillator = oscillator; // Update the current oscillator
 }
 
-// Play the audio file for the given note
+let currentSource = null; // Variable to keep track of the currently playing source
+
 async function playMp3(note) {
   try {
+    if (currentSource) {currentSource.stop();} // Stop the currently playing source if it exists
     const audioBuffer = await loadMp3(note);
     if (!audioBuffer) {
       throw new Error('AudioBuffer is null or undefined');
@@ -617,6 +626,9 @@ async function playMp3(note) {
     source.buffer = audioBuffer;
     source.connect(audioContext.destination);
     source.start();
+    // Add an event listener for the 'ended' event
+    source.onended = () => {currentSource = null;};
+    currentSource = source; // Update the current source
   } catch (error) {
     console.error('Error playing MP3:', error);
   }
@@ -664,6 +676,52 @@ function startToneDetection(){
   });
 }
 
+function initAudio() {
+  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(function(stream) {
+        handleAudio(stream);
+      })
+      .catch(function(err) {
+        error('Auf Mikrofon kann nicht zugegriffen werden - ' + err);
+      });
+  } else if (navigator.getUserMedia) {
+    navigator.getUserMedia({ audio: true },
+      function(stream) {
+        handleAudio(stream);
+      },
+      function(err) {
+        error('Auf Mikrofon kann nicht zugegriffen werden - ' + err);
+      });
+  } else {
+    error('getUserMedia wird von diesem Browser nicht unterstützt. Bitte benutzen sie Chrome oder Firefox.');
+  }
+}
+
+function handleAudio(stream){
+  status('Aktiviere Mikrofon und initialisiere Notenerkennung...');
+  console.log('Audio context sample rate = ' + audioContext.sampleRate);
+  const mic = audioContext.createMediaStreamSource(stream);
+  // We need the buffer size that is a power of two and is longer than 1024 samples when resampled to 16000 Hz.
+  // In most platforms where the sample rate is 44.1 kHz or 48 kHz, this will be 4096, giving 10-12 updates/sec.
+  const minBufferSize = audioContext.sampleRate / 16000 * 1024;
+  for (var bufferSize = 4; bufferSize < minBufferSize; bufferSize *= 2);
+  console.log('Buffer size = ' + bufferSize);
+  const scriptNode = audioContext.createScriptProcessor(bufferSize, 1, 1);
+  scriptNode.onaudioprocess = process_microphone_buffer;
+  // It seems necessary to connect the stream to a sink for the pipeline to work, contrary to documentataions.
+  // As a workaround, here we create a gain node with zero gain, and connect temp to the system audio output.
+  const gain = audioContext.createGain();
+  gain.gain.setValueAtTime(0, audioContext.currentTime);
+  mic.connect(scriptNode);
+  scriptNode.connect(gain);
+  gain.connect(audioContext.destination);
+  if (audioContext.state === 'running') {
+    status('AudioContext gestartet...');
+  }
+}
+
 async function loadModel() {
   if(!running){
     status('Lade Modell...');
@@ -673,6 +731,40 @@ async function loadModel() {
 }
 
 var running = false;
+
+// bin number -> cent value mapping
+const cent_mapping = tf.add(tf.linspace(0, 7180, 360), tf.tensor(1997.3794084376191))
+
+function process_microphone_buffer(event) {
+  resample(event.inputBuffer, function(resampled) {
+    tf.tidy(() => {
+      running = true;
+      // run the prediction on the model
+      const frame = tf.tensor(resampled.slice(0, 1024));
+      const zeromean = tf.sub(frame, tf.mean(frame));
+      const framestd = tf.tensor(tf.norm(zeromean).dataSync()/Math.sqrt(1024));
+      const normalized = tf.div(zeromean, framestd);
+      const input = normalized.reshape([1, 1024]);
+      const activation = model.predict([input]).reshape([360]);
+      // the confidence of voicing activity and the argmax bin
+      const confidence = activation.max().dataSync()[0];
+      const center = activation.argMax().dataSync()[0];
+      // slice the local neighborhood around the argmax bin
+      const start = Math.max(0, center - 4);
+      const end = Math.min(360, center + 5);
+      const weights = activation.slice([start], [end - start]);
+      const cents = cent_mapping.slice([start], [end - start]);
+      // take the local weighted average to get the predicted pitch
+      const products = tf.mul(weights, cents);
+      const productSum = products.dataSync().reduce((a, b) => a + b, 0);
+      const weightSum = weights.dataSync().reduce((a, b) => a + b, 0);
+      const predicted_cent = productSum / weightSum;
+      const predicted_hz = 10 * Math.pow(2, predicted_cent / 1200.0);
+      //check if the detected note matches to the requested note 
+      checkNote((confidence > confidenceRequested) ? predicted_hz : null);
+    });
+  });
+}
 
 // perform resampling the audio to 16000 Hz, on which the model is trained.
 // setting a sample rate in AudioContext is not supported by most browsers at the moment.
@@ -695,97 +787,7 @@ function resample(audioBuffer, onComplete) {
   onComplete(subsamples);
 }
 
-// bin number -> cent value mapping
-const cent_mapping = tf.add(tf.linspace(0, 7180, 360), tf.tensor(1997.3794084376191))
-
-function process_microphone_buffer(event) {
-  resample(event.inputBuffer, function(resampled) {
-    tf.tidy(() => {
-      running = true;
-
-      // run the prediction on the model
-      const frame = tf.tensor(resampled.slice(0, 1024));
-      const zeromean = tf.sub(frame, tf.mean(frame));
-      const framestd = tf.tensor(tf.norm(zeromean).dataSync()/Math.sqrt(1024));
-      const normalized = tf.div(zeromean, framestd);
-      const input = normalized.reshape([1, 1024]);
-      const activation = model.predict([input]).reshape([360]);
-
-      // the confidence of voicing activity and the argmax bin
-      const confidence = activation.max().dataSync()[0];
-      const center = activation.argMax().dataSync()[0];
-
-      // slice the local neighborhood around the argmax bin
-      const start = Math.max(0, center - 4);
-      const end = Math.min(360, center + 5);
-      const weights = activation.slice([start], [end - start]);
-      const cents = cent_mapping.slice([start], [end - start]);
-
-      // take the local weighted average to get the predicted pitch
-      const products = tf.mul(weights, cents);
-      const productSum = products.dataSync().reduce((a, b) => a + b, 0);
-      const weightSum = weights.dataSync().reduce((a, b) => a + b, 0);
-      const predicted_cent = productSum / weightSum;
-      const predicted_hz = 10 * Math.pow(2, predicted_cent / 1200.0);
-
-      checkNote((confidence > confidenceRequested) ? predicted_hz : null);
-    });
-  });
-}
-
-function initAudio() {
-  // Polyfill for getUserMedia
-  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-      .then(function(stream) {
-        handleAudio(stream);
-      })
-      .catch(function(err) {
-        error('Auf Mikrofon kann nicht zugegriffen werden - ' + err);
-      });
-  } else if (navigator.getUserMedia) {
-    navigator.getUserMedia({ audio: true },
-      function(stream) {
-        handleAudio(stream);
-      },
-      function(err) {
-        error('Auf Mikrofon kann nicht zugegriffen werden - ' + err);
-      });
-  } else {
-    error('getUserMedia wird von diesem Browser nicht unterstützt.');
-  }
-}
-
-function handleAudio(stream){
-  status('Aktiviere Mikrofon und initialisiere Notenerkennung...');
-  console.log('Audio context sample rate = ' + audioContext.sampleRate);
-  const mic = audioContext.createMediaStreamSource(stream);
-
-  // We need the buffer size that is a power of two and is longer than 1024 samples when resampled to 16000 Hz.
-  // In most platforms where the sample rate is 44.1 kHz or 48 kHz, this will be 4096, giving 10-12 updates/sec.
-  const minBufferSize = audioContext.sampleRate / 16000 * 1024;
-  for (var bufferSize = 4; bufferSize < minBufferSize; bufferSize *= 2);
-  console.log('Buffer size = ' + bufferSize);
-  const scriptNode = audioContext.createScriptProcessor(bufferSize, 1, 1);
-  scriptNode.onaudioprocess = process_microphone_buffer;
-
-  // It seems necessary to connect the stream to a sink for the pipeline to work, contrary to documentataions.
-  // As a workaround, here we create a gain node with zero gain, and connect temp to the system audio output.
-  const gain = audioContext.createGain();
-  gain.gain.setValueAtTime(0, audioContext.currentTime);
-
-  mic.connect(scriptNode);
-  scriptNode.connect(gain);
-  gain.connect(audioContext.destination);
-
-  if (audioContext.state === 'running') {
-    status('AudioContext gestartet...');
-  }
-}
 /*----------------------- TONE CHECKING -------------------------------*/
-
 function checkNote(pitch){
   if(!blocking && currentNote){
     if (pitch) {
