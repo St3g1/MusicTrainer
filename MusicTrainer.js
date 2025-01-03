@@ -609,24 +609,34 @@
   
       // Play the audio file for the given note
       async function playMp3(note) {
-        const audioBuffer = await loadMp3(note);
-        if(!audioBuffer){return null;}
-        const source = audioContext.createBufferSource();
-        source.buffer = audioBuffer;
-        source.connect(audioContext.destination);
-        source.start();
+        try {
+          const audioBuffer = await loadMp3(note);
+          if (!audioBuffer) {
+            throw new Error('AudioBuffer is null or undefined');
+          }
+          const source = audioContext.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(audioContext.destination);
+          source.start();
+        } catch (error) {
+          console.error('Error playing MP3:', error);
+        }
       }
-  
+      
       // Load the audio file for the given note (can only be used with WebServer!)
       async function loadMp3(note) {
-        try{const response = await fetch("audio/" + note.mp3);
+        try {
+          const response = await fetch("audio/" + note.mp3);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
           const arrayBuffer = await response.arrayBuffer();
           const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-          return { audioBuffer };
+          return audioBuffer;
         } catch (error) {
-          console.log(error);
+          console.error('Error loading MP3:', error);
           return null;
-        }  
+        }
       }
 
       /*----------------------- TONE DETECTION with neuronal network -------------------------------*/
