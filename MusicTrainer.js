@@ -2,7 +2,8 @@
  ToDo:
  - StartButton should be temporarily disabled until access to micro has been granted
  - Statistics about how many tones played correctly/wrong => favor difficult tones
- - play mp3 sax tones
+ - play mp3 tones
+ - Make in work on firefox
  - Disable Menu until started
  - No tone should be played until the micro dialog has been accepted (not technically...but from a user-interaction)
 */
@@ -634,6 +635,7 @@
           const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
           return audioBuffer;
         } catch (error) {
+          playTone(note); //fallback to oscillator if mp3 is not defined
           console.error('Error loading MP3:', error);
           return null;
         }
