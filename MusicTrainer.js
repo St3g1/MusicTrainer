@@ -1,8 +1,6 @@
 /*
  ToDo:
  - StartButton should be temporarily disabled until access to micro has been granted
- - Statistics about how many tones played correctly/wrong => favor difficult tones
- - Disable Menu until started
  - No tone should be played until the micro dialog has been accepted (not technically...but from a user-interaction)
 */
  
@@ -398,9 +396,9 @@ useBassClefCheckbox.addEventListener('change', () => {
 showSummaryCheckbox.addEventListener('change', () => { saveOptions(); });
 pauseInput.addEventListener('change', () => { saveOptions(); pause = Math.round(pauseInput.value); });
 toleranceInput.addEventListener('change', () => { saveOptions(); tolerance = Math.round(toleranceInput.value); });
-instrumentSaxTenorRadio.addEventListener('change', () => { nextNote(); saveOptions(); initNoteSatistics();});
-instrumentSaxAltRadio.addEventListener('change', () => { nextNote(); saveOptions(); initNoteSatistics();});
-instrumentRegularRadio.addEventListener('change', () => { nextNote(); saveOptions(); initNoteSatistics();});
+instrumentSaxTenorRadio.addEventListener('change', () => { initNoteSatistics(); nextNote(); saveOptions();});
+instrumentSaxAltRadio.addEventListener('change', () => { initNoteSatistics(); nextNote(); saveOptions();});
+instrumentRegularRadio.addEventListener('change', () => { initNoteSatistics(); nextNote(); saveOptions();});
 showSharpCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
 showFlatCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
 smallRangeRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
