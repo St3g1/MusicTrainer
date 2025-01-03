@@ -311,6 +311,7 @@ function loadOptions() {
   showNoteNameCheckbox.checked = JSON.parse(localStorage.getItem("showNoteNameCheckbox")) || false;
   playNoteCheckbox.checked = JSON.parse(localStorage.getItem("playNoteCheckbox")) || false;
   useBassClefCheckbox.checked = JSON.parse(localStorage.getItem("useBassClefCheckbox")) || false;
+  showSummaryCheckbox.checked = JSON.parse(localStorage.getItem("showSummaryCheckbox")) || false;
   pauseInput.value = localStorage.getItem("pauseInput") || "500";
   toleranceInput.value = localStorage.getItem("toleranceInput") || "5";
   instrumentSaxTenorRadio.checked = JSON.parse(localStorage.getItem("instrumentSaxTenorRadio")) || false;
@@ -331,6 +332,7 @@ function saveOptions() {
   localStorage.setItem("showNoteNameCheckbox", JSON.stringify(showNoteNameCheckbox.checked));
   localStorage.setItem("playNoteCheckbox", JSON.stringify(playNoteCheckbox.checked));
   localStorage.setItem("useBassClefCheckbox", JSON.stringify(useBassClefCheckbox.checked));
+  localStorage.setItem("showSummaryCheckbox", JSON.stringify(showSummaryCheckbox.checked));
   localStorage.setItem("pauseInput", pauseInput.value);
   localStorage.setItem("toleranceInput", toleranceInput.value);
   localStorage.setItem("instrumentSaxTenorRadio", JSON.stringify(instrumentSaxTenorRadio.checked));
@@ -357,6 +359,7 @@ const noteNameElement = document.getElementById("noteName");
 const showNoteNameCheckbox = document.getElementById("showNoteNameCheckbox");
 const playNoteCheckbox = document.getElementById("playNoteCheckbox");
 const useBassClefCheckbox = document.getElementById("useBassClefCheckbox");
+const showSummaryCheckbox = document.getElementById("showSummaryCheckbox");
 const pauseInput = document.getElementById("pauseInput");
 const toleranceInput = document.getElementById("toleranceInput");
 const instrumentSaxTenorRadio = document.getElementById("instrumentSaxTenorRadio");
@@ -391,12 +394,13 @@ playNoteCheckbox.addEventListener('change', () => {
 useBassClefCheckbox.addEventListener('change', () => {
   displayNote(currentNote);
   saveOptions(); 
-});      
+});   
+showSummaryCheckbox.addEventListener('change', () => { saveOptions(); });
 pauseInput.addEventListener('change', () => { saveOptions(); pause = Math.round(pauseInput.value); });
 toleranceInput.addEventListener('change', () => { saveOptions(); tolerance = Math.round(toleranceInput.value); });
-instrumentSaxTenorRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
-instrumentSaxAltRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
-instrumentRegularRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
+instrumentSaxTenorRadio.addEventListener('change', () => { nextNote(); saveOptions(); initNoteSatistics();});
+instrumentSaxAltRadio.addEventListener('change', () => { nextNote(); saveOptions(); initNoteSatistics();});
+instrumentRegularRadio.addEventListener('change', () => { nextNote(); saveOptions(); initNoteSatistics();});
 showSharpCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
 showFlatCheckbox.addEventListener('change', () => { nextNote(); saveOptions(); });
 smallRangeRadio.addEventListener('change', () => { nextNote(); saveOptions(); });
@@ -412,10 +416,13 @@ document.addEventListener('click', (event) => { //close option dialog if clicked
 });
 startButton.addEventListener("click", () => {startToneDetection(); });
 stopButton.addEventListener("click", () => {
-  //Show statistics?
-  //Stop detectting
+  stopToneDetection();
   handleButtons();
-  location.reload(); //quick fix for now
+  if(showSummaryCheckbox.checked){
+    showStatistics();
+  } else {
+    location.reload();
+  }
 });
 
 function handleButtons(){
@@ -457,11 +464,18 @@ function status(text) {
 }
 
 //--------------- NOTE SELECTION ------------------------------
+var noteStatistics = {};
 
-// Filter notes and select a random note from this list
-function getNextNote() {
+function initNoteSatistics() {
+  let notes = getSelectedNotes();
+  noteStatistics = {}; //reset 
+  notes.forEach(note => {
+    noteStatistics[note.name] = { correct: 0, incorrect: 0 };
+  });
+}
+
+function getSelectedNotes() {
   let notes;
-  //pick notes based on instrument (different tuning)
   if (instrumentSaxTenorRadio.checked) {
     notes = allNotes_sax_tenor;
   } else if (instrumentSaxAltRadio.checked) {
@@ -469,6 +483,13 @@ function getNextNote() {
   } else {
     notes = allNotes_regular;
   }  
+  return notes;
+}
+
+// Filter notes and select a random note from this list
+function getNextNote() {
+  //pick notes based on instrument (different tuning)
+  let notes = getSelectedNotes();
   //Filter notes
   if (smallRangeRadio.checked) {
     notes = notes.filter(note => note.position >= 0 && note.position <= 70);
@@ -491,8 +512,21 @@ function getNextNote() {
     }
   }
   if(currentNote && notes.length > 1){notes = notes.filter(note => !note.name.includes(currentNote.name));} //don't use the same note
+  const weightedNotes = getWeightedNotes(notes);
   //Randomize result
-  return notes[Math.floor(Math.random() * notes.length)];
+  return weightedNotes[Math.floor(Math.random() * weightedNotes.length)];
+}
+
+// Increase the probability of incorrect notes
+function getWeightedNotes(notes){
+    const weightedNotes = [];
+    notes.forEach(note => {
+      const incorrectCount = noteStatistics[note.name].incorrect;
+      for (let i = 0; i <= incorrectCount; i++) {
+        weightedNotes.push(note);
+      }
+    });
+  return weightedNotes;  
 }
 
 // Show the next note
@@ -614,7 +648,6 @@ function playTone(note) {
 }
 
 let currentSource = null; // Variable to keep track of the currently playing source
-
 async function playMp3(note) {
   try {
     if (currentSource) {currentSource.stop(); currentSource = null;} // Stop the currently playing source if it exists
@@ -665,6 +698,7 @@ function startToneDetection(){
   loadModel().then(() => {
     if(!running){
       initAudio();
+      initNoteSatistics();
       handleButtons();
     }
     blocking = false; //reset
@@ -674,6 +708,14 @@ function startToneDetection(){
     tolerance = Math.round(toleranceInput.value);
     pause = Math.round(pauseInput.innerText);
   });
+}
+
+function stopToneDetection() {
+  running = false;
+  // Stop any ongoing audio processing or event listeners here
+  if (audioContext && audioContext.state !== 'closed') {
+    audioContext.close();
+  }
 }
 
 function initAudio() {
@@ -794,9 +836,62 @@ function checkNote(pitch){
       status("Tonhöhe: " + Math.round(pitch) + " Hz, Ziel: " + Math.round(currentNote.frequency) + " Hz");
       const targetFrequency = currentNote.frequency;
       const correct = Math.abs(targetFrequency - pitch) < tolerance; // Allow small tolerance
+      if(correct){
+        noteStatistics[currentNote.name].correct++;
+      } else {
+        noteStatistics[currentNote.name].incorrect++;
+      }
       highlightNote(correct);
     } else {
       status("Tonhöhe: <span class='message-red'>Spiele den angegebenen Ton</span>, Ziel: " + Math.round(currentNote.frequency) + " Hz");
     }
   }
 }
+
+/*----------------------- STATISTICS -------------------------------*/
+// Function to show the pop-up dialog with the pie chart
+function showStatistics() {
+  const correctNotes = Object.values(noteStatistics).reduce((sum, stats) => sum + stats.correct, 0);
+  const incorrectNotes = Object.values(noteStatistics).reduce((sum, stats) => sum + stats.incorrect, 0);
+  const data = [
+    { label: 'Correct', value: correctNotes },
+    { label: 'Incorrect', value: incorrectNotes }
+  ];
+  const chartContainer = document.getElementById('chartContainer');
+  chartContainer.innerHTML = ''; // Clear previous chart
+  const canvas = document.createElement('canvas');
+  chartContainer.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  const total = data.reduce((sum, item) => sum + item.value, 0);
+  let startAngle = 0;
+  data.forEach(item => {
+    const sliceAngle = (item.value / total) * 2 * Math.PI;
+    ctx.beginPath();
+    ctx.moveTo(100, 75); // Center of the pie chart
+    ctx.arc(100, 75, 75, startAngle, startAngle + sliceAngle);
+    startAngle += sliceAngle;
+    ctx.closePath();
+    ctx.fillStyle = item.label === 'Correct' ? 'green' : 'red';
+    ctx.fill();
+  });
+  // Create ranked list of incorrectly played notes
+  const rankedListContainer = document.getElementById('rankedListContainer');
+  rankedListContainer.innerHTML = ''; // Clear previous list
+  const rankedList = document.createElement('ul');
+  const sortedNotes = Object.entries(noteStatistics)
+    .filter(([name, stats]) => stats.incorrect > 0)
+    .sort((a, b) => b[1].incorrect - a[1].incorrect);
+  sortedNotes.forEach(([name, stats]) => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${name}`;
+    rankedList.appendChild(listItem);
+  });
+  rankedListContainer.appendChild(rankedList);
+  document.getElementById('statisticsDialog').style.display = 'block';
+}
+
+// Event listener for the close button
+document.getElementById('closeButton').addEventListener('click', () => {
+  document.getElementById('statisticsDialog').style.display = 'none';
+  location.reload();
+});

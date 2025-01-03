@@ -189,14 +189,44 @@ button {
   padding: 0px;
 }
 
-/*----------------- OTHER ------------------*/
+/*----------------- MESSAGES ------------------*/
 #message {
   margin: 10px;
   font-size: 1em;
   font-weight: normal;
   font-style: italic;
 }
-
 .message-red {
   color: red;
+}
+
+/*----------------- STATISTICS ------------------*/
+#statisticsDialog {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+#chartContainer {
+  width: 200px;
+  height: 150px;
+  margin: 0 auto;
+}
+#rankedListContainer {
+  margin-top: 20px;
+  text-align: center;
+}
+#rankedListContainer ul {
+  list-style-type: none;
+  font-weight: normal;
+  padding: 0;
+}
+#rankedListContainer li {
+  margin: 5px 0;
 }

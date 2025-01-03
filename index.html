@@ -26,6 +26,7 @@
       <label title="Zeigt den Notennamen an."><input type="checkbox" id="showNoteNameCheckbox" disabled>Zeige Notennamen</label>
       <label title="Spielt kurz den neu vorgeschlagenen Ton ab."><input type="checkbox" id="playNoteCheckbox" disabled>Spiele Ton</label>
       <label title="Wechselt bei Bedarf in den Bassschlüssel."><input type="checkbox" id="useBassClefCheckbox" disabled>Aktiviere <b>𝄢</b></label>
+      <label><input type="checkbox" id="showSummaryCheckbox">Zeige Zusammenfassung</label>
       <div class="checkbox-text" title="Gibt die Pause (in Milli-Sekunden) zwischen einem erfolgreichen und neue vorgeschlagen Ton an.">
         <label>Pause:
         <input type="text" id="pauseInput" value="1000" disabled></label>
@@ -85,6 +86,14 @@
   <!--------------- MESSAGE ------------------>
   <div id="message">
     <span id="status"></span>
+  </div>
+  <!--------------- STATISTICS ------------------>
+  <div id="statisticsDialog">
+    <h2>Zusammenfassung</h2>
+    <div id="chartContainer"></div>
+    <h3>Noten, die Du noch üben solltest:</h3>
+    <div id="rankedListContainer"></div>
+    <button id="closeButton">Close</button>
   </div>
   <!------------------------------ SCRIPT ----------------------------------->
   <script src="crepe/tfjs-0.8.0.min.js"></script>
