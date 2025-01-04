@@ -385,7 +385,7 @@ showNoteNameCheckbox.addEventListener('change', () => {
 });
 playNoteCheckbox.addEventListener('change', () => {
   saveOptions(); 
-  if(playNoteCheckbox.checked && currentNote){playMp3(currentNote);}
+  playMp3(currentNote);
 });
 useBassClefCheckbox.addEventListener('change', () => {
   saveOptions(); 
@@ -421,7 +421,7 @@ stopButton.addEventListener("click", () => {
   }
 });
 
-function setOptionEnableState(state){
+function setOptionEnableState(state){ //no longer in use
   showNoteNameCheckbox.disabled = !state;
   playNoteCheckbox.disabled = !state;
   useBassClefCheckbox.disabled = !state;
@@ -563,7 +563,7 @@ function displayNote(note) {
   drawLedgerLines(note);
   drawNoteName(note);
   drawAccidental(note);
-  if(playNoteCheckbox.checked){playMp3(note);}
+  playMp3(note);
 //  setStemDirection(note.position);
 }
 
@@ -663,6 +663,7 @@ function playTone(note) {
 
 let currentSource = null; // Variable to keep track of the currently playing source
 async function playMp3(note) {
+  if(!(playNoteCheckbox.checked && note)){return null;} //don't play if checkbox is not checked or note is not defined
   try {
     if (currentSource) {currentSource.stop(); currentSource = null;} // Stop the currently playing source if it exists
     const audioBuffer = await loadMp3(note);
@@ -717,7 +718,6 @@ function startToneDetection(){
     }
     blocking = false; //reset
     nextNote();
-    setOptionEnableState(true); //no longer in use
     saveOptions();
     tolerance = Math.round(toleranceInput.value);
     pause = Math.round(pauseInput.innerText);
