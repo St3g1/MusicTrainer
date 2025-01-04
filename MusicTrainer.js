@@ -848,7 +848,7 @@ function checkNote(detectedFrequency) {
         noteStatistics[currentNote.name].correct++;
         if(!toneWeighted){updateWeightedNotes(currentNote, "decrement");}
         correctNotePlayed = true; //Only weight a tone as correct/incorrect once per proposed note
-        status("<span class='message-green'>Gut gemacht! Du hast den richtigen Ton <b>" + closestNoteName + "</b> gespielt.</span>");
+        status("<span class='message-green'>Gut gemacht! Du hast den Ton <b>" + closestNoteName + "</b> gespielt.</span>");
         highlightNote(true);
         clearTimeout(pauseTimeout); // Clear any existing timeout
         pauseTimeout = setTimeout(() => {
