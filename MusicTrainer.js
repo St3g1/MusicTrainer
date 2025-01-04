@@ -541,13 +541,9 @@ function initNoteStatistics() {
 
 // Filter notes and select a random note from this list
 function getNextNote() {
-  //Randomize result
   let notes = weightedNotes;
-  if(currentNote && notes.length > 1){
-    notes = notes.filter(note => !note.name.includes(currentNote.name));
-  } //don't use the same note
-  const tobi = 4;
-  return notes[Math.floor(Math.random() * notes.length)];
+  if(currentNote && notes.length > 1){notes = notes.filter(note => !note.name.includes(currentNote.name));} //don't use the same note
+  return notes[Math.floor(Math.random() * notes.length)]; //Randomize result
 }
 
 // Show the next note
