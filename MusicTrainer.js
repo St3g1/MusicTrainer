@@ -594,7 +594,7 @@ function drawAccidental(note){ //Vorzeichen
   if (note.name.includes('#')) {
     sharpElement.style.display = 'block'; 
     sharpElement.style.top = `${-(note.position + offset + offset_global -47)}px`; // Adjust position for accidental
-  } else if (note.name.includes('b')) {
+  } else if (note.name.includes('b') || note.name.includes('B')) {
     flatElement.style.display = 'block';
     flatElement.style.top = `${-(note.position + offset + offset_global - 40)}px`; // Adjust position for accidental
   }        
