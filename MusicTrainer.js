@@ -415,7 +415,7 @@ document.addEventListener('click', (event) => { //close option dialog if clicked
     optionContainer.classList.remove('active');
   }
 });
-instrumentImage.addEventListener('click', () => {playAllNotes();});
+instrumentImage.addEventListener('dblclick', () => {playAllNotes(notesFiltered);});
 startButton.addEventListener("click", () => {startToneDetection(); });
 stopButton.addEventListener("click", () => {
   stopToneDetection();
@@ -502,9 +502,9 @@ function getSelectedNotes() {//pick notes based on instrument (different tuning)
   return notes;
 }
 
-var filteredNotes = [];
+var notesFiltered = [];
 function setFilteredNotes(){
-  filteredNotes = filterNotes(notesSelected);
+  notesFiltered = filterNotes(notesSelected);
 }
 
 function filterNotes(notes){
@@ -693,12 +693,23 @@ async function loadMp3(note) {
   }
 }
 
-function playAllNotes(){
-  notesSelected.forEach(note => {
-    setTimeout(() => {
-      playMp3(note);
-    }, 500);
-  });
+function playAllNotes(notes) {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioContext.state === 'suspended') {
+    audioContext.resume();
+  }
+  let index = 0;
+  function playNextNote() {
+    if (index < notes.length) {
+      const note = notes[index];
+      playMp3(note); // Assuming playNote is a function that plays the note
+      index++;
+      setTimeout(playNextNote, 1000); // Wait for 1 second before playing the next note
+    }
+  }
+  playNextNote();
 }
 
 /*----------------------- TONE DETECTION with neuronal network -------------------------------*/
@@ -922,7 +933,7 @@ function updateWeightedNotes(note, type) {
 }
 
 function resetWeightedNotes(){
-  weightedNotes = filteredNotes;
+  weightedNotes = notesFiltered;
 }
 
 /*----------------------- STATISTICS -------------------------------*/
