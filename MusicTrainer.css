@@ -199,6 +199,9 @@ button {
 .message-red {
   color: red;
 }
+.message-green {
+  color: green;
+}
 
 /*----------------- STATISTICS ------------------*/
 #statisticsDialog {

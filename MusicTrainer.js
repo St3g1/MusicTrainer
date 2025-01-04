@@ -375,13 +375,13 @@ const instruction = document.getElementById('instruction');
 let currentNote = null;
 let audioContext = null;
 let model;
-let pause;
-let tolerance;
 
 //--------------- EVENT LISTENERS ------------------------------
 showNoteNameCheckbox.addEventListener('change', () => {
   noteNameElement.textContent = showNoteNameCheckbox.checked && currentNote ? currentNote.name : '';
   saveOptions();
+  triedOnce = false; //in order to trigger update of message
+  checkNote(null);
 });
 playNoteCheckbox.addEventListener('change', () => {
   saveOptions(); 
@@ -392,8 +392,8 @@ useBassClefCheckbox.addEventListener('change', () => {
   displayNote(currentNote);
 });   
 showSummaryCheckbox.addEventListener('change', () => { saveOptions(); });
-pauseInput.addEventListener('change', () => { saveOptions(); pause = Math.round(pauseInput.value); });
-toleranceInput.addEventListener('change', () => { saveOptions(); tolerance = Math.round(toleranceInput.value); });
+pauseInput.addEventListener('change', () => { saveOptions();});
+toleranceInput.addEventListener('change', () => { saveOptions(); });
 instrumentSaxTenorRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); saveOptions(); nextNote();});
 instrumentSaxAltRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); saveOptions(); nextNote();});
 instrumentRegularRadio.addEventListener('change', () => { initNoteSatistics(); updateInstrument(); saveOptions(); nextNote();});
@@ -545,8 +545,9 @@ function getWeightedNotes(notes){
 
 // Show the next note
 function nextNote() {
-  blocking = false; //reset
   noteEllipse.setAttribute("fill", "black"); // Reset note color after delay
+  triedOnce = false;
+  correctNotePlayed = false; // Reset the flag for the next note
   currentNote = getNextNote();
   displayNote(currentNote);
   noteContainer.className = "staff"; // Reset staff color
@@ -631,18 +632,6 @@ function setStemDirection(position) {
   }
 }
 
-var blocking = false; //used to correctly handle pause
-// Highlight the staff depending on correctness (not used here)
-function highlightNote(correct) {
-  noteEllipse.setAttribute("fill", correct ? "green" : "red");
-  setTimeout(() => {
-    if (correct && !blocking) {
-      blocking = true;
-      setTimeout(nextNote, pause||500); // Delay before showing the next note
-    }
-  }, pause||500); // Delay duration
-}
-
 /*--------- Audio OUTPUT --------------------------*/
 // Play the note using Web Audio API
 
@@ -704,23 +693,14 @@ async function loadMp3(note) {
 var confidenceRequested = 0.8
 
 function startToneDetection(){
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  if (audioContext.state === 'suspended') {
-    audioContext.resume();
-  }
   loadModel().then(() => {
     if(!running){
       initAudio();
       initNoteSatistics();
       handleButtons();
     }
-    blocking = false; //reset
     nextNote();
     saveOptions();
-    tolerance = Math.round(toleranceInput.value);
-    pause = Math.round(pauseInput.innerText);
   });
 }
 
@@ -733,6 +713,12 @@ function stopToneDetection() {
 }
 
 function initAudio() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioContext.state === 'suspended') {
+    audioContext.resume();
+  }
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ audio: true })
@@ -810,7 +796,7 @@ function process_microphone_buffer(event) {
       const end = Math.min(360, center + 5);
       const weights = activation.slice([start], [end - start]);
       const cents = cent_mapping.slice([start], [end - start]);
-      // take the local weighted average to get the predicted pitch
+      // take the local weighted average to get the predicted detectedFrequency
       const products = tf.mul(weights, cents);
       const productSum = products.dataSync().reduce((a, b) => a + b, 0);
       const weightSum = weights.dataSync().reduce((a, b) => a + b, 0);
@@ -846,29 +832,43 @@ function resample(audioBuffer, onComplete) {
 /*----------------------- TONE CHECKING -------------------------------*/
 var silence = false;
 var correctNotePlayed = false;
-function checkNote(pitch){
-  if(!blocking && currentNote){
-    if (pitch) {
-      const closestNoteName = getClosestNoteName(pitch);
-      status("Gespielter Ton: " + closestNoteName + ", Ziel: " + currentNote.name);
-//      status("Tonhöhe: " + Math.round(pitch) + " Hz, Ziel: " + Math.round(currentNote.frequency) + " Hz");
+var pauseTimeout;
+var triedOnce = false;
+function checkNote(detectedFrequency) {
+  if (currentNote) {
+    if (detectedFrequency) {
+      const closestNoteName = getClosestNoteName(detectedFrequency);
       const targetFrequency = currentNote.frequency;
-      const correct = Math.abs(targetFrequency - pitch) < tolerance; // Allow small tolerance
-      if(correct){
+      const correct = Math.abs(targetFrequency - detectedFrequency) < parseInt(toleranceInput.value); // Allow small tolerance
+      if (correct) {
         noteStatistics[currentNote.name].correct++;
         correctNotePlayed = true;
+        status("<span class='message-green'>Gut gemacht! Du hast den richtigen Ton <b>" + closestNoteName + "</b> gespielt.</span>");
+        highlightNote(true);
+        clearTimeout(pauseTimeout); // Clear any existing timeout
+        pauseTimeout = setTimeout(() => {
+          nextNote(); // Suggest a new note after the pause
+        }, parseInt(pauseInput.value));
       } else {
-        if (!correctNotePlayed) {noteStatistics[currentNote.name].incorrect++;} //only count as incorrect if the correct note was not played before
+        if (!correctNotePlayed) { //only update statistics if no correct played tone was detected
+          status("<span class='message-red'>Du hast den Ton <b>" + closestNoteName + "</b> gespielt!</span>" + (showNoteNameCheckbox.checked ? " Gewünschter Ton ist <b>" + currentNote.name + "</b>." : " Versuche es noch einmal!"));
+          noteStatistics[currentNote.name].incorrect++;
+          highlightNote(false);
+        }
       }
+      triedOnce = true;
       silence = false;
-      highlightNote(correct);
     } else {
-      if (!silence) {correctNotePlayed = false;} // If entering a new silence interval, reset the flag
-      silence = true; //trigers a new checking intervall, within a checking intervall (while playing) the correct not must be played in order to flag the intervall to be correct
-//      status("Tonhöhe: <span class='message-red'>Spiele den angegebenen Ton</span>, Ziel: " + Math.round(currentNote.frequency) + " Hz");
-      status("<span class='message-red'>Spiele den angegebenen Ton</span>" + (showNoteNameCheckbox.checked ? ", Ziel: " + currentNote.name : ""));
+      if(!triedOnce){
+        status("<span class='message-red'>Spiele den angegebenen Ton!" + (showNoteNameCheckbox.checked ? "</span> Gewünschter Ton ist <b>" + currentNote.name + ".</b>" : "</span>"));
+      }  
+      silence = true; // triggers a new checking interval
     }
   }
+}
+
+function highlightNote(correct) {
+  noteEllipse.setAttribute("fill", correct ? "green" : "red");
 }
 
 function getClosestNoteName(frequency) {
@@ -884,6 +884,7 @@ function getClosestNoteName(frequency) {
   }
   return closestNote.name;
 }
+
 
 /*----------------------- STATISTICS -------------------------------*/
 // Function to show the pop-up dialog with the pie chart
