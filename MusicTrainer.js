@@ -312,12 +312,14 @@ function loadOptions() {
   showSummaryCheckbox.checked = JSON.parse(localStorage.getItem("showSummaryCheckbox")) || false;
   pauseInput.value = localStorage.getItem("pauseInput") || "500";
   toleranceInput.value = localStorage.getItem("toleranceInput") || "5";
-  instrumentSaxTenorRadio.checked = JSON.parse(localStorage.getItem("instrumentSaxTenorRadio")) || false;
-  instrumentSaxAltRadio.checked = JSON.parse(localStorage.getItem("instrumentSaxAltRadio")) || false;
-  instrumentRegularRadio.checked = JSON.parse(localStorage.getItem("instrumentRegularRadio")) || true;
-  smallRangeRadio.checked = JSON.parse(localStorage.getItem("smallRangeRadio")) || true;
-  middleRangeRadio.checked = JSON.parse(localStorage.getItem("middleRangeRadio")) || false;
-  largeRangeRadio.checked = JSON.parse(localStorage.getItem("largeRangeRadio")) || false;
+  const selectedInstrument = localStorage.getItem("selectedInstrument");
+  if (selectedInstrument) {
+    document.querySelector(`input[name="instrument"][value="${selectedInstrument}"]`).checked = true;
+  }
+  const selectedNoteRange = localStorage.getItem("selectedNoteRange");
+  if (selectedNoteRange) {
+    document.querySelector(`input[name="noteRange"][value="${selectedNoteRange}"]`).checked = true;
+  }
   showSharpCheckbox.checked = JSON.parse(localStorage.getItem("showSharpCheckbox")) || false;
   showFlatCheckbox.checked = JSON.parse(localStorage.getItem("showFlatCheckbox")) || false;
   noteFilterCheckbox.checked = JSON.parse(localStorage.getItem("noteFilterCheckbox")) || false;
@@ -334,12 +336,8 @@ function saveOptions() {
   localStorage.setItem("showSummaryCheckbox", JSON.stringify(showSummaryCheckbox.checked));
   localStorage.setItem("pauseInput", pauseInput.value);
   localStorage.setItem("toleranceInput", toleranceInput.value);
-  localStorage.setItem("instrumentSaxTenorRadio", JSON.stringify(instrumentSaxTenorRadio.checked));
-  localStorage.setItem("instrumentSaxAltRadio", JSON.stringify(instrumentSaxAltRadio.checked));
-  localStorage.setItem("instrumentRegularRadio", JSON.stringify(instrumentRegularRadio.checked));
-  localStorage.setItem("smallRangeRadio", JSON.stringify(smallRangeRadio.checked));
-  localStorage.setItem("middleRangeRadio", JSON.stringify(middleRangeRadio.checked));
-  localStorage.setItem("largeRangeRadio", JSON.stringify(largeRangeRadio.checked));
+  localStorage.setItem("selectedInstrument", document.querySelector('input[name="instrument"]:checked').value);
+  localStorage.setItem("selectedNoteRange", document.querySelector('input[name="noteRange"]:checked').value);
   localStorage.setItem("showSharpCheckbox", JSON.stringify(showSharpCheckbox.checked));
   localStorage.setItem("showFlatCheckbox", JSON.stringify(showFlatCheckbox.checked));
   localStorage.setItem("noteFilterCheckbox", JSON.stringify(noteFilterCheckbox.checked));
@@ -376,6 +374,7 @@ const burgerMenu = document.getElementById('burgerMenu');
 const optionContainer = document.getElementById('optionContainer');
 const instrumentImage = document.getElementById('instrumentImage');
 const instrumentName = document.getElementById('instrumentName');
+const instruction = document.getElementById('instruction'); 
 
 let currentNote = null;
 let audioContext = null;
@@ -389,12 +388,12 @@ showNoteNameCheckbox.addEventListener('change', () => {
   saveOptions();
 });
 playNoteCheckbox.addEventListener('change', () => {
-  if(playNoteCheckbox.checked && currentNote){playMp3(currentNote);}
   saveOptions(); 
+  if(playNoteCheckbox.checked && currentNote){playMp3(currentNote);}
 });
 useBassClefCheckbox.addEventListener('change', () => {
-  displayNote(currentNote);
   saveOptions(); 
+  displayNote(currentNote);
 });   
 showSummaryCheckbox.addEventListener('change', () => { saveOptions(); });
 pauseInput.addEventListener('change', () => { saveOptions(); pause = Math.round(pauseInput.value); });
@@ -457,7 +456,6 @@ function handleButtons(){
 }
 
 function updateInstrument() {
-  instrumentImage.style.display = 'block';
   if (instrumentSaxTenorRadio.checked) {
     instrumentImage.src = 'images/saxTenor.png';
     instrumentName.textContent = 'Tenor Saxophon';
@@ -468,6 +466,10 @@ function updateInstrument() {
     instrumentImage.src = 'images/piano.png';
     instrumentName.textContent = 'Klavier';
   }
+  instrumentImage.style.visibility = 'visible'; 
+  instrumentImage.style.opacity = '1';
+  instruction.style.visibility = 'visible'; 
+  instruction.style.opacity = '1';
 }
 
 function error(text) {
