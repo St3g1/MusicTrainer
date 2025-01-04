@@ -2,6 +2,8 @@
  ToDo:
  - StartButton should be temporarily disabled until access to micro has been granted
  - No tone should be played until the micro dialog has been accepted (not technically...but from a user-interaction)
+ - weighted algorithm needs more work
+ - piano tones do not seem to match
 */
  
 const allNotes_regular = [
@@ -397,9 +399,9 @@ useBassClefCheckbox.addEventListener('change', () => {
 showSummaryCheckbox.addEventListener('change', () => { saveOptions(); });
 pauseInput.addEventListener('change', () => { saveOptions();});
 toleranceInput.addEventListener('change', () => { saveOptions(); });
-instrumentSaxTenorRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); setNoteStatistics(); resetWeightedNotes(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
-instrumentSaxAltRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); setNoteStatistics(); resetWeightedNotes(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
-instrumentRegularRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); setNoteStatistics(); resetWeightedNotes(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
+instrumentSaxTenorRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); initNoteStatistics(); resetWeightedNotes(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
+instrumentSaxAltRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); initNoteStatistics(); resetWeightedNotes(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
+instrumentRegularRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); initNoteStatistics(); resetWeightedNotes(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
 showSharpCheckbox.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNotes(); nextNote(); });
 showFlatCheckbox.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNotes(); nextNote(); });
 smallRangeRadio.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNotes(); nextNote(); });
@@ -526,12 +528,11 @@ function filterNotes(notes){
       notes = notes.filter(note => regex.test(note.name));
     }
   }
-  if(currentNote && notes.length > 1){notes = notes.filter(note => !note.name.includes(currentNote.name));} //don't use the same note
   return notes;
 }
 
 var noteStatistics = {};
-function setNoteStatistics() {
+function initNoteStatistics() {
   noteStatistics = {}; //reset 
   notesSelected.forEach(note => {
     noteStatistics[note.name] = { correct: 0, incorrect: 0 };
@@ -541,7 +542,12 @@ function setNoteStatistics() {
 // Filter notes and select a random note from this list
 function getNextNote() {
   //Randomize result
-  return weightedNotes[Math.floor(Math.random() * weightedNotes.length)];
+  let notes = weightedNotes;
+  if(currentNote && notes.length > 1){
+    notes = notes.filter(note => !note.name.includes(currentNote.name));
+  } //don't use the same note
+  const tobi = 4;
+  return notes[Math.floor(Math.random() * notes.length)];
 }
 
 // Show the next note
@@ -698,7 +704,7 @@ function startToneDetection(){
   loadModel().then(() => {
     if(!running){
       initAudio();
-      setNoteStatistics();
+      initNoteStatistics();
       handleButtons();
     }
     nextNote();
@@ -880,13 +886,12 @@ function highlightNote(correct) {
 }
 
 function getClosestNoteName(frequency) {
-  const notes = getSelectedNotes();
-  let closestNote = notes[0];
+  let closestNote = notesSelected[0];
   let minDiff = Math.abs(frequency - closestNote.frequency);
-  for (let i = 1; i < notes.length; i++) {
-    const diff = Math.abs(frequency - notes[i].frequency);
+  for (let i = 1; i < notesSelected.length; i++) {
+    const diff = Math.abs(frequency - notesSelected[i].frequency);
     if (diff < minDiff) {
-      closestNote = notes[i];
+      closestNote = notesSelected[i];
       minDiff = diff;
     }
   }
