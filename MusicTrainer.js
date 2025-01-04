@@ -7,92 +7,92 @@
 */
  
 const allNotes_regular = [
-  { name: "C6", frequency: 1046.50, mp3: "piano/.mp3", position: 140 },
-  { name: "H5", frequency: 987.77, mp3: "piano/.mp3", position: 130 },
-  { name: "B5", frequency: 932.33, mp3: "piano/88.mp3", position: 130 },
-  { name: "A#5", frequency: 932.33, mp3: "piano/87.mp3", position: 120 },
-  { name: "A5", frequency: 880.00, mp3: "piano/86.mp3", position: 120 },
-  { name: "Ab5", frequency: 830.61, mp3: "piano/85.mp3", position: 120 },
-  { name: "G#5", frequency: 830.61, mp3: "piano/85.mp3", position: 110 },
-  { name: "G5", frequency: 783.99, mp3: "piano/84.mp3", position: 110 },
-  { name: "Gb5", frequency: 739.99, mp3: "piano/83.mp3", position: 110 },
-  { name: "F#5", frequency: 739.99, mp3: "piano/83.mp3", position: 100 },
-  { name: "F5", frequency: 698.46, mp3: "piano/82.mp3", position: 100 },
-  { name: "E5", frequency: 659.25, mp3: "piano/81.mp3", position: 90 },
-  { name: "Eb5", frequency: 622.25, mp3: "piano/80.mp3", position: 90 },
-  { name: "D#5", frequency: 622.25, mp3: "piano/80.mp3", position: 80 },
-  { name: "D5", frequency: 587.33, mp3: "piano/79.mp3", position: 80 },
-  { name: "Db5", frequency: 554.37, mp3: "piano/78.mp3", position: 80 },
-  { name: "C#5", frequency: 554.37, mp3: "piano/78.mp3", position: 70 },
-  { name: "C5", frequency: 523.25, mp3: "piano/77.mp3", position: 70 },
-  { name: "H4", frequency: 493.88, mp3: "piano/76.mp3", position: 60 },
-  { name: "B4", frequency: 466.16, mp3: "piano/75.mp3", position: 60 },
-  { name: "A#4", frequency: 466.16, mp3: "piano/75.mp3", position: 50 },
-  { name: "A4", frequency: 440.00, mp3: "piano/74.mp3", position: 50 },
-  { name: "Ab4", frequency: 415.30, mp3: "piano/73.mp3", position: 50 },
-  { name: "G#4", frequency: 415.30, mp3: "piano/73.mp3", position: 40 },
-  { name: "G4", frequency: 392.00, mp3: "piano/72.mp3", position: 40 },
-  { name: "Gb4", frequency: 369.99, mp3: "piano/71.mp3", position: 40 },
-  { name: "F#4", frequency: 369.99, mp3: "piano/71.mp3", position: 30 },
-  { name: "F4", frequency: 349.23, mp3: "piano/70.mp3", position: 30 },
-  { name: "E4", frequency: 329.63, mp3: "piano/69.mp3", position: 20 },
-  { name: "Eb4", frequency: 311.13, mp3: "piano/68.mp3", position: 20 },
-  { name: "D#4", frequency: 311.13, mp3: "piano/68.mp3", position: 10 },
-  { name: "D4", frequency: 293.66, mp3: "piano/67.mp3", position: 10 },
-  { name: "Db4", frequency: 277.18, mp3: "piano/66.mp3", position: 10 },
-  { name: "C#4", frequency: 277.18, mp3: "piano/66.mp3", position: 0 },
-  { name: "C4", frequency: 261.63, mp3: "piano/65.mp3", position: 0 }, // Positioned for middle C
-  { name: "H3", frequency: 246.94, mp3: "piano/64.mp3", position: -10 },
-  { name: "B3", frequency: 233.08, mp3: "piano/63.mp3", position: -10 },
-  { name: "A#3", frequency: 233.08, mp3: "piano/62.mp3", position: -20 },
-  { name: "A3", frequency: 220.00, mp3: "piano/61.mp3", position: -20 },
-  { name: "Ab3", frequency: 207.65, mp3: "piano/60.mp3", position: -20 },
-  { name: "G#3", frequency: 207.65, mp3: "piano/60.mp3", position: -30 },
-  { name: "G3", frequency: 196.00, mp3: "piano/59.mp3", position: -30 },
-  { name: "Gb3", frequency: 185.00, mp3: "piano/58.mp3", position: -30 },
-  { name: "F#3", frequency: 185.00, mp3: "piano/58.mp3", position: -40 },
-  { name: "F3", frequency: 174.61, mp3: "piano/57.mp3", position: -40 },
-  { name: "E3", frequency: 164.81, mp3: "piano/56.mp3", position: -50 },
-  { name: "Eb3", frequency: 155.56, mp3: "piano/55.mp3", position: -50 },
-  { name: "D#3", frequency: 155.56, mp3: "piano/55.mp3", position: -60 },
-  { name: "D3", frequency: 146.83, mp3: "piano/54.mp3", position: -60 },
-  { name: "Db3", frequency: 138.59, mp3: "piano/53.mp3", position: -60 },
-  { name: "C#3", frequency: 138.59, mp3: "piano/53.mp3", position: -70 },
-  { name: "C3", frequency: 130.81, mp3: "piano/52.mp3", position: -70 },
-  { name: "H2", frequency: 123.47, mp3: "piano/51.mp3", position: -80 },
-  { name: "B2", frequency: 116.54, mp3: "piano/50.mp3", position: -80 },
-  { name: "A#2", frequency: 116.54, mp3: "piano/50.mp3", position: -90 },
-  { name: "A2", frequency: 110.00, mp3: "piano/49.mp3", position: -90 },
-  { name: "Ab2", frequency: 103.83, mp3: "piano/48.mp3", position: -90 },
-  { name: "G#2", frequency: 103.83, mp3: "piano/48.mp3", position: -100 },
-  { name: "G2", frequency: 98.00, mp3: "piano/47.mp3", position: -100 },
-  { name: "Gb2", frequency: 92.50, mp3: "piano/46.mp3", position: -100 },
-  { name: "F#2", frequency: 92.50, mp3: "piano/46.mp3", position: -110 },
-  { name: "F2", frequency: 87.31, mp3: "piano/45.mp3", position: -110 },
-  { name: "E2", frequency: 82.41, mp3: "piano/44.mp3", position: -120 },
-  { name: "Eb2", frequency: 77.78, mp3: "piano/43.mp3", position: -120 },
-  { name: "D#2", frequency: 77.78, mp3: "piano/43.mp3", position: -130 },
-  { name: "D2", frequency: 73.42, mp3: "piano/42.mp3", position: -130 },
-  { name: "Db2", frequency: 69.30, mp3: "piano/41.mp3", position: -130 },
-  { name: "C#2", frequency: 69.30, mp3: "piano/41.mp3", position: -140 },
-  { name: "C2", frequency: 65.41, mp3: "piano/40.mp3", position: -140 },
-  { name: "H1", frequency: 61.74, mp3: "piano/39.mp3", position: -150 },
-  { name: "B1", frequency: 58.27, mp3: "piano/38.mp3", position: -150 },
-  { name: "A#1", frequency: 58.27, mp3: "piano/38.mp3", position: -160 },
-  { name: "A1", frequency: 55.00, mp3: "piano/37.mp3", position: -160 },
-  { name: "Ab1", frequency: 51.91, mp3: "piano/36.mp3", position: -160 },
-  { name: "G#1", frequency: 51.91, mp3: "piano/36.mp3", position: -170 },
-  { name: "G1", frequency: 49.00, mp3: "piano/35.mp3", position: -170 },
-  { name: "Gb1", frequency: 46.25, mp3: "piano/34.mp3", position: -170 },
-  { name: "F#1", frequency: 46.25, mp3: "piano/34.mp3", position: -180 },
-  { name: "F1", frequency: 43.65, mp3: "piano/33.mp3", position: -180 },
-  { name: "E1", frequency: 41.20, mp3: "piano/32.mp3", position: -190 },
-  { name: "Eb1", frequency: 38.89, mp3: "piano/31.mp3", position: -190 },
-  { name: "D#1", frequency: 38.89, mp3: "piano/31.mp3", position: -200 },
-  { name: "D1", frequency: 36.71, mp3: "piano/30.mp3", position: -200 },
-  { name: "Db1", frequency: 34.65, mp3: "piano/29.mp3", position: -200 },
-  { name: "C#1", frequency: 34.65, mp3: "piano/29.mp3", position: -210 },
-  { name: "C1", frequency: 32.70, mp3: "piano/28.mp3", position: -210 }
+  { name: "C6", frequency: 1046.50, mp3: "piano/66.mp3", position: 140 },
+  { name: "H5", frequency: 987.77, mp3: "piano/65.mp3", position: 130 },
+  { name: "B5", frequency: 932.33, mp3: "piano/64.mp3", position: 130 },
+  { name: "A#5", frequency: 932.33, mp3: "piano/63.mp3", position: 120 },
+  { name: "A5", frequency: 880.00, mp3: "piano/62.mp3", position: 120 },
+  { name: "Ab5", frequency: 830.61, mp3: "piano/61.mp3", position: 120 },
+  { name: "G#5", frequency: 830.61, mp3: "piano/61.mp3", position: 110 },
+  { name: "G5", frequency: 783.99, mp3: "piano/60.mp3", position: 110 },
+  { name: "Gb5", frequency: 739.99, mp3: "piano/59.mp3", position: 110 },
+  { name: "F#5", frequency: 739.99, mp3: "piano/59.mp3", position: 100 },
+  { name: "F5", frequency: 698.46, mp3: "piano/58.mp3", position: 100 },
+  { name: "E5", frequency: 659.25, mp3: "piano/57.mp3", position: 90 },
+  { name: "Eb5", frequency: 622.25, mp3: "piano/56.mp3", position: 90 },
+  { name: "D#5", frequency: 622.25, mp3: "piano/56.mp3", position: 80 },
+  { name: "D5", frequency: 587.33, mp3: "piano/55.mp3", position: 80 },
+  { name: "Db5", frequency: 554.37, mp3: "piano/54.mp3", position: 80 },
+  { name: "C#5", frequency: 554.37, mp3: "piano/54.mp3", position: 70 },
+  { name: "C5", frequency: 523.25, mp3: "piano/53.mp3", position: 70 },
+  { name: "H4", frequency: 493.88, mp3: "piano/52.mp3", position: 60 },
+  { name: "B4", frequency: 466.16, mp3: "piano/51.mp3", position: 60 },
+  { name: "A#4", frequency: 466.16, mp3: "piano/51.mp3", position: 50 },
+  { name: "A4", frequency: 440.00, mp3: "piano/50.mp3", position: 50 },
+  { name: "Ab4", frequency: 415.30, mp3: "piano/49.mp3", position: 50 },
+  { name: "G#4", frequency: 415.30, mp3: "piano/49.mp3", position: 40 },
+  { name: "G4", frequency: 392.00, mp3: "piano/48.mp3", position: 40 },
+  { name: "Gb4", frequency: 369.99, mp3: "piano/47.mp3", position: 40 },
+  { name: "F#4", frequency: 369.99, mp3: "piano/47.mp3", position: 30 },
+  { name: "F4", frequency: 349.23, mp3: "piano/46.mp3", position: 30 },
+  { name: "E4", frequency: 329.63, mp3: "piano/45.mp3", position: 20 },
+  { name: "Eb4", frequency: 311.13, mp3: "piano/44.mp3", position: 20 },
+  { name: "D#4", frequency: 311.13, mp3: "piano/44.mp3", position: 10 },
+  { name: "D4", frequency: 293.66, mp3: "piano/43.mp3", position: 10 },
+  { name: "Db4", frequency: 277.18, mp3: "piano/42.mp3", position: 10 },
+  { name: "C#4", frequency: 277.18, mp3: "piano/42.mp3", position: 0 },
+  { name: "C4", frequency: 261.63, mp3: "piano/41.mp3", position: 0 }, // Positioned for middle C
+  { name: "H3", frequency: 246.94, mp3: "piano/40.mp3", position: -10 },
+  { name: "B3", frequency: 233.08, mp3: "piano/39.mp3", position: -10 },
+  { name: "A#3", frequency: 233.08, mp3: "piano/38.mp3", position: -20 },
+  { name: "A3", frequency: 220.00, mp3: "piano/37.mp3", position: -20 },
+  { name: "Ab3", frequency: 207.65, mp3: "piano/36.mp3", position: -20 },
+  { name: "G#3", frequency: 207.65, mp3: "piano/36.mp3", position: -30 },
+  { name: "G3", frequency: 196.00, mp3: "piano/35.mp3", position: -30 },
+  { name: "Gb3", frequency: 185.00, mp3: "piano/34.mp3", position: -30 },
+  { name: "F#3", frequency: 185.00, mp3: "piano/34.mp3", position: -40 },
+  { name: "F3", frequency: 174.61, mp3: "piano/33.mp3", position: -40 },
+  { name: "E3", frequency: 164.81, mp3: "piano/32.mp3", position: -50 },
+  { name: "Eb3", frequency: 155.56, mp3: "piano/31.mp3", position: -50 },
+  { name: "D#3", frequency: 155.56, mp3: "piano/31.mp3", position: -60 },
+  { name: "D3", frequency: 146.83, mp3: "piano/30.mp3", position: -60 },
+  { name: "Db3", frequency: 138.59, mp3: "piano/29.mp3", position: -60 },
+  { name: "C#3", frequency: 138.59, mp3: "piano/29.mp3", position: -70 },
+  { name: "C3", frequency: 130.81, mp3: "piano/28.mp3", position: -70 },
+  { name: "H2", frequency: 123.47, mp3: "piano/27.mp3", position: -80 },
+  { name: "B2", frequency: 116.54, mp3: "piano/26.mp3", position: -80 },
+  { name: "A#2", frequency: 116.54, mp3: "piano/26.mp3", position: -90 },
+  { name: "A2", frequency: 110.00, mp3: "piano/25.mp3", position: -90 },
+  { name: "Ab2", frequency: 103.83, mp3: "piano/24.mp3", position: -90 },
+  { name: "G#2", frequency: 103.83, mp3: "piano/24.mp3", position: -100 },
+  { name: "G2", frequency: 98.00, mp3: "piano/23.mp3", position: -100 },
+  { name: "Gb2", frequency: 92.50, mp3: "piano/22.mp3", position: -100 },
+  { name: "F#2", frequency: 92.50, mp3: "piano/22.mp3", position: -110 },
+  { name: "F2", frequency: 87.31, mp3: "piano/21.mp3", position: -110 },
+  { name: "E2", frequency: 82.41, mp3: "piano/20.mp3", position: -120 },
+  { name: "Eb2", frequency: 77.78, mp3: "piano/19.mp3", position: -120 },
+  { name: "D#2", frequency: 77.78, mp3: "piano/19.mp3", position: -130 },
+  { name: "D2", frequency: 73.42, mp3: "piano/18.mp3", position: -130 },
+  { name: "Db2", frequency: 69.30, mp3: "piano/17.mp3", position: -130 },
+  { name: "C#2", frequency: 69.30, mp3: "piano/17.mp3", position: -140 },
+  { name: "C2", frequency: 65.41, mp3: "piano/16.mp3", position: -140 },
+  { name: "H1", frequency: 61.74, mp3: "piano/15.mp3", position: -150 },
+  { name: "B1", frequency: 58.27, mp3: "piano/14.mp3", position: -150 },
+  { name: "A#1", frequency: 58.27, mp3: "piano/14.mp3", position: -160 },
+  { name: "A1", frequency: 55.00, mp3: "piano/13.mp3", position: -160 },
+  { name: "Ab1", frequency: 51.91, mp3: "piano/12.mp3", position: -160 },
+  { name: "G#1", frequency: 51.91, mp3: "piano/12.mp3", position: -170 },
+  { name: "G1", frequency: 49.00, mp3: "piano/11.mp3", position: -170 },
+  { name: "Gb1", frequency: 46.25, mp3: "piano/10.mp3", position: -170 },
+  { name: "F#1", frequency: 46.25, mp3: "piano/10.mp3", position: -180 },
+  { name: "F1", frequency: 43.65, mp3: "piano/9.mp3", position: -180 },
+  { name: "E1", frequency: 41.20, mp3: "piano/8.mp3", position: -190 },
+  { name: "Eb1", frequency: 38.89, mp3: "piano/7.mp3", position: -190 },
+  { name: "D#1", frequency: 38.89, mp3: "piano/7.mp3", position: -200 },
+  { name: "D1", frequency: 36.71, mp3: "piano/6.mp3", position: -200 },
+  { name: "Db1", frequency: 34.65, mp3: "piano/5.mp3", position: -200 },
+  { name: "C#1", frequency: 34.65, mp3: "piano/5.mp3", position: -210 },
+  { name: "C1", frequency: 32.70, mp3: "piano/4.mp3", position: -210 }
 ];
 const allNotes_sax_alt = [			
   { name: "C7"	, frequency:  1244.50 ,	mp3: "saxAlt/C7.mp3"	, position:  210  },
@@ -851,9 +851,11 @@ function checkNote(detectedFrequency) {
       const frequencyDifference = targetFrequency - detectedFrequency;
       const correct = Math.abs(frequencyDifference) < parseInt(toleranceInput.value); // Allow small tolerance
       if (correct) { //CORRECT
-        noteStatistics[currentNote.name].correct++;
-        if(!toneWeighted){updateWeightedNotes(currentNote, "decrement");}
-        correctNotePlayed = true; //Only weight a tone as correct/incorrect once per proposed note
+        if(!toneWeighted){
+          updateWeightedNotes(currentNote, "decrement");
+          noteStatistics[currentNote.name].correct++;
+        }
+        correctNotePlayed = true; 
         status("<span class='message-green'>Gut gemacht! Du hast den Ton <b>" + closestNoteName + "</b> gespielt.</span>");
         highlightNote(true);
         clearTimeout(pauseTimeout); // Clear any existing timeout
@@ -864,9 +866,10 @@ function checkNote(detectedFrequency) {
         if (!correctNotePlayed) { //only update statistics if no correct played tone was detected
           if(closestNoteName === currentNote.name){sign(frequencyDifference) === 1 ? closestNoteName = closestNoteName + "+" : closestNoteName = "-" + closestNoteName;} 
           status("<span class='message-red'>Du hast den Ton <b>" + closestNoteName + "</b> gespielt!</span>" + (showNoteNameCheckbox.checked ? " Gewünschter Ton ist <b>" + currentNote.name + "</b>." : " Versuche es noch einmal!"));
-          noteStatistics[currentNote.name].incorrect++;
-          if(!toneWeighted){updateWeightedNotes(currentNote, "increment");}
-          toneWeighted = true; //Only weight a tone as correct/incorrect once per proposed note
+          if(!toneWeighted){
+            updateWeightedNotes(currentNote, "increment");
+            noteStatistics[currentNote.name].incorrect++;
+          }
           highlightNote(false);
         }
       }
@@ -899,24 +902,18 @@ function getClosestNoteName(frequency) {
 }
 
 var weightedNotes = [];
-// Increase the probability of incorrect notes
+// Update the probability of notes, limiting max same entries to 3 and keep at least one entry
 function updateWeightedNotes(note, type) {
-  return null; //does not work as desired
-  if (type === "increment") {
+  const noteCount = weightedNotes.filter(item => item === note).length;
+  if (type === "increment" && noteCount < 3) {
     weightedNotes.push(note);
-  } else if (type === "decrement") {
-    removeOneMatchingEntry(weightedNotes, note);
-  }
-}
-
-function removeOneMatchingEntry(list, match) {
-  const matchCount = list.filter(item => item === match).length;
-  if (matchCount > 1) {
-    const index = list.findIndex(item => item === match);
+  } else if (type === "decrement" && noteCount > 0) {
+    const index = weightedNotes.findIndex(item => item === note);
     if (index !== -1) {
-      list.splice(index, 1);
+      weightedNotes.splice(index, 1);
     }
   }
+  toneWeighted = true; // Only weight a tone as correct/incorrect once per proposed note (gets reset with nextNote())
 }
 
 function resetWeightedNotes(){
