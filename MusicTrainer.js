@@ -415,6 +415,7 @@ document.addEventListener('click', (event) => { //close option dialog if clicked
     optionContainer.classList.remove('active');
   }
 });
+instrumentImage.addEventListener('click', () => {playAllNotes();});
 startButton.addEventListener("click", () => {startToneDetection(); });
 stopButton.addEventListener("click", () => {
   stopToneDetection();
@@ -690,6 +691,14 @@ async function loadMp3(note) {
     console.error('Error loading MP3:', error);
     return null;
   }
+}
+
+function playAllNotes(){
+  notesSelected.forEach(note => {
+    setTimeout(() => {
+      playMp3(note);
+    }, 500);
+  });
 }
 
 /*----------------------- TONE DETECTION with neuronal network -------------------------------*/
