@@ -704,7 +704,7 @@ function playAllNotes(notes) {
   function playNextNote() {
     if (index < notes.length) {
       const note = notes[index];
-      playMp3(note); // Assuming playNote is a function that plays the note
+      displayNote(note);
       index++;
       setTimeout(playNextNote, 1000); // Wait for 1 second before playing the next note
     }
