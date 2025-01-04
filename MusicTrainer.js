@@ -849,7 +849,9 @@ var correctNotePlayed = false;
 function checkNote(pitch){
   if(!blocking && currentNote){
     if (pitch) {
-      status("Tonhöhe: " + Math.round(pitch) + " Hz, Ziel: " + Math.round(currentNote.frequency) + " Hz");
+      const closestNoteName = getClosestNoteName(pitch);
+      status("Gespielter Ton: " + closestNoteName + ", Ziel: " + currentNote.name);
+//      status("Tonhöhe: " + Math.round(pitch) + " Hz, Ziel: " + Math.round(currentNote.frequency) + " Hz");
       const targetFrequency = currentNote.frequency;
       const correct = Math.abs(targetFrequency - pitch) < tolerance; // Allow small tolerance
       if(correct){
@@ -863,9 +865,24 @@ function checkNote(pitch){
     } else {
       if (!silence) {correctNotePlayed = false;} // If entering a new silence interval, reset the flag
       silence = true; //trigers a new checking intervall, within a checking intervall (while playing) the correct not must be played in order to flag the intervall to be correct
-      status("Tonhöhe: <span class='message-red'>Spiele den angegebenen Ton</span>, Ziel: " + Math.round(currentNote.frequency) + " Hz");
+//      status("Tonhöhe: <span class='message-red'>Spiele den angegebenen Ton</span>, Ziel: " + Math.round(currentNote.frequency) + " Hz");
+      status("<span class='message-red'>Spiele den angegebenen Ton</span>" + (showNoteNameCheckbox.checked ? ", Ziel: " + currentNote.name : ""));
     }
   }
+}
+
+function getClosestNoteName(frequency) {
+  const notes = getSelectedNotes();
+  let closestNote = notes[0];
+  let minDiff = Math.abs(frequency - closestNote.frequency);
+  for (let i = 1; i < notes.length; i++) {
+    const diff = Math.abs(frequency - notes[i].frequency);
+    if (diff < minDiff) {
+      closestNote = notes[i];
+      minDiff = diff;
+    }
+  }
+  return closestNote.name;
 }
 
 /*----------------------- STATISTICS -------------------------------*/
