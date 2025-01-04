@@ -896,6 +896,7 @@ function getClosestNoteName(frequency) {
 var weightedNotes = [];
 // Increase the probability of incorrect notes
 function updateWeightedNotes(note, type) {
+  return null; //does not work as desired
   if (type === "increment") {
     weightedNotes.push(note);
   } else if (type === "decrement") {
