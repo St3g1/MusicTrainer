@@ -844,6 +844,8 @@ function resample(audioBuffer, onComplete) {
 }
 
 /*----------------------- TONE CHECKING -------------------------------*/
+var silence = false;
+var correctNotePlayed = false;
 function checkNote(pitch){
   if(!blocking && currentNote){
     if (pitch) {
@@ -852,11 +854,15 @@ function checkNote(pitch){
       const correct = Math.abs(targetFrequency - pitch) < tolerance; // Allow small tolerance
       if(correct){
         noteStatistics[currentNote.name].correct++;
+        correctNotePlayed = true;
       } else {
-        noteStatistics[currentNote.name].incorrect++;
+        if (!correctNotePlayed) {noteStatistics[currentNote.name].incorrect++;} //only count as incorrect if the correct note was not played before
       }
+      silence = false;
       highlightNote(correct);
     } else {
+      if (!silence) {correctNotePlayed = false;} // If entering a new silence interval, reset the flag
+      silence = true; //trigers a new checking intervall, within a checking intervall (while playing) the correct not must be played in order to flag the intervall to be correct
       status("Tonhöhe: <span class='message-red'>Spiele den angegebenen Ton</span>, Ziel: " + Math.round(currentNote.frequency) + " Hz");
     }
   }
@@ -893,6 +899,13 @@ function showSummary() {
     ctx.fillStyle = item.label === 'Correct' ? 'green' : 'red';
     ctx.fill();
   });
+  //summary message
+  const summaryMessage = document.getElementById('summaryMessage');
+  if(incorrectNotes){
+    summaryMessage.innerHTML = "Noten, die Du noch üben solltest:";
+  } else {
+    summaryMessage.innerHTML = "Super! Keine Fehler gemacht!";
+  }
   // Create ranked list of incorrectly played notes
   const rankedListContainer = document.getElementById('rankedListContainer');
   rankedListContainer.innerHTML = ''; // Clear previous list
