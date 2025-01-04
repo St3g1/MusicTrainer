@@ -312,14 +312,10 @@ function loadOptions() {
   showSummaryCheckbox.checked = JSON.parse(localStorage.getItem("showSummaryCheckbox")) || false;
   pauseInput.value = localStorage.getItem("pauseInput") || "500";
   toleranceInput.value = localStorage.getItem("toleranceInput") || "5";
-  const selectedInstrument = localStorage.getItem("selectedInstrument");
-  if (selectedInstrument) {
-    document.querySelector(`input[name="instrument"][value="${selectedInstrument}"]`).checked = true;
-  }
-  const selectedNoteRange = localStorage.getItem("selectedNoteRange");
-  if (selectedNoteRange) {
-    document.querySelector(`input[name="noteRange"][value="${selectedNoteRange}"]`).checked = true;
-  }
+  const selectedInstrument = localStorage.getItem("selectedInstrument") || "saxTenor";
+  document.querySelector(`input[name="instrument"][value="${selectedInstrument}"]`).checked = true;
+  const selectedNoteRange = localStorage.getItem("selectedNoteRange") || "small";
+  document.querySelector(`input[name="noteRange"][value="${selectedNoteRange}"]`).checked = true;
   showSharpCheckbox.checked = JSON.parse(localStorage.getItem("showSharpCheckbox")) || false;
   showFlatCheckbox.checked = JSON.parse(localStorage.getItem("showFlatCheckbox")) || false;
   noteFilterCheckbox.checked = JSON.parse(localStorage.getItem("noteFilterCheckbox")) || false;
