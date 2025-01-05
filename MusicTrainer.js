@@ -326,7 +326,7 @@ function loadOptions() {
   updateInstrument();
   setSelectedNotes();
   setFilteredNotes();
-  resetWeightedNotes();
+  resetWeightedNoteNames();
 }
 
 // Save options to localStorage
@@ -399,16 +399,16 @@ useBassClefCheckbox.addEventListener('change', () => {
 showSummaryCheckbox.addEventListener('change', () => { saveOptions(); });
 pauseInput.addEventListener('change', () => { saveOptions();});
 toleranceInput.addEventListener('change', () => { saveOptions(); });
-instrumentSaxTenorRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); initNoteStatistics(); resetWeightedNotes(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
-instrumentSaxAltRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); initNoteStatistics(); resetWeightedNotes(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
-instrumentRegularRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); initNoteStatistics(); resetWeightedNotes(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
-showSharpCheckbox.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNotes(); nextNote(); });
-showFlatCheckbox.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNotes(); nextNote(); });
-smallRangeRadio.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNotes(); nextNote(); });
-middleRangeRadio.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNotes(); nextNote(); });
-largeRangeRadio.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNotes(); nextNote(); });
-noteFilterCheckbox.addEventListener('change', () => { noteFilterInput.disabled = !noteFilterCheckbox.checked; saveOptions(); setFilteredNotes(); resetWeightedNotes(); nextNote();}); 
-noteFilterInput.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNotes();}); 
+instrumentSaxTenorRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); initNoteStatistics(); resetWeightedNoteNames(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
+instrumentSaxAltRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); initNoteStatistics(); resetWeightedNoteNames(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
+instrumentRegularRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); initNoteStatistics(); resetWeightedNoteNames(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
+showSharpCheckbox.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNoteNames(); nextNote(); });
+showFlatCheckbox.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNoteNames(); nextNote(); });
+smallRangeRadio.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNoteNames(); nextNote(); });
+middleRangeRadio.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNoteNames(); nextNote(); });
+largeRangeRadio.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNoteNames(); nextNote(); });
+noteFilterCheckbox.addEventListener('change', () => { noteFilterInput.disabled = !noteFilterCheckbox.checked; saveOptions(); setFilteredNotes(); resetWeightedNoteNames(); nextNote();}); 
+noteFilterInput.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNoteNames();}); 
 burgerMenu.addEventListener('click', () => {optionContainer.classList.toggle('active');});
 document.addEventListener('click', (event) => { //close option dialog if clicked outside
   if (!optionContainer.contains(event.target) && !burgerMenu.contains(event.target)) {
@@ -483,8 +483,13 @@ function status(text) {
   document.getElementById('status').innerHTML = text;
 }
 
+function debug(text) {
+  document.getElementById('debugMsg').style.display = 'block';
+  document.getElementById('debugMsg').innerHTML = document.getElementById('debugMsg').innerHTML + "<br>=============================<br>" + text;
+}
+
 //--------------- NOTE SELECTION ------------------------------
-var notesSelected = []; //ToDo: Correct?
+var notesSelected = []; 
 
 function setSelectedNotes() {   
   notesSelected = getSelectedNotes();
@@ -538,13 +543,6 @@ function initNoteStatistics() {
   notesSelected.forEach(note => {
     noteStatistics[note.name] = { correct: 0, incorrect: 0 };
   });
-}
-
-// Filter notes and select a random note from this list
-function getNextNote() {
-  let notes = notesWeighted;
-  if(currentNote && notes.length > 1){notes = notes.filter(note => !note.name.includes(currentNote.name));} //don't use the same note
-  return notes[Math.floor(Math.random() * notes.length)]; //Randomize result
 }
 
 // Show the next note
@@ -867,7 +865,7 @@ function checkNote(detectedFrequency) {
       const correct = Math.abs(frequencyDifference) < parseInt(toleranceInput.value); // Allow small tolerance
       if (correct) { //CORRECT
         if(!toneWeighted){
-          updateWeightedNotes(currentNote, "decrement");
+          updateWeightedNoteNames(currentNote.name, "decrement");
           noteStatistics[currentNote.name].correct++;
         }
         correctNotePlayed = true; 
@@ -882,7 +880,7 @@ function checkNote(detectedFrequency) {
           if(closestNoteName === currentNote.name){sign(frequencyDifference) === 1 ? closestNoteName = closestNoteName + "+" : closestNoteName = "-" + closestNoteName;} 
           status("<span class='message-red'>Du hast den Ton <b>" + closestNoteName + "</b> gespielt!</span>" + (showNoteNameCheckbox.checked ? " Gewünschter Ton ist <b>" + currentNote.name + "</b>." : " Versuche es noch einmal!"));
           if(!toneWeighted){
-            updateWeightedNotes(currentNote, "increment");
+            updateWeightedNoteNames(currentNote.name, "increment");
             noteStatistics[currentNote.name].incorrect++;
           }
           highlightNote(false);
@@ -916,24 +914,28 @@ function getClosestNoteName(frequency) {
   return closestNote.name;
 }
 
-var notesWeighted = [];
-// Update the probability of notes, limiting max same entries to 3 and keep at least one entry
-function updateWeightedNotes(note, type) {
-  return null; //has a problem
-  const noteCount = notesWeighted.filter(item => item === note).length;
+noteNamesWeighted = [];
+function resetWeightedNoteNames(){
+  noteNamesWeighted = notesFiltered.map(note => note.name); //get note names from list of notes
+}
+
+function updateWeightedNoteNames(noteName, type) {
+  const noteCount = noteNamesWeighted.filter(item => item === noteName).length;
   if (type === "increment" && noteCount < 3) {
-    notesWeighted.push(note);
-  } else if (type === "decrement" && noteCount > 0) {
-    const index = notesWeighted.findIndex(item => item === note);
-    if (index !== -1) {
-      notesWeighted.splice(index, 1);
-    }
+    noteNamesWeighted.push(noteName);
+  } else if (type === "decrement" && noteCount > 1) {
+    const index = noteNamesWeighted.findIndex(item => item === noteName);
+    noteNamesWeighted.splice(index, 1);
   }
   toneWeighted = true; // Only weight a tone as correct/incorrect once per proposed note (gets reset with nextNote())
 }
 
-function resetWeightedNotes(){
-  notesWeighted = notesFiltered;
+function getNextNote() {
+  let noteNames = noteNamesWeighted;
+  if(currentNote && noteNames.length > 1){noteNames = noteNames.filter(noteName => !noteName.includes(currentNote.name));} //don't use the same note
+  const nextNoteName = noteNames[Math.floor(Math.random() * noteNames.length)]; //Randomize result
+  const nextNote = notesFiltered.find(note => note.name === nextNoteName);
+  return nextNote;
 }
 
 /*----------------------- STATISTICS -------------------------------*/
@@ -981,7 +983,8 @@ function showSummary() {
   const sortedNotes = Object.entries(noteStatistics)
     .filter(([name, stats]) => stats.incorrect > 0)
     .sort((a, b) => b[1].incorrect - a[1].incorrect);
-  sortedNotes.forEach(([name, stats]) => {
+  const top3IncorrectNotes = sortedNotes.slice(0, 3);
+  top3IncorrectNotes.forEach(([name, stats]) => {
     const listItem = document.createElement('li');
     listItem.textContent = `${name}`;
     rankedList.appendChild(listItem);
