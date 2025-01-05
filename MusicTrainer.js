@@ -542,7 +542,7 @@ function initNoteStatistics() {
 
 // Filter notes and select a random note from this list
 function getNextNote() {
-  let notes = weightedNotes;
+  let notes = notesWeighted;
   if(currentNote && notes.length > 1){notes = notes.filter(note => !note.name.includes(currentNote.name));} //don't use the same note
   return notes[Math.floor(Math.random() * notes.length)]; //Randomize result
 }
@@ -694,12 +694,7 @@ async function loadMp3(note) {
 }
 
 function playAllNotes(notes) {
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  if (audioContext.state === 'suspended') {
-    audioContext.resume();
-  }
+  enableAudioContextIfRequired();
   let index = 0;
   function playNextNote() {
     if (index < notes.length) {
@@ -710,6 +705,15 @@ function playAllNotes(notes) {
     }
   }
   playNextNote();
+}
+
+function enableAudioContextIfRequired() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioContext.state === 'suspended') {
+    audioContext.resume();
+  }
 }
 
 /*----------------------- TONE DETECTION with neuronal network -------------------------------*/
@@ -737,12 +741,7 @@ function stopToneDetection() {
 }
 
 function initAudio() {
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  if (audioContext.state === 'suspended') {
-    audioContext.resume();
-  }
+  enableAudioContextIfRequired()
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ audio: true })
@@ -917,24 +916,24 @@ function getClosestNoteName(frequency) {
   return closestNote.name;
 }
 
-var weightedNotes = [];
+var notesWeighted = [];
 // Update the probability of notes, limiting max same entries to 3 and keep at least one entry
 function updateWeightedNotes(note, type) {
   return null; //has a problem
-  const noteCount = weightedNotes.filter(item => item === note).length;
+  const noteCount = notesWeighted.filter(item => item === note).length;
   if (type === "increment" && noteCount < 3) {
-    weightedNotes.push(note);
+    notesWeighted.push(note);
   } else if (type === "decrement" && noteCount > 0) {
-    const index = weightedNotes.findIndex(item => item === note);
+    const index = notesWeighted.findIndex(item => item === note);
     if (index !== -1) {
-      weightedNotes.splice(index, 1);
+      notesWeighted.splice(index, 1);
     }
   }
   toneWeighted = true; // Only weight a tone as correct/incorrect once per proposed note (gets reset with nextNote())
 }
 
 function resetWeightedNotes(){
-  weightedNotes = notesFiltered;
+  notesWeighted = notesFiltered;
 }
 
 /*----------------------- STATISTICS -------------------------------*/
