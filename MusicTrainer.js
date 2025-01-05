@@ -2,8 +2,9 @@
  ToDo:
  - StartButton should be temporarily disabled until access to micro has been granted
  - No tone should be played until the micro dialog has been accepted (not technically...but from a user-interaction)
- - weighted algorithm needs more work
- - piano tones do not seem to match
+ - If a new note is proposed we discard all invalid notes until silence has been deteced
+ - or we do not accept the old noteName to be applied for the next node
+ - 
 */
  
 const allNotes_regular = [
@@ -549,6 +550,7 @@ function initNoteStatistics() {
 function nextNote() {
   noteEllipse.setAttribute("fill", "black"); // Reset note color after delay
   triedOnce = false;
+  silenceOnce = false;
   toneWeighted = false; //Only weight a tone as correct/incorrect once per proposed note
   correctNotePlayed = false; // Reset the flag for the next note
   currentNote = getNextNote();
@@ -856,6 +858,8 @@ var correctNotePlayed = false;
 var pauseTimeout;
 var triedOnce = false;
 var toneWeighted = false;
+var silenceOnce = false;
+var toneNamePrevious = null;
 function checkNote(detectedFrequency) {
   if (currentNote) {
     if (detectedFrequency) {
@@ -871,12 +875,13 @@ function checkNote(detectedFrequency) {
         correctNotePlayed = true; 
         status("<span class='message-green'>Gut gemacht! Du hast den Ton <b>" + closestNoteName + "</b> gespielt.</span>");
         highlightNote(true);
+        toneNamePrevious = currentNote.name;
         clearTimeout(pauseTimeout); // Clear any existing timeout
         pauseTimeout = setTimeout(() => {
           nextNote(); // Suggest a new note after the pause
         }, parseInt(pauseInput.value));
-      } else { //INCORRECT
-        if (!correctNotePlayed) { //only update statistics if no correct played tone was detected
+      } else { //INCORRECT          
+        if (!correctNotePlayed && (closestNoteName != toneNamePrevious)) { //if a tone was played correctly, discard any wrong notes after that. We enforce different proposed notes so will discard a previous note played again.
           if(closestNoteName === currentNote.name){sign(frequencyDifference) === 1 ? closestNoteName = closestNoteName + "+" : closestNoteName = "-" + closestNoteName;} 
           status("<span class='message-red'>Du hast den Ton <b>" + closestNoteName + "</b> gespielt!</span>" + (showNoteNameCheckbox.checked ? " Gewünschter Ton ist <b>" + currentNote.name + "</b>." : " Versuche es noch einmal!"));
           if(!toneWeighted){
@@ -893,6 +898,7 @@ function checkNote(detectedFrequency) {
         status("<span class='message-red'>Spiele den angegebenen Ton!" + (showNoteNameCheckbox.checked ? "</span> Gewünschter Ton ist <b>" + currentNote.name + ".</b>" : "</span>"));
       }  
       silence = true; // triggers a new checking interval
+      silenceOnce = true;
     }
   }
 }
