@@ -920,6 +920,7 @@ function getClosestNoteName(frequency) {
 var weightedNotes = [];
 // Update the probability of notes, limiting max same entries to 3 and keep at least one entry
 function updateWeightedNotes(note, type) {
+  return null; //has a problem
   const noteCount = weightedNotes.filter(item => item === note).length;
   if (type === "increment" && noteCount < 3) {
     weightedNotes.push(note);
