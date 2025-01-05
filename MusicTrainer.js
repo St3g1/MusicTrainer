@@ -550,7 +550,8 @@ function initNoteStatistics() {
 function nextNote() {
   noteEllipse.setAttribute("fill", "black"); // Reset note color after delay
   triedOnce = false;
-  silenceOnce = false;
+  decayTimeoutReached = false; // Reset decay timeout flag
+  setTimeout(() => {decayTimeoutReached = true;}, 3000); // Set decay timeout to 3 seconds, until the previous note is detected as incorrect
   toneWeighted = false; //Only weight a tone as correct/incorrect once per proposed note
   correctNotePlayed = false; // Reset the flag for the next note
   currentNote = getNextNote();
@@ -858,7 +859,7 @@ var correctNotePlayed = false;
 var pauseTimeout;
 var triedOnce = false;
 var toneWeighted = false;
-var silenceOnce = false;
+var decayTimeoutReached = false;
 var toneNamePrevious = null;
 function checkNote(detectedFrequency) {
   if (currentNote) {
@@ -881,7 +882,7 @@ function checkNote(detectedFrequency) {
           nextNote(); // Suggest a new note after the pause
         }, parseInt(pauseInput.value));
       } else { //INCORRECT          
-        if (!correctNotePlayed && (closestNoteName != toneNamePrevious)) { //if a tone was played correctly, discard any wrong notes after that. We enforce different proposed notes so will discard a previous note played again.
+        if (!correctNotePlayed && ((closestNoteName != toneNamePrevious) || decayTimeoutReached)) { //if a tone was played correctly, discard any wrong notes after that. We enforce different proposed notes so will discard a previous note played again.
           if(closestNoteName === currentNote.name){sign(frequencyDifference) === 1 ? closestNoteName = closestNoteName + "+" : closestNoteName = "-" + closestNoteName;} 
           status("<span class='message-red'>Du hast den Ton <b>" + closestNoteName + "</b> gespielt!</span>" + (showNoteNameCheckbox.checked ? " Gewünschter Ton ist <b>" + currentNote.name + "</b>." : " Versuche es noch einmal!"));
           if(!toneWeighted){
@@ -898,7 +899,6 @@ function checkNote(detectedFrequency) {
         status("<span class='message-red'>Spiele den angegebenen Ton!" + (showNoteNameCheckbox.checked ? "</span> Gewünschter Ton ist <b>" + currentNote.name + ".</b>" : "</span>"));
       }  
       silence = true; // triggers a new checking interval
-      silenceOnce = true;
     }
   }
 }
