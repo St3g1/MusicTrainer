@@ -315,6 +315,7 @@ function loadOptions() {
   showSummaryCheckbox.checked = JSON.parse(localStorage.getItem("showSummaryCheckbox")) || false;
   pauseInput.value = localStorage.getItem("pauseInput") || "500";
   toleranceInput.value = localStorage.getItem("toleranceInput") || "5";
+//  languageSelector.value = localStorage.getItem("languageSelector") || "Deutsch";
   const selectedInstrument = localStorage.getItem("selectedInstrument") || "saxTenor";
   document.querySelector(`input[name="instrument"][value="${selectedInstrument}"]`).checked = true;
   const selectedNoteRange = localStorage.getItem("selectedNoteRange") || "small";
@@ -338,6 +339,7 @@ function saveOptions() {
   localStorage.setItem("showSummaryCheckbox", JSON.stringify(showSummaryCheckbox.checked));
   localStorage.setItem("pauseInput", pauseInput.value);
   localStorage.setItem("toleranceInput", toleranceInput.value);
+//  localStorage.setItem("languageSelector", languageSelector.value);
   localStorage.setItem("selectedInstrument", document.querySelector('input[name="instrument"]:checked').value);
   localStorage.setItem("selectedNoteRange", document.querySelector('input[name="noteRange"]:checked').value);
   localStorage.setItem("showSharpCheckbox", JSON.stringify(showSharpCheckbox.checked));
@@ -361,6 +363,7 @@ const useBassClefCheckbox = document.getElementById("useBassClefCheckbox");
 const showSummaryCheckbox = document.getElementById("showSummaryCheckbox");
 const pauseInput = document.getElementById("pauseInput");
 const toleranceInput = document.getElementById("toleranceInput");
+const languageSelector = document.getElementById("languageSelector");
 const instrumentSaxTenorRadio = document.getElementById("instrumentSaxTenorRadio");
 const instrumentSaxAltRadio = document.getElementById("instrumentSaxAltRadio");
 const instrumentRegularRadio = document.getElementById("instrumentRegularRadio");
@@ -1005,3 +1008,141 @@ document.getElementById('closeButton').addEventListener('click', () => {
   document.getElementById('statisticsDialog').style.display = 'none';
   location.reload();
 });
+
+/*----------------------- LANGUAGE -------------------------------*/
+
+document.getElementById('languageSelector').addEventListener('change', (event) => {
+  setLanguage(event.target.value);
+  updateTexts(); // Update all texts based on the new language
+});
+
+// Tobi: Todo - we stopped here - no longer showing fields...
+function updateTexts() {
+  document.getElementById('title').textContent = getMessage('main', 'title');
+  document.getElementById('instruction').innerHTML = getMessage('main', 'instruction', { instrument: document.getElementById('instrumentName').textContent });
+  document.getElementById('showNoteNameCheckboxLabel').textContent = getMessage('main', 'showNoteNameCheckbox');
+  document.getElementById('playNoteCheckboxLabel').textContent = getMessage('main', 'playNoteCheckbox');
+  document.getElementById('useBassClefCheckboxLabel').textContent = getMessage('main', 'useBassClefCheckbox');
+  document.getElementById('showSummaryCheckboxLabel').textContent = getMessage('main', 'showSummaryCheckbox');
+  document.getElementById('pauseInputLabel').textContent = getMessage('main', 'pauseInput');
+  document.getElementById('toleranceInputLabel').textContent = getMessage('main', 'toleranceInput');
+  document.getElementById('instrumentSaxTenorRadioLabel').textContent = getMessage('main', 'instrumentSaxTenorRadio');
+  document.getElementById('instrumentSaxAltRadioLabel').textContent = getMessage('main', 'instrumentSaxAltRadio');
+  document.getElementById('instrumentRegularRadioLabel').textContent = getMessage('main', 'instrumentRegularRadio');
+  document.getElementById('smallRangeRadioLabel').textContent = getMessage('main', 'smallRangeRadio');
+  document.getElementById('middleRangeRadioLabel').textContent = getMessage('main', 'middleRangeRadio');
+  document.getElementById('largeRangeRadioLabel').textContent = getMessage('main', 'largeRangeRadio');
+  document.getElementById('noteFilterCheckboxLabel').textContent = getMessage('main', 'noteFilterCheckbox');
+  document.getElementById('showSharpCheckboxLabel').textContent = getMessage('main', 'showSharpCheckbox');
+  document.getElementById('showFlatCheckboxLabel').textContent = getMessage('main', 'showFlatCheckbox');
+  document.getElementById('languageSelectorLabel').textContent = getMessage('main', 'languageSelector');
+  document.querySelector('.option-container h2').textContent = getMessage('main', 'optionsTitle');
+//  document.querySelector('.option-heading.instrument-tuning').textContent = getMessage('main', 'instrumentTuning');
+//  document.querySelector('.option-heading.note-range').textContent = getMessage('main', 'noteRange');
+//  document.querySelector('.option-heading.accidentals').textContent = getMessage('main', 'accidentals');
+  document.getElementById('startButton').textContent = getMessage('main', 'startButton');
+  document.getElementById('stopButton').textContent = getMessage('main', 'stopButton');
+  document.getElementById('summaryHeading').textContent = getMessage('summary', 'summaryHeading');
+  document.getElementById('summaryMessage').textContent = getMessage('summary', 'summaryMessage');
+  document.getElementById('closeButton').textContent = getMessage('summary', 'closeButton');
+}
+
+let currentLanguage = 'de'; // Default language is German
+
+function setLanguage(language) {
+  currentLanguage = language;
+  updateTexts();
+}
+
+function getMessage(group, key, replacements = {}) {
+  let message = messages[currentLanguage][group][key];
+  for (const [placeholder, value] of Object.entries(replacements)) {
+    message = message.replace(`{${placeholder}}`, value);
+  }
+  return message;
+}
+
+const messages = {
+  en: {
+    messages: {
+      correct: "Well done! You played the note <b>{note}</b>.",
+      incorrect: "You played the note <b>{note}</b>! {desiredNote}",
+      desiredNote: "Desired note is <b>{note}</b>.",
+      playNote: "Play the given note! {desiredNote}",
+      topIncorrectNotes: "Top 3 Incorrect Notes"
+    },
+    main: {
+      title: "Sabine's Note Trainer",
+      instruction: "Play the note on the <span id=\"instrumentName\">{instrument}</span>:",
+      showNoteNameCheckbox: "Show Note Names",
+      playNoteCheckbox: "Play Note",
+      useBassClefCheckbox: "Activate Bass Clef",
+      showSummaryCheckbox: "Show Summary",
+      pauseInput: "Pause",
+      toleranceInput: "Tolerance (Hz)",
+      instrumentSaxTenorRadio: "Tenor Sax",
+      instrumentSaxAltRadio: "Alto Sax",
+      instrumentRegularRadio: "Piano",
+      smallRangeRadio: "Small",
+      middleRangeRadio: "Middle",
+      largeRangeRadio: "Large",
+      noteFilterCheckbox: "Note Filter",
+      noteFilterInput: "Filter Notes",
+      showSharpCheckbox: "Activate ♯",
+      showFlatCheckbox: "Activate ♭",
+      languageSelector: "Language",
+      optionsTitle: "Options",
+      instrumentTuning: "Instrument Tuning",
+      noteRange: "Note Range",
+      accidentals: "Accidentals",
+      startButton: "Start",
+      stopButton: "Stop"
+    },
+    summary: {
+      summaryHeading: "Summary",
+      summaryMessage: "Notes you should practice:",
+      closeButton: "Close"
+    }
+  },
+  de: {
+    messages: {
+      correct: "Gut gemacht! Du hast den Ton <b>{note}</b> gespielt.",
+      incorrect: "Du hast den Ton <b>{note}</b> gespielt! {desiredNote}",
+      desiredNote: "Gewünschter Ton ist <b>{note}</b>.",
+      playNote: "Spiele den angegebenen Ton! {desiredNote}",
+      topIncorrectNotes: "Top 3 falsche Noten"
+    },
+    main: {
+      title: "Sabines Noten Trainer",
+      instruction: "Spiele den Ton auf dem <span id=\"instrumentName\">{instrument}</span>:",
+      showNoteNameCheckbox: "Zeige Notennamen",
+      playNoteCheckbox: "Spiele Ton",
+      useBassClefCheckbox: "Aktiviere Bassschlüssel",
+      showSummaryCheckbox: "Zeige Zusammenfassung",
+      pauseInput: "Pause",
+      toleranceInput: "Toleranz (Hz)",
+      instrumentSaxTenorRadio: "Tenor Saxophon",
+      instrumentSaxAltRadio: "Alt Saxophon",
+      instrumentRegularRadio: "Klavier",
+      smallRangeRadio: "Klein",
+      middleRangeRadio: "Mittel",
+      largeRangeRadio: "Groß",
+      noteFilterCheckbox: "Noten Filter",
+      noteFilterInput: "Noten filtern",
+      showSharpCheckbox: "Aktiviere ♯",
+      showFlatCheckbox: "Aktiviere ♭",
+      languageSelector: "Sprache",
+      optionsTitle: "Optionen",
+      instrumentTuning: "Instrumenten Stimmung",
+      noteRange: "Notenraum",
+      accidentals: "Vorzeichen",
+      startButton: "Start",
+      stopButton: "Stopp"
+    },
+    summary: {
+      summaryHeading: "Zusammenfassung",
+      summaryMessage: "Noten, die Du noch üben solltest:",
+      closeButton: "Schließen"
+    }
+  }
+};

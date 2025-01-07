@@ -73,10 +73,10 @@ body {
 .option-container label {
   display: block; /* Forces a line break after each label */
   margin-bottom: 5px; /* Adds some space between the checkboxes */
-  margin-right: 10px;
+  margin-right: 7px; /*Space: [x] text <=> [x] */ 
 }
 .option-container label input {
-  margin-right: 10px; /* Add some space between the checkbox and the text */ 
+  margin-right: 5px; /*Space: [x] <=> text*/ 
 }
 .option-container .checkbox-text label {
   display: flex;
@@ -97,6 +97,14 @@ body {
   font-weight: bold; /* Make the section titles bold */
   margin-top: 15px; /* Increase the top margin to create more space */
   margin-bottom: 5px; /* Increase the top margin to create more space */
+}
+.options-radio-one-line {
+  display: flex;
+  gap: 5px; /* Optional: Abstand zwischen den Optionen */
+}
+.options-radio-one-line label {
+  display: flex;
+  align-items: center;
 }
 
 /*------------- STAFF ------------------*/

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=0.8">
@@ -13,7 +13,7 @@
   <link rel="manifest" href="site.webmanifest">
 </head>
 <body>
-  <h1>Sabine's Noten Trainer</h1>
+  <h1 id="title">Sabine's Noten Trainer</h1>
   <p id="instruction" style="visibility: hidden; opacity: 0;">Spiele den Ton auf dem <span id="instrumentName">Saxophon</span>:</p>
   <div class="container">
     <!--------------- BURGER MENU ------------------>
@@ -23,39 +23,44 @@
     <!--------------- OPTIONS ------------------>
     <div class="option-container" id="optionContainer">
       <h2>Optionen</h2>
-      <label title="Zeigt den Notennamen an."><input type="checkbox" id="showNoteNameCheckbox">Zeige Notennamen</label>
-      <label title="Spielt kurz den neu vorgeschlagenen Ton ab."><input type="checkbox" id="playNoteCheckbox">Spiele Ton</label>
-      <label title="Wechselt bei Bedarf in den Bassschlüssel."><input type="checkbox" id="useBassClefCheckbox">Aktiviere <b>𝄢</b></label>
-      <label><input type="checkbox" id="showSummaryCheckbox">Zeige Zusammenfassung</label>
-      <div class="checkbox-text" title="Gibt die Pause (in Milli-Sekunden) zwischen einem erfolgreichen und neue vorgeschlagen Ton an.">
-        <label>Pause:
-        <input type="text" id="pauseInput" value="1000"></label>
+      <label id="showNoteNameCheckboxLabel" title="Zeigt den Notennamen an."><input type="checkbox" id="showNoteNameCheckbox">Zeige Notennamen</label>
+      <label id="playNoteCheckboxLabel" title="Spielt kurz den neu vorgeschlagenen Ton ab."><input type="checkbox" id="playNoteCheckbox">Spiele Ton</label>
+      <label id="useBassClefCheckboxLabel" title="Wechselt bei Bedarf in den Bassschlüssel."><input type="checkbox" id="useBassClefCheckbox">Aktiviere <b>𝄢</b></label>
+      <label id="showSummaryCheckboxLabel"><input type="checkbox" id="showSummaryCheckbox">Zeige Zusammenfassung</label>
+      <div id="showSummaryCheckboxDiv" class="checkbox-text" title="Gibt die Pause (in Milli-Sekunden) zwischen einem erfolgreichen und neue vorgeschlagen Ton an.">
+        <label id="pauseInputLabel">Pause:<input type="text" id="pauseInput" value="1000"></label>
       </div>
-      <div class="checkbox-text" title="Erlaubt bei der Ton-Erkennung die angegebene Abweichung in Hertz.">
-        <label>Toleranz (Hertz):
-        <input type="text" id="toleranceInput" value="5"></label>
+      <div id="toleranceInputDiv" class="checkbox-text" title="Erlaubt bei der Ton-Erkennung die angegebene Abweichung in Hertz.">
+        <label id="toleranceInputLabel">Toleranz (Hertz): <input type="text" id="toleranceInput" value="5"></label>
       </div>
-      <div class="option-heading">Instrumenten Stimmung:</div>
+      <!-- <div class="checkbox-text">
+        <label id="languageSelectorLabel" for="languageSelector">Sprache</label>
+        <select id="languageSelector">
+          <option value="en">English</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </div> -->
+      <div id="instrumentTuningDiv" class="option-heading">Instrumenten Stimmung:</div>
+      <div class="options-radio-one-line">
+        <label id="instrumentSaxTenorRadioLabel" title="Das Tenorsaxophon notiert eine große None (14 Halbtöne) höher als klingend und ist damit in B gestimmt."><input type="radio" name="instrument" id="instrumentSaxTenorRadio" value="saxTenor">Tenor Sax</label>
+        <label id="instrumentSaxAltRadioLabel" title="Das Altsaxophon notiert eine große Sexte (9 Halbtöne) höher als klingend und ist damit in Es gestimmt."><input type="radio" name="instrument" id="instrumentSaxAltRadio" value="saxAlt">Alt Sax</label>
+        <label id="instrumentRegularRadioLabel" title="Die meisten Instrumente notieren wie klingend."><input type="radio" name="instrument" id="instrumentRegularRadio" value="regular" checked>Klavier</label>
+      </div>
+      <div id="noteRangeHeadingDiv" class="option-heading">Notenraum:</div>
+      <div class="options-radio-one-line">
+        <label id="smallRangeRadioLabel"><input type="radio" name="noteRange" id="smallRangeRadio" value="small" checked>Klein</label>
+        <label id="middleRangeRadioLabel"><input type="radio" name="noteRange" id="middleRangeRadio" value="middle">Mittel</label>
+        <label id="largeRangeRadioLabel"><input type="radio" name="noteRange" id="largeRangeRadio" value="large">Groß</label>
+      </div>
+      <div id="notFilterCheckboxDiv" class="checkbox-text" title="Alle mit den Buchstaben in der Liste übereinstimmenden Töne werden ausgewählt.">
+        <label id="noteFilterCheckboxLabel"><input type="checkbox" id="noteFilterCheckbox" >Noten Filter: 
+        <input type="text" id="noteFilterInput" value="C D E F G A H" ></label>
+      </div>
+    <div id="accidentalsDiv" class="option-heading">Vorzeichen:</div>
       <div>
-        <label title="Das Tenorsaxophon notiert eine große None (14 Halbtöne) höher als klingend und ist damit in B gestimmt."><input type="radio" name="instrument" id="instrumentSaxTenorRadio" value="saxTenor">Tenor Saxophon</label>
-        <label title="Das Altsaxophon notiert eine große Sexte (9 Halbtöne) höher als klingend und ist damit in Es gestimmt."><input type="radio" name="instrument" id="instrumentSaxAltRadio" value="saxAlt">Alt Saxophon</label>
-        <label title="Die meisten Instrumente notieren wie klingend."><input type="radio" name="instrument" id="instrumentRegularRadio" value="regular" checked>Klavier/Gitarre </label>
+        <label id="showSharpCheckboxLabel"><input type="checkbox" id="showSharpCheckbox">Aktiviere <b>♯</b></label>
+        <label id="showFlatCheckboxLabel"><input type="checkbox" id="showFlatCheckbox">Aktiviere <b>♭</bb></label>
       </div>
-      <div class="option-heading">Notenraum:</div>
-      <div>
-        <label><input type="radio" name="noteRange" id="smallRangeRadio" value="small" checked>Klein</label>
-        <label><input type="radio" name="noteRange" id="middleRangeRadio" value="middle">Mittel</label>
-        <label><input type="radio" name="noteRange" id="largeRangeRadio" value="large">Groß</label>
-        <div class="checkbox-text" title="Alle mit den Buchstaben in der Liste übereinstimmenden Töne werden ausgewählt.">
-          <label><input type="checkbox" id="noteFilterCheckbox" >Noten Filter: 
-          <input type="text" id="noteFilterInput" value="C D E F G A H" ></label>
-        </div>
-      </div>
-      <div class="option-heading">Vorzeichen:</div>
-      <div>
-        <label><input type="checkbox" id="showSharpCheckbox">Aktiviere <b>♯</b></label>
-        <label><input type="checkbox" id="showFlatCheckbox">Aktiviere <b>♭</bb></label>
-      </div>    
     </div>
     <div class="content">
       <!--------------- SAXOPHONE ------------------>
@@ -90,7 +95,7 @@
   </div>
   <!--------------- STATISTICS ------------------>
   <div id="statisticsDialog">
-    <h2>Zusammenfassung</h2>
+    <h2 id="summaryHeading">Zusammenfassung</h2>
     <div id="chartContainer"></div>
     <h3><div id="summaryMessage">Noten, die Du noch üben solltest:</div></h3>
     <div id="rankedListContainer"></div>
