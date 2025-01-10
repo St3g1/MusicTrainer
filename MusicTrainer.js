@@ -1022,27 +1022,44 @@ function updateTexts() {
   //MAIN GUI
   document.getElementById('title').textContent = getMessage('main', 'title');
   document.getElementById('instruction').innerHTML = getMessage('main', 'instruction', { instrument: document.getElementById('instrumentName').textContent });
+  document.getElementById('startButton').textContent = getMessage('main', 'startButton');
+  document.getElementById('stopButton').textContent = getMessage('main', 'stopButton');
   //OPTIONS
   document.getElementById('optionsTitle').childNodes[0].textContent = getMessage('options', 'optionsTitle');
   document.getElementById('showNoteNameCheckboxLabel').childNodes[1].textContent = getMessage('options', 'showNoteNameCheckbox');
-  document.getElementById('showNoteNameCheckboxLabel').title = getMessage('tooltips', 'showNoteNameCheckboxLabel');  
+  document.getElementById('showNoteNameCheckboxLabel').title = getMessage('tooltips', 'showNoteNameCheckboxLabel');
   document.getElementById('playNoteCheckboxLabel').childNodes[1].textContent = getMessage('options', 'playNoteCheckbox');
+  document.getElementById('playNoteCheckboxLabel').title = getMessage('tooltips', 'playNoteCheckboxLabel');
   document.getElementById('useBassClefCheckboxLabel').childNodes[1].textContent = getMessage('options', 'useBassClefCheckbox');
+  document.getElementById('useBassClefCheckboxLabel').title = getMessage('tooltips', 'useBassClefCheckboxLabel');
   document.getElementById('showSummaryCheckboxLabel').childNodes[1].textContent = getMessage('options', 'showSummaryCheckbox');
+  document.getElementById('showSummaryCheckboxLabel').title = getMessage('tooltips', 'showSummaryCheckboxLabel');
   document.getElementById('pauseInputLabel').childNodes[0].textContent = getMessage('options', 'pauseInput');
+  document.getElementById('pauseInputLabel').title = getMessage('tooltips', 'pauseInputLabel');
   document.getElementById('toleranceInputLabel').childNodes[0].textContent = getMessage('options', 'toleranceInput');
+  document.getElementById('toleranceInputLabel').title = getMessage('tooltips', 'toleranceInputLabel');
   document.getElementById('instrumentSaxTenorRadioLabel').childNodes[1].textContent = getMessage('options', 'instrumentSaxTenorRadio');
+  document.getElementById('instrumentSaxTenorRadioLabel').title = getMessage('tooltips', 'instrumentSaxTenorRadioLabel');
   document.getElementById('instrumentSaxAltRadioLabel').childNodes[1].textContent = getMessage('options', 'instrumentSaxAltRadio');
+  document.getElementById('instrumentSaxAltRadioLabel').title = getMessage('tooltips', 'instrumentSaxAltRadioLabel');
   document.getElementById('instrumentRegularRadioLabel').childNodes[1].textContent = getMessage('options', 'instrumentRegularRadio');
+  document.getElementById('instrumentRegularRadioLabel').title = getMessage('tooltips', 'instrumentRegularRadioLabel');
   document.getElementById('smallRangeRadioLabel').childNodes[1].textContent = getMessage('options', 'smallRangeRadio');
+  document.getElementById('smallRangeRadioLabel').title = getMessage('tooltips', 'smallRangeRadioLabel');
   document.getElementById('middleRangeRadioLabel').childNodes[1].textContent = getMessage('options', 'middleRangeRadio');
+  document.getElementById('middleRangeRadioLabel').title = getMessage('tooltips', 'middleRangeRadioLabel');
   document.getElementById('largeRangeRadioLabel').childNodes[1].textContent = getMessage('options', 'largeRangeRadio');
+  document.getElementById('largeRangeRadioLabel').title = getMessage('tooltips', 'largeRangeRadioLabel');
   document.getElementById('noteFilterCheckboxLabel').childNodes[1].textContent = getMessage('options', 'noteFilterCheckbox');
+  document.getElementById('noteFilterCheckboxLabel').title = getMessage('tooltips', 'noteFilterCheckboxLabel');
   document.getElementById('showSharpCheckboxLabel').childNodes[1].textContent = getMessage('options', 'showSharpCheckbox');
+  document.getElementById('showSharpCheckboxLabel').title = getMessage('tooltips', 'showSharpCheckboxLabel');
   document.getElementById('showFlatCheckboxLabel').childNodes[1].textContent = getMessage('options', 'showFlatCheckbox');
-  document.getElementById('languageSelectorLabel').childNodes[0].textContent = getMessage('options', 'languageSelector');
-  document.getElementById('startButton').textContent = getMessage('main', 'startButton');
-  document.getElementById('stopButton').textContent = getMessage('main', 'stopButton');
+  document.getElementById('showFlatCheckboxLabel').title = getMessage('tooltips', 'showFlatCheckboxLabel');
+  document.getElementById('languageSelectorLabel').textContent = getMessage('options', 'languageSelector');
+  document.getElementById('instrumentTuningDiv').textContent = getMessage('options', 'instrumentTuning');
+  document.getElementById('noteRangeHeadingDiv').textContent = getMessage('options', 'noteRange');
+  document.getElementById('accidentalsDiv').textContent = getMessage('options', 'accidentals');
   //SUMMARY
   document.getElementById('summaryHeading').textContent = getMessage('summary', 'summaryHeading');
   document.getElementById('summaryMessage').textContent = getMessage('summary', 'summaryMessage');
@@ -1103,7 +1120,21 @@ const messages = {
       accidentals: "Accidentals"
     },
     tooltips: {
-      showNoteNameCheckboxLabel: "Shows the note name."
+      showNoteNameCheckboxLabel: "Shows the note name.",
+      playNoteCheckboxLabel: "Plays the newly suggested note briefly.",
+      useBassClefCheckboxLabel: "Switches to bass clef if needed.",
+      showSummaryCheckboxLabel: "Shows a summary.",
+      pauseInputLabel: "Specifies the pause (in milliseconds) between a successful note and the next suggested note.",
+      toleranceInputLabel: "Allows the specified deviation in Hertz for note recognition.",
+      noteFilterCheckboxLabel: "Selects all notes matching the letters in the list.",
+      showSharpCheckboxLabel: "Activates ♯.",
+      showFlatCheckboxLabel: "Activates ♭.",
+      instrumentSaxTenorRadioLabel: "The tenor saxophone is notated a major ninth (14 semitones) higher than it sounds and is therefore tuned in B♭.",
+      instrumentSaxAltRadioLabel: "The alto saxophone is notated a major sixth (9 semitones) higher than it sounds and is therefore tuned in E♭.",
+      instrumentRegularRadioLabel: "Most instruments are notated as they sound.",
+      smallRangeRadioLabel: "Small",
+      middleRangeRadioLabel: "Middle",
+      largeRangeRadioLabel: "Large"
     },
     summary: {
       summaryHeading: "Summary",
@@ -1149,7 +1180,21 @@ const messages = {
       accidentals: "Vorzeichen"
     },
     tooltips: {
-      showNoteNameCheckboxLabel: "Zeigt den Notennamen an."
+      showNoteNameCheckboxLabel: "Zeigt den Notennamen an.",
+      playNoteCheckboxLabel: "Spielt kurz den neu vorgeschlagenen Ton ab.",
+      useBassClefCheckboxLabel: "Wechselt bei Bedarf in den Bassschlüssel.",
+      showSummaryCheckboxLabel: "Zeigt eine Zusammenfassung.",
+      pauseInputLabel: "Gibt die Pause (in Millisekunden) zwischen einem erfolgreichen Ton und dem nächsten vorgeschlagenen Ton an.",
+      toleranceInputLabel: "Erlaubt bei der Ton-Erkennung die angegebene Abweichung in Hertz.",
+      noteFilterCheckboxLabel: "Wählt alle Töne aus, die den Buchstaben in der Liste entsprechen.",
+      showSharpCheckboxLabel: "Aktiviert ♯.",
+      showFlatCheckboxLabel: "Aktiviert ♭.",
+      instrumentSaxTenorRadioLabel: "Das Tenorsaxophon notiert eine große None (14 Halbtöne) höher als klingend und ist damit in B gestimmt.",
+      instrumentSaxAltRadioLabel: "Das Altsaxophon notiert eine große Sexte (9 Halbtöne) höher als klingend und ist damit in Es gestimmt.",
+      instrumentRegularRadioLabel: "Die meisten Instrumente notieren wie klingend.",
+      smallRangeRadioLabel: "Klein",
+      middleRangeRadioLabel: "Mittel",
+      largeRangeRadioLabel: "Groß"
     },
     summary: {
       summaryHeading: "Zusammenfassung",
