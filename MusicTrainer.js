@@ -315,7 +315,7 @@ function loadOptions() {
   showSummaryCheckbox.checked = JSON.parse(localStorage.getItem("showSummaryCheckbox")) || false;
   pauseInput.value = localStorage.getItem("pauseInput") || "500";
   toleranceInput.value = localStorage.getItem("toleranceInput") || "5";
-//  languageSelector.value = localStorage.getItem("languageSelector") || "Deutsch";
+  languageSelector.value = localStorage.getItem("languageSelector") || "Deutsch";
   const selectedInstrument = localStorage.getItem("selectedInstrument") || "saxTenor";
   document.querySelector(`input[name="instrument"][value="${selectedInstrument}"]`).checked = true;
   const selectedNoteRange = localStorage.getItem("selectedNoteRange") || "small";
@@ -325,6 +325,7 @@ function loadOptions() {
   noteFilterCheckbox.checked = JSON.parse(localStorage.getItem("noteFilterCheckbox")) || false;
   noteFilterInput.value = localStorage.getItem("noteFilterInput") || "C D E F G A H";
   noteFilterInput.disabled = !noteFilterCheckbox.checked;
+  setLanguage(languageSelector.value); //also calls setTexts()
   updateInstrument();
   setSelectedNotes();
   setFilteredNotes();
@@ -339,7 +340,7 @@ function saveOptions() {
   localStorage.setItem("showSummaryCheckbox", JSON.stringify(showSummaryCheckbox.checked));
   localStorage.setItem("pauseInput", pauseInput.value);
   localStorage.setItem("toleranceInput", toleranceInput.value);
-//  localStorage.setItem("languageSelector", languageSelector.value);
+  localStorage.setItem("languageSelector", languageSelector.value);
   localStorage.setItem("selectedInstrument", document.querySelector('input[name="instrument"]:checked').value);
   localStorage.setItem("selectedNoteRange", document.querySelector('input[name="noteRange"]:checked').value);
   localStorage.setItem("showSharpCheckbox", JSON.stringify(showSharpCheckbox.checked));
@@ -379,7 +380,6 @@ const noteEllipse = document.getElementById("noteEllipse");
 const burgerMenu = document.getElementById('burgerMenu');
 const optionContainer = document.getElementById('optionContainer');
 const instrumentImage = document.getElementById('instrumentImage');
-const instrumentName = document.getElementById('instrumentName');
 const instruction = document.getElementById('instruction'); 
 
 let currentNote = null;
@@ -414,7 +414,7 @@ middleRangeRadio.addEventListener('change', () => { saveOptions(); setFilteredNo
 largeRangeRadio.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNoteNames(); nextNote(); });
 noteFilterCheckbox.addEventListener('change', () => { noteFilterInput.disabled = !noteFilterCheckbox.checked; saveOptions(); setFilteredNotes(); resetWeightedNoteNames(); nextNote();}); 
 noteFilterInput.addEventListener('change', () => { saveOptions(); setFilteredNotes(); resetWeightedNoteNames();}); 
-burgerMenu.addEventListener('click', () => {optionContainer.classList.toggle('active');});
+burgerMenu.addEventListener('click', () => {optionContainer.classList.toggle('active'); updateTexts();});
 document.addEventListener('click', (event) => { //close option dialog if clicked outside
   if (!optionContainer.contains(event.target) && !burgerMenu.contains(event.target)) {
     optionContainer.classList.remove('active');
@@ -452,31 +452,32 @@ function setOptionEnableState(state){ //no longer in use
 
 function handleButtons(){
   if(!running){
-    startButton.textContent = "Weiter"; // Change button text to "Weiter"
+    startButton.textContent = getMessage("main", "continue"); // Change button text to "Weiter"
     startButton.style.backgroundColor = "gray"; // Change button color to gray
     stopButton.style.display = "block";
   } else {
-    startButton.textContent = "Start"; // Change button text to "Weiter"
+    startButton.textContent = getMessage("main", "startButton"); // Change button text to "Start"
     startButton.style.backgroundColor = "green"; // Change button color to gray
     stopButton.style.display = "none";
   }  
 }
 
 function updateInstrument() {
+  instruction.style.visibility = 'visible'; 
+  instruction.style.opacity = '1';
+  const instrumentName = document.getElementById('instrumentName');
   if (instrumentSaxTenorRadio.checked) {
     instrumentImage.src = 'images/saxTenor.png';
-    instrumentName.textContent = 'Tenor Saxophon';
+    instrumentName.innerHTML = getMessage("options", "instrumentSaxTenorRadio"); 
   } else if (instrumentSaxAltRadio.checked) {
     instrumentImage.src = 'images/saxAlt.png';
-    instrumentName.textContent = 'Alt Saxophon';
+    instrumentName.innerHTML = getMessage("options", "instrumentSaxAltRadio"); 
   } else {
     instrumentImage.src = 'images/piano.png';
-    instrumentName.textContent = 'Klavier';
+    instrumentName.innerHTML = getMessage("options", "instrumentRegularRadio"); 
   }
   instrumentImage.style.visibility = 'visible'; 
   instrumentImage.style.opacity = '1';
-  instruction.style.visibility = 'visible'; 
-  instruction.style.opacity = '1';
 }
 
 function error(text) {
@@ -663,6 +664,7 @@ function playTone(note) {
 let currentSource = null; // Variable to keep track of the currently playing source
 async function playMp3(note) {
   if(!(playNoteCheckbox.checked && note)){return null;} //don't play if checkbox is not checked or note is not defined
+  enableAudioContextIfRequired();
   try {
     if (currentSource) {currentSource.stop(); currentSource = null;} // Stop the currently playing source if it exists
     const audioBuffer = await loadMp3(note);
@@ -677,7 +679,7 @@ async function playMp3(note) {
     source.onended = () => {currentSource = null;};
     currentSource = source; // Update the current source
   } catch (error) {
-    console.error('Error playing MP3:', error);
+    console.log('Error playing MP3:', error);
   }
 }
 
@@ -693,7 +695,7 @@ async function loadMp3(note) {
     return audioBuffer;
   } catch (error) {
     playTone(note); //fallback to oscillator if mp3 is not defined
-    console.error('Error loading MP3:', error);
+    console.log('Error loading MP3:', error);
     return null;
   }
 }
@@ -770,7 +772,7 @@ function initAudio() {
 }
 
 function handleAudio(stream){
-  status('Aktiviere Mikrofon und initialisiere Notenerkennung...');
+  status(getMessage("messages", "activating"));
   console.log('Audio context sample rate = ' + audioContext.sampleRate);
   const mic = audioContext.createMediaStreamSource(stream);
   // We need the buffer size that is a power of two and is longer than 1024 samples when resampled to 16000 Hz.
@@ -788,15 +790,15 @@ function handleAudio(stream){
   scriptNode.connect(gain);
   gain.connect(audioContext.destination);
   if (audioContext.state === 'running') {
-    status('Starte Notenerkennung...');
+    status(getMessage("messages", "starting"));
   }
 }
 
 async function loadModel() {
   if(!running){
-    status('Lade Modell...');
+    status(getMessage("messages", "loadingModel"));
     model = await tf.loadModel('https://marl.github.io/crepe/model/model.json');
-    status('Modell geladen');
+    status(getMessage("messages", "modelLoaded"));
   }
 }
 
@@ -878,7 +880,7 @@ function checkNote(detectedFrequency) {
           noteStatistics[currentNote.name].correct++;
         }
         correctNotePlayed = true; 
-        status("<span class='message-green'>Gut gemacht! Du hast den Ton <b>" + closestNoteName + "</b> gespielt.</span>");
+        status("<span class='message-green'>" + getMessage("messages", "correct", {note: closestNoteName}) + "</span>");
         highlightNote(true);
         toneNamePrevious = currentNote.name;
         clearTimeout(pauseTimeout); // Clear any existing timeout
@@ -888,7 +890,7 @@ function checkNote(detectedFrequency) {
       } else { //INCORRECT          
         if (!correctNotePlayed && ((closestNoteName != toneNamePrevious) || decayTimeoutReached)) { //if a tone was played correctly, discard any wrong notes after that. We enforce different proposed notes so will discard a previous note played again.
           if(closestNoteName === currentNote.name){sign(frequencyDifference) === 1 ? closestNoteName = closestNoteName + "+" : closestNoteName = "-" + closestNoteName;} 
-          status("<span class='message-red'>Du hast den Ton <b>" + closestNoteName + "</b> gespielt!</span>" + (showNoteNameCheckbox.checked ? " Gewünschter Ton ist <b>" + currentNote.name + "</b>." : " Versuche es noch einmal!"));
+          status("<span class='message-red'>" + getMessage("messages", "incorrect", {note: closestNoteName}) + "</span>" + (showNoteNameCheckbox.checked ? getMessage("messages", "desiredNote", {note: currentNote.name}) : getMessage("messages", "tryAgain")));
           if(!toneWeighted){
             updateWeightedNoteNames(currentNote.name, "increment");
             noteStatistics[currentNote.name].incorrect++;
@@ -900,7 +902,7 @@ function checkNote(detectedFrequency) {
       silence = false;
     } else {
       if(!triedOnce){
-        status("<span class='message-red'>Spiele den angegebenen Ton!" + (showNoteNameCheckbox.checked ? "</span> Gewünschter Ton ist <b>" + currentNote.name + ".</b>" : "</span>"));
+        status("<span class='message-red'>" + getMessage("messages", "playNote") + (showNoteNameCheckbox.checked ? "</span>" + getMessage("messages", "desiredNote", {note: currentNote.name}) : "</span>"));
       }  
       silence = true; // triggers a new checking interval
     }
@@ -952,6 +954,8 @@ function getNextNote() {
 /*----------------------- STATISTICS -------------------------------*/
 // Function to show the pop-up dialog with the pie chart
 function showSummary() {
+  const summaryHeading = document.getElementById('summaryHeading');
+  summaryHeading.textContent = getMessage("summary", "summaryHeading");
   const correctNotes = Object.values(noteStatistics).reduce((sum, stats) => sum + stats.correct, 0);
   const incorrectNotes = Object.values(noteStatistics).reduce((sum, stats) => sum + stats.incorrect, 0);
   // Check if there are any correct or incorrect notes
@@ -983,9 +987,9 @@ function showSummary() {
   //summary message
   const summaryMessage = document.getElementById('summaryMessage');
   if(incorrectNotes){
-    summaryMessage.innerHTML = "Noten, die Du noch üben solltest:";
+    summaryMessage.innerHTML = getMessage("summary", "summaryMessage");
   } else {
-    summaryMessage.innerHTML = "Super! Keine Fehler gemacht!";
+    summaryMessage.innerHTML = getMessage("summary", "successMessage"); 
   }
   // Create ranked list of incorrectly played notes
   const rankedListContainer = document.getElementById('rankedListContainer');
@@ -1001,6 +1005,8 @@ function showSummary() {
     rankedList.appendChild(listItem);
   });
   rankedListContainer.appendChild(rankedList);
+  const closeButton = document.getElementById('closeButton');
+  closeButton.textContent = getMessage("summary", "closeButton");
   document.getElementById('statisticsDialog').style.display = 'block';
 }
 
@@ -1014,6 +1020,7 @@ document.getElementById('closeButton').addEventListener('click', () => {
 
 document.getElementById('languageSelector').addEventListener('change', (event) => {
   setLanguage(event.target.value);
+  saveOptions();
   updateTexts(); // Update all texts based on the new language
 });
 
@@ -1021,7 +1028,8 @@ document.getElementById('languageSelector').addEventListener('change', (event) =
 function updateTexts() {
   //MAIN GUI
   document.getElementById('title').textContent = getMessage('main', 'title');
-  document.getElementById('instruction').innerHTML = getMessage('main', 'instruction', { instrument: document.getElementById('instrumentName').textContent });
+  document.getElementById('instruction').innerHTML = getMessage('main', 'instruction'); //, { instrument: document.getElementById('instrumentName').textContent });
+  updateInstrument();
   document.getElementById('startButton').textContent = getMessage('main', 'startButton');
   document.getElementById('stopButton').textContent = getMessage('main', 'stopButton');
   //OPTIONS
@@ -1085,14 +1093,19 @@ const messages = {
   en: {
     messages: {
       correct: "Well done! You played the note <b>{note}</b>.",
-      incorrect: "You played the note <b>{note}</b>! {desiredNote}",
-      desiredNote: "Desired note is <b>{note}</b>.",
-      playNote: "Play the given note! {desiredNote}",
-      topIncorrectNotes: "Top 3 Incorrect Notes"
+      incorrect: "You played the note <b>{note}</b>!",
+      desiredNote: " Desired note is <b>{note}</b>.",
+      tryAgain: " Try again!",
+      playNote: "Play the given note!",
+      activating : "Activating microphone and initializing note detection...",
+      starting: "Starting note detection...",
+      loadingModel: "Loading model...",
+      modelLoaded: "Model loaded."
     },
     main: {
       title: "Sabine's Note Trainer",
-      instruction: "Play the note on the <span id=\"instrumentName\">{instrument}</span>:",
+      instruction: "Play the note on the <span id=\"instrumentName\"></span>:",
+      continue: "Continue",
       startButton: "Start",
       stopButton: "Stop"
       },
@@ -1126,33 +1139,40 @@ const messages = {
       showSummaryCheckboxLabel: "Shows a summary.",
       pauseInputLabel: "Specifies the pause (in milliseconds) between a successful note and the next suggested note.",
       toleranceInputLabel: "Allows the specified deviation in Hertz for note recognition.",
-      noteFilterCheckboxLabel: "Selects all notes matching the letters in the list.",
-      showSharpCheckboxLabel: "Activates ♯.",
-      showFlatCheckboxLabel: "Activates ♭.",
+      noteFilterCheckboxLabel: "Selects all notes matching the letters in the list. You can also indicate the octave like 'C4 D4 C5', or b und #.",
+      showSharpCheckboxLabel: "Selects notes with ♯ (Cis, Dis, Fis, Gis, Ais).",
+      showFlatCheckboxLabel: "Selects notes with ♭ (Des, Es, Ges, As, bB).",
       instrumentSaxTenorRadioLabel: "The tenor saxophone is notated a major ninth (14 semitones) higher than it sounds and is therefore tuned in B♭.",
       instrumentSaxAltRadioLabel: "The alto saxophone is notated a major sixth (9 semitones) higher than it sounds and is therefore tuned in E♭.",
       instrumentRegularRadioLabel: "Most instruments are notated as they sound.",
-      smallRangeRadioLabel: "Small",
-      middleRangeRadioLabel: "Middle",
-      largeRangeRadioLabel: "Large"
+      smallRangeRadioLabel: "Selects just a small range of notes.",
+      middleRangeRadioLabel: "Selects a medium range of notes.",
+      largeRangeRadioLabel: "Selects a large range of notes."
     },
     summary: {
       summaryHeading: "Summary",
       summaryMessage: "Notes you should practice:",
-      closeButton: "Close"
+      successMessage: "Great! No mistakes made!",
+      closeButton: "Close",
+      topIncorrectNotes: "top 3 notes"
     }
   },
   de: {
     messages: {
       correct: "Gut gemacht! Du hast den Ton <b>{note}</b> gespielt.",
-      incorrect: "Du hast den Ton <b>{note}</b> gespielt! {desiredNote}",
-      desiredNote: "Gewünschter Ton ist <b>{note}</b>.",
-      playNote: "Spiele den angegebenen Ton! {desiredNote}",
-      topIncorrectNotes: "Top 3 falsche Noten"
+      incorrect: "Du hast den Ton <b>{note}</b> gespielt!",
+      desiredNote: " Gewünschter Ton ist <b>{note}</b>.",
+      tryAgain: " Versuche es noch einmal!",
+      playNote: "Spiele den angegebenen Ton!",
+      activating : "Aktiviere Mikrofon und initialisiere Notenerkennung...",
+      starting: "Starte Notenerkennung...",
+      loadingModel: "Lade Modell...",
+      modelLoaded: "Modell geladen."
     },
     main: {
-      title: "Sabines Noten Trainer",
-      instruction: "Spiele den Ton auf dem <span id=\"instrumentName\">{instrument}</span>:",
+      title: "Sabine's Noten Trainer",
+      instruction: "Spiele den Ton auf dem <span id=\"instrumentName\"></span>:",
+      continue: "Weiter",
       startButton: "Start",
       stopButton: "Stopp"
     },
@@ -1183,23 +1203,25 @@ const messages = {
       showNoteNameCheckboxLabel: "Zeigt den Notennamen an.",
       playNoteCheckboxLabel: "Spielt kurz den neu vorgeschlagenen Ton ab.",
       useBassClefCheckboxLabel: "Wechselt bei Bedarf in den Bassschlüssel.",
-      showSummaryCheckboxLabel: "Zeigt eine Zusammenfassung.",
+      showSummaryCheckboxLabel: "Zeigt eine Zusammenfassung wenn die Stopp-Taste gedrückt wird.",
       pauseInputLabel: "Gibt die Pause (in Millisekunden) zwischen einem erfolgreichen Ton und dem nächsten vorgeschlagenen Ton an.",
       toleranceInputLabel: "Erlaubt bei der Ton-Erkennung die angegebene Abweichung in Hertz.",
-      noteFilterCheckboxLabel: "Wählt alle Töne aus, die den Buchstaben in der Liste entsprechen.",
-      showSharpCheckboxLabel: "Aktiviert ♯.",
-      showFlatCheckboxLabel: "Aktiviert ♭.",
+      noteFilterCheckboxLabel: "Wählt alle Töne aus, die den Buchstaben in der Liste entsprechen.\nEs kann auch die Oktave angegeben werden, z.B. 'C4 D4 C5', oder b und #.",
+      showSharpCheckboxLabel: "Wählt auch Noten mit ♯ (Cis, Dis, Fis, Gis, Ais) aus.",
+      showFlatCheckboxLabel: "Wählt auch Noten mit ♭ (Des, Es, Ges, As, B) aus.",
       instrumentSaxTenorRadioLabel: "Das Tenorsaxophon notiert eine große None (14 Halbtöne) höher als klingend und ist damit in B gestimmt.",
       instrumentSaxAltRadioLabel: "Das Altsaxophon notiert eine große Sexte (9 Halbtöne) höher als klingend und ist damit in Es gestimmt.",
       instrumentRegularRadioLabel: "Die meisten Instrumente notieren wie klingend.",
-      smallRangeRadioLabel: "Klein",
-      middleRangeRadioLabel: "Mittel",
-      largeRangeRadioLabel: "Groß"
+      smallRangeRadioLabel: "Wählt nur einen kleinen Notenraum aus.",
+      middleRangeRadioLabel: "Wählt einen mittleren Notenraum aus.",
+      largeRangeRadioLabel: "Wählt einen großen Notenraum aus."
     },
     summary: {
       summaryHeading: "Zusammenfassung",
       summaryMessage: "Noten, die Du noch üben solltest:",
-      closeButton: "Schließen"
+      successMessage: "Super! Keine Fehler gemacht!",
+      closeButton: "Schließen",
+      topIncorrectNotes: "Top 3 falsche Noten"
     }
   }
 };
