@@ -347,7 +347,8 @@ function saveOptions() {
   localStorage.setItem("noteFilterCheckbox", JSON.stringify(noteFilterCheckbox.checked));
   localStorage.setItem("noteFilterInput", noteFilterInput.value);
 }
-      
+
+//--------------- OBJECTS ------------------------------
 const noteContainer = document.getElementById("noteContainer");
 const noteElement = document.getElementById("note");
 const clefTrebleElement = document.getElementById("clefTreble");
@@ -1018,30 +1019,31 @@ document.getElementById('languageSelector').addEventListener('change', (event) =
 
 // Tobi: Todo - we stopped here - no longer showing fields...
 function updateTexts() {
+  //MAIN GUI
   document.getElementById('title').textContent = getMessage('main', 'title');
   document.getElementById('instruction').innerHTML = getMessage('main', 'instruction', { instrument: document.getElementById('instrumentName').textContent });
-  document.getElementById('showNoteNameCheckboxLabel').textContent = getMessage('main', 'showNoteNameCheckbox');
-  document.getElementById('playNoteCheckboxLabel').textContent = getMessage('main', 'playNoteCheckbox');
-  document.getElementById('useBassClefCheckboxLabel').textContent = getMessage('main', 'useBassClefCheckbox');
-  document.getElementById('showSummaryCheckboxLabel').textContent = getMessage('main', 'showSummaryCheckbox');
-  document.getElementById('pauseInputLabel').textContent = getMessage('main', 'pauseInput');
-  document.getElementById('toleranceInputLabel').textContent = getMessage('main', 'toleranceInput');
-  document.getElementById('instrumentSaxTenorRadioLabel').textContent = getMessage('main', 'instrumentSaxTenorRadio');
-  document.getElementById('instrumentSaxAltRadioLabel').textContent = getMessage('main', 'instrumentSaxAltRadio');
-  document.getElementById('instrumentRegularRadioLabel').textContent = getMessage('main', 'instrumentRegularRadio');
-  document.getElementById('smallRangeRadioLabel').textContent = getMessage('main', 'smallRangeRadio');
-  document.getElementById('middleRangeRadioLabel').textContent = getMessage('main', 'middleRangeRadio');
-  document.getElementById('largeRangeRadioLabel').textContent = getMessage('main', 'largeRangeRadio');
-  document.getElementById('noteFilterCheckboxLabel').textContent = getMessage('main', 'noteFilterCheckbox');
-  document.getElementById('showSharpCheckboxLabel').textContent = getMessage('main', 'showSharpCheckbox');
-  document.getElementById('showFlatCheckboxLabel').textContent = getMessage('main', 'showFlatCheckbox');
-  document.getElementById('languageSelectorLabel').textContent = getMessage('main', 'languageSelector');
-  document.querySelector('.option-container h2').textContent = getMessage('main', 'optionsTitle');
-//  document.querySelector('.option-heading.instrument-tuning').textContent = getMessage('main', 'instrumentTuning');
-//  document.querySelector('.option-heading.note-range').textContent = getMessage('main', 'noteRange');
-//  document.querySelector('.option-heading.accidentals').textContent = getMessage('main', 'accidentals');
+  //OPTIONS
+  document.getElementById('optionsTitle').childNodes[0].textContent = getMessage('options', 'optionsTitle');
+  document.getElementById('showNoteNameCheckboxLabel').childNodes[1].textContent = getMessage('options', 'showNoteNameCheckbox');
+  document.getElementById('showNoteNameCheckboxLabel').title = getMessage('tooltips', 'showNoteNameCheckboxLabel');  
+  document.getElementById('playNoteCheckboxLabel').childNodes[1].textContent = getMessage('options', 'playNoteCheckbox');
+  document.getElementById('useBassClefCheckboxLabel').childNodes[1].textContent = getMessage('options', 'useBassClefCheckbox');
+  document.getElementById('showSummaryCheckboxLabel').childNodes[1].textContent = getMessage('options', 'showSummaryCheckbox');
+  document.getElementById('pauseInputLabel').childNodes[0].textContent = getMessage('options', 'pauseInput');
+  document.getElementById('toleranceInputLabel').childNodes[0].textContent = getMessage('options', 'toleranceInput');
+  document.getElementById('instrumentSaxTenorRadioLabel').childNodes[1].textContent = getMessage('options', 'instrumentSaxTenorRadio');
+  document.getElementById('instrumentSaxAltRadioLabel').childNodes[1].textContent = getMessage('options', 'instrumentSaxAltRadio');
+  document.getElementById('instrumentRegularRadioLabel').childNodes[1].textContent = getMessage('options', 'instrumentRegularRadio');
+  document.getElementById('smallRangeRadioLabel').childNodes[1].textContent = getMessage('options', 'smallRangeRadio');
+  document.getElementById('middleRangeRadioLabel').childNodes[1].textContent = getMessage('options', 'middleRangeRadio');
+  document.getElementById('largeRangeRadioLabel').childNodes[1].textContent = getMessage('options', 'largeRangeRadio');
+  document.getElementById('noteFilterCheckboxLabel').childNodes[1].textContent = getMessage('options', 'noteFilterCheckbox');
+  document.getElementById('showSharpCheckboxLabel').childNodes[1].textContent = getMessage('options', 'showSharpCheckbox');
+  document.getElementById('showFlatCheckboxLabel').childNodes[1].textContent = getMessage('options', 'showFlatCheckbox');
+  document.getElementById('languageSelectorLabel').childNodes[0].textContent = getMessage('options', 'languageSelector');
   document.getElementById('startButton').textContent = getMessage('main', 'startButton');
   document.getElementById('stopButton').textContent = getMessage('main', 'stopButton');
+  //SUMMARY
   document.getElementById('summaryHeading').textContent = getMessage('summary', 'summaryHeading');
   document.getElementById('summaryMessage').textContent = getMessage('summary', 'summaryMessage');
   document.getElementById('closeButton').textContent = getMessage('summary', 'closeButton');
@@ -1074,9 +1076,14 @@ const messages = {
     main: {
       title: "Sabine's Note Trainer",
       instruction: "Play the note on the <span id=\"instrumentName\">{instrument}</span>:",
+      startButton: "Start",
+      stopButton: "Stop"
+      },
+    options: {
+      optionsTitle: "Options",
       showNoteNameCheckbox: "Show Note Names",
       playNoteCheckbox: "Play Note",
-      useBassClefCheckbox: "Activate Bass Clef",
+      useBassClefCheckbox: "Activate ",
       showSummaryCheckbox: "Show Summary",
       pauseInput: "Pause",
       toleranceInput: "Tolerance (Hz)",
@@ -1088,15 +1095,15 @@ const messages = {
       largeRangeRadio: "Large",
       noteFilterCheckbox: "Note Filter",
       noteFilterInput: "Filter Notes",
-      showSharpCheckbox: "Activate ♯",
-      showFlatCheckbox: "Activate ♭",
+      showSharpCheckbox: "Activate ",
+      showFlatCheckbox: "Activate ",
       languageSelector: "Language",
-      optionsTitle: "Options",
       instrumentTuning: "Instrument Tuning",
       noteRange: "Note Range",
-      accidentals: "Accidentals",
-      startButton: "Start",
-      stopButton: "Stop"
+      accidentals: "Accidentals"
+    },
+    tooltips: {
+      showNoteNameCheckboxLabel: "Shows the note name."
     },
     summary: {
       summaryHeading: "Summary",
@@ -1115,29 +1122,34 @@ const messages = {
     main: {
       title: "Sabines Noten Trainer",
       instruction: "Spiele den Ton auf dem <span id=\"instrumentName\">{instrument}</span>:",
+      startButton: "Start",
+      stopButton: "Stopp"
+    },
+    options: {  
+      optionsTitle: "Optionen",
       showNoteNameCheckbox: "Zeige Notennamen",
       playNoteCheckbox: "Spiele Ton",
-      useBassClefCheckbox: "Aktiviere Bassschlüssel",
+      useBassClefCheckbox: "Aktiviere ",
       showSummaryCheckbox: "Zeige Zusammenfassung",
       pauseInput: "Pause",
       toleranceInput: "Toleranz (Hz)",
-      instrumentSaxTenorRadio: "Tenor Saxophon",
-      instrumentSaxAltRadio: "Alt Saxophon",
+      instrumentSaxTenorRadio: "Tenor Sax",
+      instrumentSaxAltRadio: "Alt Sax",
       instrumentRegularRadio: "Klavier",
       smallRangeRadio: "Klein",
       middleRangeRadio: "Mittel",
       largeRangeRadio: "Groß",
       noteFilterCheckbox: "Noten Filter",
       noteFilterInput: "Noten filtern",
-      showSharpCheckbox: "Aktiviere ♯",
-      showFlatCheckbox: "Aktiviere ♭",
+      showSharpCheckbox: "Aktiviere ",
+      showFlatCheckbox: "Aktiviere ",
       languageSelector: "Sprache",
-      optionsTitle: "Optionen",
       instrumentTuning: "Instrumenten Stimmung",
       noteRange: "Notenraum",
-      accidentals: "Vorzeichen",
-      startButton: "Start",
-      stopButton: "Stopp"
+      accidentals: "Vorzeichen"
+    },
+    tooltips: {
+      showNoteNameCheckboxLabel: "Zeigt den Notennamen an."
     },
     summary: {
       summaryHeading: "Zusammenfassung",

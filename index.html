@@ -22,7 +22,7 @@
     </div>
     <!--------------- OPTIONS ------------------>
     <div class="option-container" id="optionContainer">
-      <h2>Optionen</h2>
+      <div id="optionsTitle"><h2>Optionen</h2></div>
       <label id="showNoteNameCheckboxLabel" title="Zeigt den Notennamen an."><input type="checkbox" id="showNoteNameCheckbox">Zeige Notennamen</label>
       <label id="playNoteCheckboxLabel" title="Spielt kurz den neu vorgeschlagenen Ton ab."><input type="checkbox" id="playNoteCheckbox">Spiele Ton</label>
       <label id="useBassClefCheckboxLabel" title="Wechselt bei Bedarf in den Bassschlüssel."><input type="checkbox" id="useBassClefCheckbox">Aktiviere <b>𝄢</b></label>
@@ -33,13 +33,13 @@
       <div id="toleranceInputDiv" class="checkbox-text" title="Erlaubt bei der Ton-Erkennung die angegebene Abweichung in Hertz.">
         <label id="toleranceInputLabel">Toleranz (Hertz): <input type="text" id="toleranceInput" value="5"></label>
       </div>
-      <!-- <div class="checkbox-text">
+      <div class="checkbox-text">
         <label id="languageSelectorLabel" for="languageSelector">Sprache</label>
         <select id="languageSelector">
           <option value="en">English</option>
           <option value="de">Deutsch</option>
         </select>
-      </div> -->
+      </div>
       <div id="instrumentTuningDiv" class="option-heading">Instrumenten Stimmung:</div>
       <div class="options-radio-one-line">
         <label id="instrumentSaxTenorRadioLabel" title="Das Tenorsaxophon notiert eine große None (14 Halbtöne) höher als klingend und ist damit in B gestimmt."><input type="radio" name="instrument" id="instrumentSaxTenorRadio" value="saxTenor">Tenor Sax</label>
@@ -52,7 +52,7 @@
         <label id="middleRangeRadioLabel"><input type="radio" name="noteRange" id="middleRangeRadio" value="middle">Mittel</label>
         <label id="largeRangeRadioLabel"><input type="radio" name="noteRange" id="largeRangeRadio" value="large">Groß</label>
       </div>
-      <div id="notFilterCheckboxDiv" class="checkbox-text" title="Alle mit den Buchstaben in der Liste übereinstimmenden Töne werden ausgewählt.">
+      <div id="noteFilterCheckboxDiv" class="checkbox-text" title="Alle mit den Buchstaben in der Liste übereinstimmenden Töne werden ausgewählt.">
         <label id="noteFilterCheckboxLabel"><input type="checkbox" id="noteFilterCheckbox" >Noten Filter: 
         <input type="text" id="noteFilterInput" value="C D E F G A H" ></label>
       </div>
