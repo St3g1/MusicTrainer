@@ -883,10 +883,10 @@ function checkNote(detectedFrequency) {
         status("<span class='message-green'>" + getMessage("messages", "correct", {note: closestNoteName}) + "</span>");
         highlightNote(true);
         toneNamePrevious = currentNote.name;
-        clearTimeout(pauseTimeout); // Clear any existing timeout
-        pauseTimeout = setTimeout(() => {
+//        clearTimeout(pauseTimeout); // Clear any existing timeout
+//        pauseTimeout = setTimeout(() => {
           nextNote(); // Suggest a new note after the pause
-        }, parseInt(pauseInput.value));
+//        }, parseInt(pauseInput.value));
       } else { //INCORRECT          
         if (!correctNotePlayed && ((closestNoteName != toneNamePrevious) || decayTimeoutReached)) { //if a tone was played correctly, discard any wrong notes after that. We enforce different proposed notes so will discard a previous note played again.
           if(closestNoteName === currentNote.name){sign(frequencyDifference) === 1 ? closestNoteName = closestNoteName + "+" : closestNoteName = "-" + closestNoteName;} 
@@ -1021,7 +1021,6 @@ document.getElementById('closeButton').addEventListener('click', () => {
 document.getElementById('languageSelector').addEventListener('change', (event) => {
   setLanguage(event.target.value);
   if(running) {checkNote(null);} //to update message
-  handleButtons();
   saveOptions();
   updateTexts(); // Update all texts based on the new language
 });
@@ -1031,6 +1030,7 @@ function updateTexts() {
   document.getElementById('title').textContent = getMessage('main', 'title');
   document.getElementById('instruction').innerHTML = getMessage('main', 'instruction'); //, { instrument: document.getElementById('instrumentName').textContent });
   updateInstrument();
+  handleButtons();
   //OPTIONS
   document.getElementById('optionsTitle').childNodes[0].textContent = getMessage('options', 'optionsTitle');
   document.getElementById('showNoteNameCheckboxLabel').childNodes[1].textContent = getMessage('options', 'showNoteNameCheckbox');
@@ -1222,5 +1222,72 @@ const messages = {
       closeButton: "Schließen",
       topIncorrectNotes: "Top 3 falsche Noten"
     }
-  }
+  },
+  it: {
+    messages: {
+      correct: "Ben fatto! Hai suonato la nota <b>{note}</b>.",
+      incorrect: "Hai suonato la nota <b>{note}</b>!",
+      desiredNote: " La nota desiderata è <b>{note}</b>.",
+      tryAgain: " Riprova!",
+      playNote: "Suona la nota indicata!",
+      activating : "Attivazione del microfono e inizializzazione del rilevamento delle note...",
+      starting: "Avvio del rilevamento delle note...",
+      loadingModel: "Caricamento del modello...",
+      modelLoaded: "Modello caricato."
+    },
+    main: {
+      title: "Il Trainer di Note di Sabine",
+      instruction: "Suona la nota sul <span id=\"instrumentName\"></span>:",
+      continue: "Continua",
+      startButton: "Inizia",
+      stopButton: "Ferma"
+    },
+    options: {
+      optionsTitle: "Opzioni",
+      showNoteNameCheckbox: "Mostra i nomi delle note",
+      playNoteCheckbox: "Suona la nota",
+      useBassClefCheckbox: "Attiva ",
+      showSummaryCheckbox: "Mostra riepilogo",
+      pauseInput: "Pausa",
+      toleranceInput: "Tolleranza (Hz)",
+      instrumentSaxTenorRadio: "Sax Tenore",
+      instrumentSaxAltRadio: "Sax Alto",
+      instrumentRegularRadio: "Pianoforte",
+      smallRangeRadio: "Piccolo",
+      middleRangeRadio: "Medio",
+      largeRangeRadio: "Grande",
+      noteFilterCheckbox: "Filtro note",
+      noteFilterInput: "Filtra note",
+      showSharpCheckbox: "Attiva ",
+      showFlatCheckbox: "Attiva ",
+      languageSelector: "Lingua",
+      instrumentTuning: "Accordatura dello strumento",
+      noteRange: "Gamma di note",
+      accidentals: "Alterazioni"
+    },
+    tooltips: {
+      showNoteNameCheckboxLabel: "Mostra il nome della nota sopra il pentagramma.\n(Disabilita questa opzione per imparare la traduzione diretta da nota a posizione.)",
+      playNoteCheckboxLabel: "Suona brevemente la nota appena suggerita.",
+      useBassClefCheckboxLabel: "Passa alla chiave di basso se necessario.",
+      showSummaryCheckboxLabel: "Mostra un riepilogo quando viene premuto il pulsante di stop.",
+      pauseInputLabel: "Specifica la pausa (in millisecondi) tra una nota corretta e la prossima nota suggerita.",
+      toleranceInputLabel: "Consente la deviazione specificata in Hertz per il riconoscimento delle note.",
+      noteFilterCheckboxLabel: "Seleziona tutte le note che corrispondono alle lettere nell'elenco. Puoi anche indicare l'ottava come 'C4 D4 C5', o b e #.",
+      showSharpCheckboxLabel: "Seleziona le note con ♯ (Do#, Re#, Fa#, Sol#, La#).",
+      showFlatCheckboxLabel: "Seleziona le note con ♭ (Re♭, Mi♭, Sol♭, La♭, Si♭).",
+      instrumentSaxTenorRadioLabel: "Il sassofono tenore è notato una nona maggiore (14 semitoni) più alta di come suona ed è quindi accordato in Si♭.",
+      instrumentSaxAltRadioLabel: "Il sassofono alto è notato una sesta maggiore (9 semitoni) più alta di come suona ed è quindi accordato in Mi♭.",
+      instrumentRegularRadioLabel: "La maggior parte degli strumenti è notata come suona.",
+      smallRangeRadioLabel: "Seleziona solo una piccola gamma di note.",
+      middleRangeRadioLabel: "Seleziona una gamma media di note.",
+      largeRangeRadioLabel: "Seleziona una grande gamma di note."
+    },
+    summary: {
+      summaryHeading: "Riepilogo",
+      summaryMessage: "Note che dovresti praticare:",
+      successMessage: "Ottimo! Nessun errore!",
+      closeButton: "Chiudi",
+      topIncorrectNotes: "top 3 note"
+    }
+  }  
 };
