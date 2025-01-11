@@ -314,8 +314,10 @@ function loadOptions() {
   useBassClefCheckbox.checked = JSON.parse(localStorage.getItem("useBassClefCheckbox")) || false;
   showSummaryCheckbox.checked = JSON.parse(localStorage.getItem("showSummaryCheckbox")) || false;
   pauseInput.value = localStorage.getItem("pauseInput") || "500";
+  pauseInput.disabled = !pauseCheckbox.checked;
+  pauseCheckbox.checked = JSON.parse(localStorage.getItem("pauseCheckbox")) || false;
   toleranceInput.value = localStorage.getItem("toleranceInput") || "5";
-  languageSelector.value = localStorage.getItem("languageSelector") || "Deutsch";
+  languageSelector.value = localStorage.getItem("languageSelector") || "Deutsch"; //Default value need to be in sync with currentLanguage default value
   const selectedInstrument = localStorage.getItem("selectedInstrument") || "saxTenor";
   document.querySelector(`input[name="instrument"][value="${selectedInstrument}"]`).checked = true;
   const selectedNoteRange = localStorage.getItem("selectedNoteRange") || "small";
@@ -325,7 +327,7 @@ function loadOptions() {
   noteFilterCheckbox.checked = JSON.parse(localStorage.getItem("noteFilterCheckbox")) || false;
   noteFilterInput.value = localStorage.getItem("noteFilterInput") || "C D E F G A H";
   noteFilterInput.disabled = !noteFilterCheckbox.checked;
-  setLanguage(languageSelector.value); //also calls setTexts()
+  updateTexts(); 
   updateInstrument();
   setSelectedNotes();
   setFilteredNotes();
@@ -338,6 +340,7 @@ function saveOptions() {
   localStorage.setItem("playNoteCheckbox", JSON.stringify(playNoteCheckbox.checked));
   localStorage.setItem("useBassClefCheckbox", JSON.stringify(useBassClefCheckbox.checked));
   localStorage.setItem("showSummaryCheckbox", JSON.stringify(showSummaryCheckbox.checked));
+  localStorage.setItem("pauseCheckbox", JSON.stringify(pauseCheckbox.checked));
   localStorage.setItem("pauseInput", pauseInput.value);
   localStorage.setItem("toleranceInput", toleranceInput.value);
   localStorage.setItem("languageSelector", languageSelector.value);
@@ -363,6 +366,7 @@ const showNoteNameCheckbox = document.getElementById("showNoteNameCheckbox");
 const playNoteCheckbox = document.getElementById("playNoteCheckbox");
 const useBassClefCheckbox = document.getElementById("useBassClefCheckbox");
 const showSummaryCheckbox = document.getElementById("showSummaryCheckbox");
+const pauseCheckbox = document.getElementById("pauseCheckbox");
 const pauseInput = document.getElementById("pauseInput");
 const toleranceInput = document.getElementById("toleranceInput");
 const languageSelector = document.getElementById("languageSelector");
@@ -402,6 +406,7 @@ useBassClefCheckbox.addEventListener('change', () => {
   displayNote(currentNote);
 });   
 showSummaryCheckbox.addEventListener('change', () => { saveOptions(); });
+pauseCheckbox.addEventListener('change', () => { pauseInput.disabled = !pauseCheckbox.checked; saveOptions(); });
 pauseInput.addEventListener('change', () => { saveOptions();});
 toleranceInput.addEventListener('change', () => { saveOptions(); });
 instrumentSaxTenorRadio.addEventListener('change', () => { setSelectedNotes(); setFilteredNotes(); initNoteStatistics(); resetWeightedNoteNames(); updateInstrument(); playMp3(currentNote); saveOptions(); nextNote();});
@@ -438,6 +443,7 @@ function setOptionEnableState(state){ //no longer in use
   useBassClefCheckbox.disabled = !state;
   showSummaryCheckbox.disabled = !state;
   toleranceInput.disabled = !state;
+  pauseCheckbox.disabled = !state;
   pauseInput.disabled = !state;
   instrumentSaxTenorRadio.disabled = !state;
   instrumentSaxAltRadio.disabled = !state;
@@ -883,10 +889,14 @@ function checkNote(detectedFrequency) {
         status("<span class='message-green'>" + getMessage("messages", "correct", {note: closestNoteName}) + "</span>");
         highlightNote(true);
         toneNamePrevious = currentNote.name;
-//        clearTimeout(pauseTimeout); // Clear any existing timeout
-//        pauseTimeout = setTimeout(() => {
-          nextNote(); // Suggest a new note after the pause
-//        }, parseInt(pauseInput.value));
+        if(pauseCheckbox.checked){
+          clearTimeout(pauseTimeout); // Clear any existing timeout
+          pauseTimeout = setTimeout(() => {
+            nextNote(); // Suggest a new note after the pause
+          }, parseInt(pauseInput.value));
+        } else {  
+          nextNote(); // Suggest a new note with no pause
+        }
       } else { //INCORRECT          
         if (!correctNotePlayed && ((closestNoteName != toneNamePrevious) || decayTimeoutReached)) { //if a tone was played correctly, discard any wrong notes after that. We enforce different proposed notes so will discard a previous note played again.
           if(closestNoteName === currentNote.name){sign(frequencyDifference) === 1 ? closestNoteName = closestNoteName + "+" : closestNoteName = "-" + closestNoteName;} 
@@ -1041,8 +1051,8 @@ function updateTexts() {
   document.getElementById('useBassClefCheckboxLabel').title = getMessage('tooltips', 'useBassClefCheckboxLabel');
   document.getElementById('showSummaryCheckboxLabel').childNodes[1].textContent = getMessage('options', 'showSummaryCheckbox');
   document.getElementById('showSummaryCheckboxLabel').title = getMessage('tooltips', 'showSummaryCheckboxLabel');
-  document.getElementById('pauseInputLabel').childNodes[0].textContent = getMessage('options', 'pauseInput');
-  document.getElementById('pauseInputLabel').title = getMessage('tooltips', 'pauseInputLabel');
+  document.getElementById('pauseCheckboxLabel').childNodes[1].textContent = getMessage('options', 'pauseInput');
+  document.getElementById('pauseCheckboxLabel').title = getMessage('tooltips', 'pauseCheckboxLabel');
   document.getElementById('toleranceInputLabel').childNodes[0].textContent = getMessage('options', 'toleranceInput');
   document.getElementById('toleranceInputLabel').title = getMessage('tooltips', 'toleranceInputLabel');
   document.getElementById('instrumentSaxTenorRadioLabel').childNodes[1].textContent = getMessage('options', 'instrumentSaxTenorRadio');
@@ -1136,7 +1146,7 @@ const messages = {
       playNoteCheckboxLabel: "Plays the newly suggested note briefly.",
       useBassClefCheckboxLabel: "Switches to bass clef if needed.",
       showSummaryCheckboxLabel: "Shows a summary when the stop button is pressed.",
-      pauseInputLabel: "Specifies the pause (in milliseconds) between a successful note and the next suggested note.",
+      pauseCheckboxLabel: "Specifies the pause (in milliseconds) between a successful note and the next suggested note.",
       toleranceInputLabel: "Allows the specified deviation in Hertz for note recognition.",
       noteFilterCheckboxLabel: "Selects all notes matching the letters in the list. You can also indicate the octave like 'C4 D4 C5', or b und #.",
       showSharpCheckboxLabel: "Selects notes with ♯ (Cis, Dis, Fis, Gis, Ais).",
@@ -1203,7 +1213,7 @@ const messages = {
       playNoteCheckboxLabel: "Spielt kurz den neu vorgeschlagenen Ton ab.",
       useBassClefCheckboxLabel: "Wechselt bei Bedarf in den Bassschlüssel.",
       showSummaryCheckboxLabel: "Zeigt eine Zusammenfassung wenn die Stopp-Taste gedrückt wird.",
-      pauseInputLabel: "Gibt die Pause (in Millisekunden) zwischen einem erfolgreichen Ton und dem nächsten vorgeschlagenen Ton an.",
+      pauseCheckboxLabel: "Gibt die Pause (in Millisekunden) zwischen einem erfolgreichen Ton und dem nächsten vorgeschlagenen Ton an.",
       toleranceInputLabel: "Erlaubt bei der Ton-Erkennung die angegebene Abweichung in Hertz.",
       noteFilterCheckboxLabel: "Wählt alle Töne aus, die den Buchstaben in der Liste entsprechen.\nEs kann auch die Oktave angegeben werden, z.B. 'C4 D4 C5', oder b und #.",
       showSharpCheckboxLabel: "Wählt auch Noten mit ♯ (Cis, Dis, Fis, Gis, Ais) aus.",
@@ -1270,7 +1280,7 @@ const messages = {
       playNoteCheckboxLabel: "Suona brevemente la nota appena suggerita.",
       useBassClefCheckboxLabel: "Passa alla chiave di basso se necessario.",
       showSummaryCheckboxLabel: "Mostra un riepilogo quando viene premuto il pulsante di stop.",
-      pauseInputLabel: "Specifica la pausa (in millisecondi) tra una nota corretta e la prossima nota suggerita.",
+      pauseCheckboxLabel: "Specifica la pausa (in millisecondi) tra una nota corretta e la prossima nota suggerita.",
       toleranceInputLabel: "Consente la deviazione specificata in Hertz per il riconoscimento delle note.",
       noteFilterCheckboxLabel: "Seleziona tutte le note che corrispondono alle lettere nell'elenco. Puoi anche indicare l'ottava come 'C4 D4 C5', o b e #.",
       showSharpCheckboxLabel: "Seleziona le note con ♯ (Do#, Re#, Fa#, Sol#, La#).",
