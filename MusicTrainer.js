@@ -450,8 +450,8 @@ function setOptionEnableState(state){ //no longer in use
   noteFilterCheckbox.disabled = !state;
 }
 
-function handleButtons(){
-  if(!running){
+function handleButtons(force = false) {
+  if(running || force) {
     startButton.textContent = getMessage("main", "continue"); // Change button text to "Weiter"
     startButton.style.backgroundColor = "gray"; // Change button color to gray
     stopButton.style.display = "block";
@@ -732,7 +732,7 @@ function startToneDetection(){
     if(!running){
       initAudio();
       initNoteStatistics();
-      handleButtons();
+      handleButtons(true);
     }
     nextNote();
     saveOptions();
@@ -1020,18 +1020,17 @@ document.getElementById('closeButton').addEventListener('click', () => {
 
 document.getElementById('languageSelector').addEventListener('change', (event) => {
   setLanguage(event.target.value);
+  if(running) {checkNote(null);} //to update message
+  handleButtons();
   saveOptions();
   updateTexts(); // Update all texts based on the new language
 });
 
-// Tobi: Todo - we stopped here - no longer showing fields...
 function updateTexts() {
   //MAIN GUI
   document.getElementById('title').textContent = getMessage('main', 'title');
   document.getElementById('instruction').innerHTML = getMessage('main', 'instruction'); //, { instrument: document.getElementById('instrumentName').textContent });
   updateInstrument();
-  document.getElementById('startButton').textContent = getMessage('main', 'startButton');
-  document.getElementById('stopButton').textContent = getMessage('main', 'stopButton');
   //OPTIONS
   document.getElementById('optionsTitle').childNodes[0].textContent = getMessage('options', 'optionsTitle');
   document.getElementById('showNoteNameCheckboxLabel').childNodes[1].textContent = getMessage('options', 'showNoteNameCheckbox');
@@ -1133,10 +1132,10 @@ const messages = {
       accidentals: "Accidentals"
     },
     tooltips: {
-      showNoteNameCheckboxLabel: "Shows the note name.",
+      showNoteNameCheckboxLabel: "Shows the note name over the staff.\n(Disable this option to learn the direct translation from note to position.)",
       playNoteCheckboxLabel: "Plays the newly suggested note briefly.",
       useBassClefCheckboxLabel: "Switches to bass clef if needed.",
-      showSummaryCheckboxLabel: "Shows a summary.",
+      showSummaryCheckboxLabel: "Shows a summary when the stop button is pressed.",
       pauseInputLabel: "Specifies the pause (in milliseconds) between a successful note and the next suggested note.",
       toleranceInputLabel: "Allows the specified deviation in Hertz for note recognition.",
       noteFilterCheckboxLabel: "Selects all notes matching the letters in the list. You can also indicate the octave like 'C4 D4 C5', or b und #.",
@@ -1200,7 +1199,7 @@ const messages = {
       accidentals: "Vorzeichen"
     },
     tooltips: {
-      showNoteNameCheckboxLabel: "Zeigt den Notennamen an.",
+      showNoteNameCheckboxLabel: "Zeigt den Notennamen über den Noteninien an.\n(Deaktiviere diese Option um die direkte Übersetzung von Note zu Position zu lernen.)",
       playNoteCheckboxLabel: "Spielt kurz den neu vorgeschlagenen Ton ab.",
       useBassClefCheckboxLabel: "Wechselt bei Bedarf in den Bassschlüssel.",
       showSummaryCheckboxLabel: "Zeigt eine Zusammenfassung wenn die Stopp-Taste gedrückt wird.",
