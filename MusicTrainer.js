@@ -942,7 +942,6 @@ function resetWeightedNoteNames(){
 }
 
 function updateWeightedNoteNames(noteName, type) {
-  return null; //some slow down
   const noteCount = noteNamesWeighted.filter(item => item === noteName).length;
   if (type === "increment" && noteCount < 3) {
     noteNamesWeighted.push(noteName);
