@@ -317,7 +317,7 @@ function loadOptions() {
   pauseInput.disabled = !pauseCheckbox.checked;
   pauseCheckbox.checked = JSON.parse(localStorage.getItem("pauseCheckbox")) || false;
   toleranceInput.value = localStorage.getItem("toleranceInput") || "5";
-  languageSelector.value = localStorage.getItem("languageSelector") || "Deutsch"; //Default value need to be in sync with currentLanguage default value
+  languageSelector.value = localStorage.getItem("languageSelector") || currentLanguage;
   const selectedInstrument = localStorage.getItem("selectedInstrument") || "saxTenor";
   document.querySelector(`input[name="instrument"][value="${selectedInstrument}"]`).checked = true;
   const selectedNoteRange = localStorage.getItem("selectedNoteRange") || "small";
