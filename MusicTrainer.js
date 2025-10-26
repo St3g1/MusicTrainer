@@ -105,24 +105,24 @@ const allNotes_sax_alt = [
   { name: "G#6"	, frequency:  987.76 ,	mp3: "saxAlt/G6di.mp3"	, position:  180  },
   { name: "G6"	, frequency:  932.32 ,	mp3: "saxAlt/G6.mp3"	, position:  180  },
   { name: "Gb6"	, frequency:  880.00 ,	mp3: "saxAlt/F6di.mp3"	, position:  180  },
-  { name: "F#6"	, frequency:  880.00 ,	mp3: "saxAlt/F6di.mp3"	, position:  170  },
+  { name: "F#6"	, frequency:  880.00 ,	mp3: "saxAlt/F6.mp3"	, position:  170  },
   { name: "F6"	, frequency:  830.60 ,	mp3: "saxAlt/F6.mp3"	, position:  170  },
   { name: "E6"	, frequency:  784.00 ,	mp3: "saxAlt/E6.mp3"	, position:  160  },
   { name: "Eb6"	, frequency:  739.98 ,	mp3: "saxAlt/D6di.mp3"	, position:  160  },
   { name: "D#6"	, frequency:  739.98 ,	mp3: "saxAlt/D6di.mp3"	, position:  150  },
   { name: "D6"	, frequency:  698.46 ,	mp3: "saxAlt/D6.mp3"	, position:  150  },
   { name: "Db6"	, frequency:  659.26 ,	mp3: "saxAlt/C6di.mp3"	, position:  150  },
-  { name: "C#6"	, frequency:  659.26 ,	mp3: "saxAlt/C6di.mp3"	, position:  140  },
+  { name: "C#6"	, frequency:  659.26 ,	mp3: "saxAlt/C6.mp3"	, position:  140  },
   { name: "C6"	, frequency:  622.25 ,	mp3: "saxAlt/C6.mp3"	, position:  140  },
   { name: "H5"	, frequency:  587.33 ,	mp3: "saxAlt/B5.mp3"	, position:  130  },
   { name: "B5"	, frequency:  554.37 ,	mp3: "saxAlt/A5di.mp3"	, position:  130  },
-  { name: "A#5"	, frequency:  554.37 ,	mp3: "saxAlt/A5di.mp3"	, position:  120  },
+  { name: "A#5"	, frequency:  554.37 ,	mp3: "saxAlt/A5.mp3"	, position:  120  },
   { name: "A5"	, frequency:  523.25 ,	mp3: "saxAlt/A5.mp3"	, position:  120  },
   { name: "Ab5"	, frequency:  493.88 ,	mp3: "saxAlt/G5di.mp3"	, position:  120  },
   { name: "G#5"	, frequency:  493.88 ,	mp3: "saxAlt/G5di.mp3"	, position:  110  },
   { name: "G5"	, frequency:  466.16 ,	mp3: "saxAlt/G5.mp3"	, position:  110  },
   { name: "Gb5"	, frequency:  440.00 ,	mp3: "saxAlt/F5di.mp3"	, position:  110  },
-  { name: "F#5"	, frequency:  440.00 ,	mp3: "saxAlt/F5di.mp3"	, position:  100  },
+  { name: "F#5"	, frequency:  440.00 ,	mp3: "saxAlt/F5.mp3"	, position:  100  },
   { name: "F5"	, frequency:  415.30 ,	mp3: "saxAlt/F5.mp3"	, position:  100  },
   { name: "E5"	, frequency:  392.00 ,	mp3: "saxAlt/E5.mp3"	, position:  90  },
   { name: "Eb5"	, frequency:  369.99 ,	mp3: "saxAlt/D5di.mp3"	, position:  90  },
@@ -133,7 +133,7 @@ const allNotes_sax_alt = [
   { name: "C5"	, frequency:  311.13 ,	mp3: "saxAlt/C5.mp3"	, position:  70  },
   { name: "H4"	, frequency:  293.66 ,	mp3: "saxAlt/B4.mp3"	, position:  60  },
   { name: "B4"	, frequency:  277.18 ,	mp3: "saxAlt/A4di.mp3"	, position:  60  },
-  { name: "A#4"	, frequency:  277.18 ,	mp3: "saxAlt/A4di.mp3"	, position:  50  },
+  { name: "A#4"	, frequency:  277.18 ,	mp3: "saxAlt/A4.mp3"	, position:  50  },
   { name: "A4"	, frequency:  261.63 ,	mp3: "saxAlt/A4.mp3"	, position:  50  },
   { name: "Ab4"	, frequency:  246.94 ,	mp3: "saxAlt/G4di.mp3"	, position:  50  },
   { name: "G#4"	, frequency:  246.94 ,	mp3: "saxAlt/G4di.mp3"	, position:  40  },
@@ -167,38 +167,38 @@ const allNotes_sax_alt = [
   { name: "C3"	, frequency:  77.78 ,	mp3: "saxAlt/C3.mp3"	, position: -70  },
   { name: "H2"	, frequency:  73.42 ,	mp3: "saxAlt/B2.mp3"	, position: -80  },
   { name: "B2"	, frequency:  69.30 ,	mp3: "saxAlt/A2di.mp3"	, position: -80  },
-  { name: "A#2"	, frequency:  69.30 ,	mp3: "saxAlt/A2di.mp3"	, position: -90  },
+  { name: "A#2"	, frequency:  69.30 ,	mp3: "saxAlt/A2di.mp3"	, position: -90 },
   { name: "A2"	, frequency:  65.41 ,	mp3: "saxAlt/A2.mp3"	, position: -90  },
   { name: "Ab2"	, frequency:  61.74 ,	mp3: "saxAlt/G2di.mp3"	, position: -90  },
   { name: "G#2"	, frequency:  61.74 ,	mp3: "saxAlt/G2di.mp3"	, position: -100  },
   { name: "G2"	, frequency:  58.27 ,	mp3: "saxAlt/G2.mp3"	, position: -100  },
   { name: "Gb2"	, frequency:  55.00 ,	mp3: "saxAlt/F2di.mp3"	, position: -100  },
-  { name: "F#2"	, frequency:  55.00 ,	mp3: "saxAlt/F2di.mp3"	, position: -110  },
-  { name: "F2"	, frequency:  51.91 ,	mp3: "saxAlt/F2.mp3"	, position: -110  },
-  { name: "E2"	, frequency:  49.00 ,	mp3: "saxAlt/E2.mp3"	, position: -120  },
-  { name: "Eb2"	, frequency:  46.25 ,	mp3: "saxAlt/D2di.mp3"	, position: -120  },
-  { name: "D#2"	, frequency:  46.25 ,	mp3: "saxAlt/D2di.mp3"	, position: -130  },
-  { name: "D2"	, frequency:  43.65 ,	mp3: "saxAlt/D2.mp3"	, position: -130  },
-  { name: "Db2"	, frequency:  41.20 ,	mp3: "saxAlt/C2di.mp3"	, position: -130  },
-  { name: "C#2"	, frequency:  41.20 ,	mp3: "saxAlt/C2di.mp3"	, position: -140  },
-  { name: "C2"	, frequency:  38.89 ,	mp3: "saxAlt/C2.mp3"	, position: -140  },
-  { name: "H1"	, frequency:  36.71 ,	mp3: "saxAlt/B1.mp3"	, position: -150  },
-  { name: "B1"	, frequency:  34.65 ,	mp3: "saxAlt/A1di.mp3"	, position: -150  },
-  { name: "A#1"	, frequency:  34.65 ,	mp3: "saxAlt/A1di.mp3"	, position: -160  },
-  { name: "A1"	, frequency:  32.70 ,	mp3: "saxAlt/A1.mp3"	, position: -160  },
-  { name: "Ab1"	, frequency:  30.87 ,	mp3: "saxAlt/G1di.mp3"	, position: -160  },
-  { name: "G#1"	, frequency:  30.87 ,	mp3: "saxAlt/G1di.mp3"	, position: -170  },
-  { name: "G1"	, frequency:  29.14 ,	mp3: "saxAlt/G1.mp3"	, position: -170  },
-  { name: "Gb1"	, frequency:  27.50 ,	mp3: "saxAlt/F1di.mp3"	, position: -170  },
-  { name: "F#1"	, frequency:  27.50 ,	mp3: "saxAlt/F1di.mp3"	, position: -180  },
-  { name: "F1"	, frequency:  25.96 ,	mp3: "saxAlt/F1.mp3"	, position: -180  },
-  { name: "E1"	, frequency:  24.50 ,	mp3: "saxAlt/E1.mp3"	, position: -190  },
-  { name: "Eb1"	, frequency:  23.13 ,	mp3: "saxAlt/D1di.mp3"	, position: -190  },
-  { name: "D#1"	, frequency:  23.13 ,	mp3: "saxAlt/D1di.mp3"	, position: -200  },
-  { name: "D1"	, frequency:  21.83 ,	mp3: "saxAlt/D1.mp3"	, position: -200  },
-  { name: "Db1"	, frequency:  20.60 ,	mp3: "saxAlt/C1di.mp3"	, position: -200  },
-  { name: "C#1"	, frequency:  20.60 ,	mp3: "saxAlt/C1di.mp3"	, position: -210  },
-  { name: "C1"	, frequency:  19.45 ,	mp3: "saxAlt/C1.mp3"	, position: -210  }
+  { name: "F#2"	, frequency:  55.00 ,	mp3: "saxAlt/F2di.mp3"	, position: -110 },
+  { name: "F2"	, frequency:  51.91 ,	mp3: "saxAlt/F2.mp3"	, position: -110 },
+  { name: "E2"	, frequency:  49.00 ,	mp3: "saxAlt/E2.mp3"	, position: -120 },
+  { name: "Eb2"	, frequency:  46.25 ,	mp3: "saxAlt/D2di.mp3"	, position: -120 },
+  { name: "D#2"	, frequency:  46.25 ,	mp3: "saxAlt/D2di.mp3"	, position: -130 },
+  { name: "D2"	, frequency:  43.65 ,	mp3: "saxAlt/D2.mp3"	, position: -130 },
+  { name: "Db2"	, frequency:  41.20 ,	mp3: "saxAlt/C2di.mp3"	, position: -130 },
+  { name: "C#2"	, frequency:  41.20 ,	mp3: "saxAlt/C2di.mp3"	, position: -140 },
+  { name: "C2"	, frequency:  38.89 ,	mp3: "saxAlt/C2.mp3"	, position: -140 },
+  { name: "H1"	, frequency:  36.71 ,	mp3: "saxAlt/B1.mp3"	, position: -150 },
+  { name: "B1"	, frequency:  34.65 ,	mp3: "saxAlt/A1di.mp3"	, position: -150 },
+  { name: "A#1"	, frequency:  34.65 ,	mp3: "saxAlt/A1di.mp3"	, position: -160 },
+  { name: "A1"	, frequency:  32.70 ,	mp3: "saxAlt/A1.mp3"	, position: -160 },
+  { name: "Ab1"	, frequency:  30.87 ,	mp3: "saxAlt/G1di.mp3"	, position: -160 },
+  { name: "G#1"	, frequency:  30.87 ,	mp3: "saxAlt/G1di.mp3"	, position: -170 },
+  { name: "G1"	, frequency:  29.14 ,	mp3: "saxAlt/G1.mp3"	, position: -170 },
+  { name: "Gb1"	, frequency:  27.50 ,	mp3: "saxAlt/F1di.mp3"	, position: -170 },
+  { name: "F#1"	, frequency:  27.50 ,	mp3: "saxAlt/F1di.mp3"	, position: -180 },
+  { name: "F1"	, frequency:  25.96 ,	mp3: "saxAlt/F1.mp3"	, position: -180 },
+  { name: "E1"	, frequency:  24.50 ,	mp3: "saxAlt/E1.mp3"	, position: -190 },
+  { name: "Eb1"	, frequency:  23.13 ,	mp3: "saxAlt/D1di.mp3"	, position: -190 },
+  { name: "D#1"	, frequency:  23.13 ,	mp3: "saxAlt/D1di.mp3"	, position: -200 },
+  { name: "D1"	, frequency:  21.83 ,	mp3: "saxAlt/D1.mp3"	, position: -200 },
+  { name: "Db1"	, frequency:  20.60 ,	mp3: "saxAlt/C1di.mp3"	, position: -200 },
+  { name: "C#1"	, frequency:  20.60 ,	mp3: "saxAlt/C1di.mp3"	, position: -210 },
+  { name: "C1"	, frequency:  19.45 ,	mp3: "saxAlt/C1.mp3"	, position: -210 }
 ];			   
 const allNotes_sax_tenor = [			
   { name: "C7", frequency: 932.33, mp3: "saxTenor/C7.mp3", position: 210 },
@@ -227,7 +227,7 @@ const allNotes_sax_tenor = [
   { name: "G#5", frequency: 369.99, mp3: "saxTenor/G5di.mp3", position: 110 },
   { name: "G5", frequency: 349.23, mp3: "saxTenor/G5.mp3", position: 110 },
   { name: "Gb5", frequency: 329.63, mp3: "saxTenor/F5di.mp3", position: 110 },
-  { name: "F#5", frequency: 329.63, mp3: "saxTenor/F5di.mp3", position: 100 },
+  { name: "F#5", frequency: 329.63, mp3: "saxTenor/F5.mp3", position: 100 },
   { name: "F5", frequency: 311.13, mp3: "saxTenor/F5.mp3", position: 100 },
   { name: "E5", frequency: 293.66, mp3: "saxTenor/E5.mp3", position: 90 },
   { name: "Eb5", frequency: 277.18, mp3: "saxTenor/D5di.mp3", position: 90 },
@@ -270,40 +270,40 @@ const allNotes_sax_tenor = [
   { name: "Db3", frequency: 61.74, mp3: "saxTenor/C3di.mp3", position: -60 },
   { name: "C#3", frequency: 61.74, mp3: "saxTenor/C3di.mp3", position: -70 },
   { name: "C3", frequency: 58.27, mp3: "saxTenor/C3.mp3", position: -70 },
-  { name: "H2", frequency: 55.00, mp3: "saxTenor/B2.mp3", position: -80 },
-  { name: "B2", frequency: 51.91, mp3: "saxTenor/A2di.mp3", position: -80 },
-  { name: "A#2", frequency: 51.91, mp3: "saxTenor/A2di.mp3", position: -90 },
-  { name: "A2", frequency: 49.00, mp3: "saxTenor/A2.mp3", position: -90 },
-  { name: "Ab2", frequency: 46.25, mp3: "saxTenor/G2di.mp3", position: -90 },
-  { name: "G#2", frequency: 46.25, mp3: "saxTenor/G2di.mp3", position: -100 },
-  { name: "G2", frequency: 43.65, mp3: "saxTenor/G2.mp3", position: -100 },
-  { name: "Gb2", frequency: 41.20, mp3: "saxTenor/F2di.mp3", position: -100 },
-  { name: "F#2", frequency: 41.20, mp3: "saxTenor/F2di.mp3", position: -110 },
-  { name: "F2", frequency: 38.89, mp3: "saxTenor/F2.mp3", position: -110 },
-  { name: "E2", frequency: 36.71, mp3: "saxTenor/E2.mp3", position: -120 },
-  { name: "Eb2", frequency: 34.65, mp3: "saxTenor/D2di.mp3", position: -120 },
-  { name: "D#2", frequency: 34.65, mp3: "saxTenor/D2di.mp3", position: -130 },
-  { name: "D2", frequency: 32.70, mp3: "saxTenor/D2.mp3", position: -130 },
-  { name: "Db2", frequency: 30.87, mp3: "saxTenor/C2di.mp3", position: -130 },
-  { name: "C#2", frequency: 30.87, mp3: "saxTenor/C2di.mp3", position: -140 },
-  { name: "C2", frequency: 29.14, mp3: "saxTenor/C2.mp3", position: -140 },
-  { name: "H1", frequency: 27.50, mp3: "saxTenor/B1.mp3", position: -150 },
-  { name: "B1", frequency: 25.96, mp3: "saxTenor/A1di.mp3", position: -150 },
-  { name: "A#1", frequency: 25.96, mp3: "saxTenor/A1di.mp3", position: -160 },
-  { name: "A1", frequency: 24.50, mp3: "saxTenor/A1.mp3", position: -160 },
-  { name: "Ab1", frequency: 23.13, mp3: "saxTenor/G1di.mp3", position: -160 },
-  { name: "G#1", frequency: 23.13, mp3: "saxTenor/G1di.mp3", position: -170 },
-  { name: "G1", frequency: 21.83, mp3: "saxTenor/G1.mp3", position: -170 },
-  { name: "Gb1", frequency: 20.60, mp3: "saxTenor/F1di.mp3", position: -170 },
-  { name: "F#1", frequency: 20.60, mp3: "saxTenor/F1di.mp3", position: -180 },
-  { name: "F1", frequency: 19.45, mp3: "saxTenor/F1.mp3", position: -180 },
-  { name: "E1", frequency: 18.36, mp3: "saxTenor/E1.mp3", position: -190 },
-  { name: "Eb1", frequency: 17.33, mp3: "saxTenor/D1di.mp3", position: -190 },
-  { name: "D#1", frequency: 17.33, mp3: "saxTenor/D1di.mp3", position: -200 },
-  { name: "D1", frequency: 16.35, mp3: "saxTenor/D1.mp3", position: -200 },
-  { name: "Db1", frequency: 15.44, mp3: "saxTenor/C1di.mp3", position: -200 },
-  { name: "C#1", frequency: 15.44, mp3: "saxTenor/C1di.mp3", position: -210 },
-  { name: "C1", frequency: 14.57, mp3: "saxTenor/C1.mp3", position: -210 }
+  { name: "H2"	, frequency:  55.00 ,	mp3: "saxTenor/B2.mp3"	, position: -80  },
+  { name: "B2"	, frequency:  51.91 ,	mp3: "saxTenor/A2di.mp3"	, position: -80  },
+  { name: "A#2"	, frequency:  51.91 ,	mp3: "saxTenor/A2di.mp3"	, position: -90 },
+  { name: "A2"	, frequency:  49.00 ,	mp3: "saxTenor/A2.mp3"	, position: -90  },
+  { name: "Ab2"	, frequency:  46.25 ,	mp3: "saxTenor/G2di.mp3"	, position: -90  },
+  { name: "G#2"	, frequency:  46.25 ,	mp3: "saxTenor/G2di.mp3"	, position: -100 },
+  { name: "G2"	, frequency:  43.65 ,	mp3: "saxTenor/G2.mp3"	, position: -100 },
+  { name: "Gb2"	, frequency:  41.20 ,	mp3: "saxTenor/F2di.mp3"	, position: -100 },
+  { name: "F#2"	, frequency:  41.20 ,	mp3: "saxTenor/F2di.mp3"	, position: -110 },
+  { name: "F2"	, frequency:  38.89 ,	mp3: "saxTenor/F2.mp3"	, position: -110 },
+  { name: "E2"	, frequency:  36.71 ,	mp3: "saxTenor/E2.mp3"	, position: -120 },
+  { name: "Eb2"	, frequency:  34.65 ,	mp3: "saxTenor/D2di.mp3"	, position: -120 },
+  { name: "D#2"	, frequency:  34.65 ,	mp3: "saxTenor/D2di.mp3"	, position: -130 },
+  { name: "D2"	, frequency:  32.70 ,	mp3: "saxTenor/D2.mp3"	, position: -130 },
+  { name: "Db2"	, frequency:  30.87 ,	mp3: "saxTenor/C2di.mp3"	, position: -130 },
+  { name: "C#2"	, frequency:  30.87 ,	mp3: "saxTenor/C2di.mp3"	, position: -140 },
+  { name: "C2"	, frequency:  29.14 ,	mp3: "saxTenor/C2.mp3"	, position: -140 },
+  { name: "H1"	, frequency:  27.50 ,	mp3: "saxTenor/B1.mp3"	, position: -150 },
+  { name: "B1"	, frequency:  25.96 ,	mp3: "saxTenor/A1di.mp3"	, position: -150 },
+  { name: "A#1"	, frequency:  25.96 ,	mp3: "saxTenor/A1di.mp3"	, position: -160 },
+  { name: "A1"	, frequency:  24.50 ,	mp3: "saxTenor/A1.mp3"	, position: -160 },
+  { name: "Ab1"	, frequency:  23.13 ,	mp3: "saxTenor/G1di.mp3"	, position: -160 },
+  { name: "G#1"	, frequency:  23.13 ,	mp3: "saxTenor/G1di.mp3"	, position: -170 },
+  { name: "G1"	, frequency:  21.83 ,	mp3: "saxTenor/G1.mp3"	, position: -170 },
+  { name: "Gb1"	, frequency:  20.60 ,	mp3: "saxTenor/F1di.mp3"	, position: -170 },
+  { name: "F#1"	, frequency:  20.60 ,	mp3: "saxTenor/F1di.mp3"	, position: -180 },
+  { name: "F1"	, frequency:  19.45 ,	mp3: "saxTenor/F1.mp3"	, position: -180 },
+  { name: "E1"	, frequency:  18.36 ,	mp3: "saxTenor/E1.mp3"	, position: -190 },
+  { name: "Eb1"	, frequency:  17.33 ,	mp3: "saxTenor/D1di.mp3"	, position: -190 },
+  { name: "D#1"	, frequency:  17.33 ,	mp3: "saxTenor/D1di.mp3"	, position: -200 },
+  { name: "D1"	, frequency:  16.35 ,	mp3: "saxTenor/D1.mp3"	, position: -200 },
+  { name: "Db1"	, frequency:  15.44 ,	mp3: "saxTenor/C1di.mp3"	, position: -200 },
+  { name: "C#1"	, frequency:  15.44 ,	mp3: "saxTenor/C1di.mp3"	, position: -210 },
+  { name: "C1"	, frequency:  14.57 ,	mp3: "saxTenor/C1.mp3"	, position: -210 }
 ];
 
 /*--------- Last Settings  --------------------------*/
@@ -426,7 +426,17 @@ document.addEventListener('click', (event) => { //close option dialog if clicked
   }
 });
 instrumentImage.addEventListener('dblclick', () => {playAllNotes(notesFiltered);});
-startButton.addEventListener("click", () => {startToneDetection(); });
+startButton.addEventListener("click", async () => {
+  // If WebMIDI is available, ask user whether to use it; otherwise fall back to microphone
+  if (navigator.requestMIDIAccess) {
+    const useMidi = confirm("A MIDI device is available. Use MIDI input instead of microphone?");
+    if (useMidi) {
+      startMIDIDetection();
+      return;
+    }
+  }
+  startToneDetection();
+});
 stopButton.addEventListener("click", () => {
   stopToneDetection();
   handleButtons();
@@ -874,7 +884,7 @@ var toneWeighted = false;
 var decayTimeoutReached = false;
 var toneNamePrevious = null;
 function checkNote(detectedFrequency) {
-  if (currentNote) {
+  if ( currentNote) {
     if (detectedFrequency) {
       const closestNoteName = getClosestNoteName(detectedFrequency);
       const targetFrequency = currentNote.frequency;
@@ -899,7 +909,7 @@ function checkNote(detectedFrequency) {
         }
       } else { //INCORRECT          
         if (!correctNotePlayed && ((closestNoteName != toneNamePrevious) || decayTimeoutReached)) { //if a tone was played correctly, discard any wrong notes after that. We enforce different proposed notes so will discard a previous note played again.
-          if(closestNoteName === currentNote.name){sign(frequencyDifference) === 1 ? closestNoteName = closestNoteName + "+" : closestNoteName = "-" + closestNoteName;} 
+          if(closestNoteName === currentNote.name){sign(frequencyDifference) === 1 ? closestNoteName = closestNoteName + "+" : closestNoteName = "-" + closestNote;} 
           status("<span class='message-red'>" + getMessage("messages", "incorrect", {note: closestNoteName}) + "</span>" + (showNoteNameCheckbox.checked ? getMessage("messages", "desiredNote", {note: currentNote.name}) : getMessage("messages", "tryAgain")));
           if(!toneWeighted){
             updateWeightedNoteNames(currentNote.name, "increment");
@@ -1300,3 +1310,97 @@ const messages = {
     }
   }  
 };
+// ------------------ MIDI SUPPORT ---------------------------
+
+let midiAccess = null;
+let midiInput = null;
+
+async function startMIDIDetection() {
+  try {
+    status(getMessage("messages", "activating"));
+    midiAccess = await navigator.requestMIDIAccess();
+    midiAccess.onstatechange = (ev) => {
+      console.log("MIDI state change", ev.port && ev.port.name, ev.port && ev.port.state);
+    };
+
+    const inputs = Array.from(midiAccess.inputs.values());
+    if (inputs.length === 0) {
+      error("No MIDI input devices found.");
+      return;
+    }
+
+    // Choose first available input. You can enhance UI to let user pick one.
+    midiInput = inputs[0];
+    console.log("Using MIDI input:", midiInput.name);
+    midiInput.onmidimessage = handleMIDIMessage;
+
+    // Prepare app state similar to microphone mode
+    if (!running) {
+      initNoteStatistics();
+      handleButtons(true);
+    }
+    running = true;
+    setSelectedNotes();
+    setFilteredNotes();
+    nextNote();
+    saveOptions();
+    status(getMessage("messages", "starting"));
+  } catch (err) {
+    error("MIDI access failed: " + err);
+  }
+}
+
+function stopMIDIDetection() {
+  if (midiInput) {
+    midiInput.onmidimessage = null;
+    midiInput = null;
+  }
+  if (midiAccess) {
+    midiAccess.onstatechange = null;
+    midiAccess = null;
+  }
+  running = false;
+  handleButtons();
+  if (showSummaryCheckbox.checked) {
+    showSummary();
+  } else {
+    location.reload();
+  }
+}
+
+function handleMIDIMessage(event) {
+  // MIDI message format: [status, data1, data2]
+  // status high nibble: 0x9 = note on, 0x8 = note off
+  const [status, data1, data2] = event.data;
+  const command = status & 0xf0;
+  if (command === 0x90 && data2 > 0) { // note on with velocity > 0
+    const noteNumber = data1;
+    const freq = midiNoteNumberToFrequency(noteNumber);
+    // Feed frequency into existing checking logic
+    checkNote(freq);
+  } else if (command === 0x80 || (command === 0x90 && data2 === 0)) { // note off or note-on with velocity 0
+    // Treat as silence
+    checkNote(null);
+  }
+}
+
+function midiNoteNumberToFrequency(noteNumber) {
+  // Standard equal temperament: A4 = MIDI 69 = 440 Hz
+  return 440 * Math.pow(2, (noteNumber - 69) / 12);
+}
+
+// Optional helper: list MIDI devices to console (call from console if needed)
+function listMIDIDevices() {
+  if (!midiAccess) {
+    console.log("No midiAccess; call startMIDIDetection() first");
+    return;
+  }
+  console.log("Inputs:");
+  for (const input of midiAccess.inputs.values()) {
+    console.log(" -", input.id, input.name, input.manufacturer);
+  }
+  console.log("Outputs:");
+  for (const output of midiAccess.outputs.values()) {
+    console.log(" -", output.id, output.name, output.manufacturer);
+  }
+}
